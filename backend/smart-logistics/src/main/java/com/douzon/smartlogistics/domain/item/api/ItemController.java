@@ -2,6 +2,7 @@ package com.douzon.smartlogistics.domain.item.api;
 
 import com.douzon.smartlogistics.domain.entity.Item;
 import com.douzon.smartlogistics.domain.item.application.ItemService;
+import com.douzon.smartlogistics.domain.item.dto.ItemInsertDto;
 import com.douzon.smartlogistics.global.common.response.CommonResponse;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
@@ -10,6 +11,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
@@ -34,5 +36,14 @@ public class ItemController {
         return ResponseEntity.status(HttpStatus.OK)
                              .contentType(MediaType.APPLICATION_JSON)
                              .body(CommonResponse.successWith(itemList));
+    }
+
+    @PostMapping("/insert")
+    public ResponseEntity<CommonResponse<String>> insert(ItemInsertDto itemInsertDto) {
+        itemService.insert(itemInsertDto);
+
+        return ResponseEntity.status(HttpStatus.CREATED)
+                             .contentType(MediaType.APPLICATION_JSON)
+                             .body(CommonResponse.successWithDefaultMessage());
     }
 }

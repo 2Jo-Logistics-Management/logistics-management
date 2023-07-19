@@ -3,6 +3,14 @@
   "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
 <mapper namespace="com.douzon.smartlogistics.domain.item.dao.mapper.ItemMapper">
+  <!-- 물품 등록  -->
+  <insert id="insert" parameterType="com.douzon.smartlogistics.domain.item.dto.ItemInsertDto">
+    INSERT INTO item (item_name, spec, unit, create_ip, create_id)
+    VALUES
+    (#{itemName}, #{spec}, #{unit}, #{createIp}, #{createId})
+  </insert>
+
+  <!-- 물품 리스트 조회  -->
   <select id="searchItemList" resultType="com.douzon.smartlogistics.domain.entity.Item">
     SELECT *
     FROM item
