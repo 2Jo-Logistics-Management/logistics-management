@@ -6,9 +6,22 @@
   <!-- 물품 등록  -->
   <insert id="insert" parameterType="com.douzon.smartlogistics.domain.item.dto.ItemInsertDto">
     INSERT INTO item (item_name, spec, unit, create_ip, create_id)
-    VALUES
-    (#{itemName}, #{spec}, #{unit}, #{createIp}, #{createId})
+    VALUES (#{itemName}, #{spec}, #{unit}, #{createIp}, #{createId})
   </insert>
+
+  <!-- 상품 수정  -->
+  <update id="modify" parameterType="com.douzon.smartlogistics.domain.item.dto.ItemModifyDto">
+    UPDATE item
+    <set>
+      <if test="itemModifyDto.itemName != null">item_name = #{itemModifyDto.itemName},</if>
+      <if test="itemModifyDto.spec != null">spec = #{itemModifyDto.spec},</if>
+      <if test="itemModifyDto.unit != null">unit = #{itemModifyDto.unit},</if>
+      modify_date = CURRENT_TIMESTAMP,
+      <if test="itemModifyDto.modifyIp != null">modify_ip = #{itemModifyDto.modifyIp},</if>
+      <if test="itemModifyDto.modifyId != null">modify_id = #{itemModifyDto.modifyId}</if>
+    </set>
+    WHERE item_code = #{itemCode}
+  </update>
 
   <!-- 물품 리스트 조회  -->
   <select id="searchItemList" resultType="com.douzon.smartlogistics.domain.entity.Item">
@@ -29,5 +42,12 @@
         AND create_id LIKE CONCAT('%', #{createId}, '%')
       </if>
     </where>
+  </select>
+
+  <!-- 물품 단건 조회 -->
+  <select id="retrieve" resultType="com.douzon.smartlogistics.domain.entity.Item">
+    SELECT *
+    FROM ITEM
+    WHERE ITEM_CODE = #{itemCode}
   </select>
 </mapper>
