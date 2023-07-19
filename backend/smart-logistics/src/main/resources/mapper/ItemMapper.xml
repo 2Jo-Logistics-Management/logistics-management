@@ -23,6 +23,12 @@
     WHERE item_code = #{itemCode}
   </update>
 
+  <!-- 상품 삭제 -->
+  <delete id="delete" parameterType="Long">
+    DELETE FROM item
+    WHERE item_code = #{itemCode}
+  </delete>
+
   <!-- 물품 리스트 조회  -->
   <select id="searchItemList" resultType="com.douzon.smartlogistics.domain.entity.Item">
     SELECT *

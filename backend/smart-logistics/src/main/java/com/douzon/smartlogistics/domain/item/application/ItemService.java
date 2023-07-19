@@ -25,4 +25,8 @@ public class ItemService {
     public void modify(Long itemCode, ItemModifyDto itemModifyDto) {
         itemDao.modify(itemCode, itemModifyDto);
     }
+
+    public void delete(Long itemCode) {
+        itemDao.delete(itemCode);
+    }
 }

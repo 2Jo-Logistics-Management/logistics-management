@@ -22,4 +22,6 @@ public interface ItemMapper {
     Optional<Item> retrieve(Long itemCode);
 
     void modify(@Param("itemCode") Long itemCode, @Param("itemModifyDto") ItemModifyDto itemModifyDto);
+
+    void delete(Long itemCode);
 }

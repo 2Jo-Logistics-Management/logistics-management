@@ -31,6 +31,13 @@ public class ItemDao {
         itemMapper.modify(itemCode, itemModifyDto);
     }
 
+
+    public void delete(Long itemCode) {
+        retrieveItem(itemCode);
+
+        itemMapper.delete(itemCode);
+    }
+
     //TODO: 전역 예외처리 필요
     private void retrieveItem(Long itemCode) {
         itemMapper.retrieve(itemCode).orElseThrow(() -> {

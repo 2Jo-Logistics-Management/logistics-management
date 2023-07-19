@@ -11,6 +11,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -51,8 +52,16 @@ public class ItemController {
 
     @PatchMapping("/modify")
     public ResponseEntity<CommonResponse<String>> modify(@RequestParam Long itemCode, ItemModifyDto itemModifyDto) {
-        log.info("itemCode: {}", itemCode);
         itemService.modify(itemCode, itemModifyDto);
+
+        return ResponseEntity.status(HttpStatus.OK)
+                             .contentType(MediaType.APPLICATION_JSON)
+                             .body(CommonResponse.successWithDefaultMessage());
+    }
+
+    @DeleteMapping("/delete")
+    public ResponseEntity<CommonResponse<String>> delete(@RequestParam Long itemCode) {
+        itemService.delete(itemCode);
 
         return ResponseEntity.status(HttpStatus.OK)
                              .contentType(MediaType.APPLICATION_JSON)
