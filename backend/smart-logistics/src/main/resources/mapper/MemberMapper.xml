@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.douzon.smartlogistics.domain.member.dao.mapper.MemberMapper">
+    <select id="memberLogin" parameterType="com.douzon.smartlogistics.domain.member.dto.LoginDto"
+                             resultType="com.douzon.smartlogistics.domain.entity.Member">
+        SELECT
+            *
+        FROM
+            MEMBER
+        WHERE
+            MEMBER_ID = #{memberId}
+            AND PASSWORD = #{password}
+    </select>
+</mapper>
