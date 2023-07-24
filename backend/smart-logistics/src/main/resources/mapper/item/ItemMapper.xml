@@ -36,7 +36,7 @@
     <where>
       <!-- 검색 조건이 있는 경우에만 해당 조건을 추가 -->
       <if test="itemCode != null and itemCode != ''">
-        AND item_code LIKE CONCAT('%', #{itemCode}, '%')
+        AND item_code LIKE concat(CONCAT('%', #{itemCode}), '%')
       </if>
       <if test="itemName != null and itemName != ''">
         AND item_name LIKE CONCAT('%', #{itemName}, '%')
