@@ -30,7 +30,7 @@ public class GlobalControllerAdvice {
     @ExceptionHandler({
         NoHandlerFoundException.class
     })
-    public ResponseEntity<CommonResponse<ErrorResponse<String>>> notFoundExceptionHandle(final NoHandlerFoundException e) {
+    public ResponseEntity<CommonResponse<String>> notFoundExceptionHandle(final NoHandlerFoundException e) {
         log.error(e.toString());
         return ResponseEntity.status(HttpStatus.NOT_FOUND)
                              .contentType(MediaType.APPLICATION_JSON)
@@ -45,7 +45,7 @@ public class GlobalControllerAdvice {
      * @since 1.0.0
      */
     @ExceptionHandler(MethodArgumentNotValidException.class)
-    public ResponseEntity<CommonResponse<ErrorResponse<String>>> handleNotValidException(
+    public ResponseEntity<CommonResponse<String>> handleNotValidException(
         final MethodArgumentNotValidException ex) {
 
         log.error("Data Validation Error 발생했습니다.", ex);
@@ -84,7 +84,7 @@ public class GlobalControllerAdvice {
      */
     @Order
     @ExceptionHandler(Exception.class)
-    public ResponseEntity<CommonResponse<ErrorResponse<String>>> handleException(final Exception ex) {
+    public ResponseEntity<CommonResponse<String>> handleException(final Exception ex) {
         log.error("", ex);
         return ResponseEntity.status(HttpStatus.BAD_REQUEST)
                              .contentType(MediaType.APPLICATION_JSON)
