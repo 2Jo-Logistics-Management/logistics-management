@@ -7,6 +7,7 @@ import java.util.List;
 import java.util.Optional;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
+import org.springframework.transaction.annotation.Transactional;
 
 @Mapper
 public interface ItemMapper {
@@ -15,13 +16,17 @@ public interface ItemMapper {
         @Param("itemCode") Long itemCode,
         @Param("itemName") String itemName,
         @Param("createDate") String createDate,
-        @Param("createId") String createId);
+        @Param("createId") String createId,
+        @Param("itemPrice") Integer itemPrice);
 
-    int insert(ItemInsertDto itemInsertDto);
+    @Transactional
+    void insert(ItemInsertDto itemInsertDto);
 
     Optional<Item> retrieve(Long itemCode);
 
+    @Transactional
     void modify(@Param("itemCode") Long itemCode, @Param("itemModifyDto") ItemModifyDto itemModifyDto);
 
+    @Transactional
     void delete(Long itemCode);
 }
