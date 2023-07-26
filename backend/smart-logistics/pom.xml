@@ -60,6 +60,18 @@
 		</dependency>
 		<!--	Validation 관련 처리를 위한 의존성	-->
   </dependencies>
+		<!-- Redis 종속성 -->
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-data-redis</artifactId>
+			<version>3.1.0</version>
+		</dependency>
+		<!-- Redis 세션 저장소 종속성 -->
+		<dependency>
+			<groupId>org.springframework.session</groupId>
+			<artifactId>spring-session-data-redis</artifactId>
+		</dependency>
+	</dependencies>
 
 	<build>
 		<plugins>
