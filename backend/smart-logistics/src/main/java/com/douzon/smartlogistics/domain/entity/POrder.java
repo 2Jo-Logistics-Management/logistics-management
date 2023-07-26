@@ -8,7 +8,8 @@ import lombok.RequiredArgsConstructor;
 @Getter
 public class POrder {
 
-    private final String POrderCode;
+    private final String pOrderCode;
+    private final String pOrderDate;
     private final String createDate;
     private final String createIp;
     private final String createId;

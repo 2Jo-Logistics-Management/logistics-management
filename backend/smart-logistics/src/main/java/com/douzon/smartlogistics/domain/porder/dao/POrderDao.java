@@ -16,11 +16,10 @@ public class POrderDao {
     private final POrderMapper pOrderMapper;
 
     public List<POrder> searchPOrder(String pOrderCode, State state, String createId, String createIp,
-        Long accountNo, String startDate, String endDate) {
+        Long accountNo, String startDate, String endDate, String pOrderDate) {
 
-        List<POrder> pOrderList = pOrderMapper.searchPOrder(pOrderCode, createId, createIp, accountNo, state);
-
-        log.info(String.valueOf(pOrderList.size()));
+        List<POrder> pOrderList = pOrderMapper.searchPOrder(pOrderCode, createId, createIp, accountNo, state,
+            startDate, endDate, pOrderDate);
 
         return pOrderList;
     }

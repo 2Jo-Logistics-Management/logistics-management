@@ -8,5 +8,6 @@ import org.apache.ibatis.annotations.Mapper;
 @Mapper
 public interface POrderMapper {
 
-    List<POrder> searchPOrder(String pOrderCode, String createId, String createIp, Long accountNo, State state);
+    List<POrder> searchPOrder(String pOrderCode, String createId, String createIp, Long accountNo, State state,
+        String startDate, String endDate, String pOrderDate);
 }

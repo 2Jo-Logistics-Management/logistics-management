@@ -15,8 +15,8 @@ public class POrderService {
 
     private final POrderDao pOrderDao;
     public List<POrder> searchPOrder(String pOrderCode, State state, String createId, String createIp, Long accountNo,
-        String startDate, String endDate) {
+        String startDate, String endDate, String pOrderDate) {
 
-        return pOrderDao.searchPOrder(pOrderCode, state, createId, createIp, accountNo, startDate, endDate);
+        return pOrderDao.searchPOrder(pOrderCode, state, createId, createIp, accountNo, startDate, endDate, pOrderDate);
     }
 }

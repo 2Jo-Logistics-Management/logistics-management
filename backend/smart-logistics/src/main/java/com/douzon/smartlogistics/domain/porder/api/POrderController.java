@@ -25,17 +25,18 @@ public class POrderController {
 
     @GetMapping("/list")
     public ResponseEntity<CommonResponse<List<POrder>>> searchPOrderList(
-        @RequestParam(required = false, defaultValue = "") String POrderCode,
+        @RequestParam(required = false, defaultValue = "") String pOrderCode,
         @RequestParam(required = false) State state,
         @RequestParam(required = false, defaultValue = "") String createId,
         @RequestParam(required = false, defaultValue = "") String createIp,
         @RequestParam(required = false) Long accountNo,
         @RequestParam(required = false, defaultValue = "") String startDate,
-        @RequestParam(required = false, defaultValue = "") String endDate
+        @RequestParam(required = false, defaultValue = "") String endDate,
+        @RequestParam(required = false, defaultValue = "") String pOrderDate
     ) {
 
-        List<POrder> pOrderList = pOrderService.searchPOrder(POrderCode, state, createId, createIp, accountNo,
-            startDate, endDate);
+        List<POrder> pOrderList = pOrderService.searchPOrder(pOrderCode, state, createId, createIp, accountNo,
+            startDate, endDate, pOrderDate);
 
         return ResponseEntity.status(HttpStatus.OK)
                              .contentType(MediaType.APPLICATION_JSON)

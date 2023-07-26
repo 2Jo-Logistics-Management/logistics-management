@@ -5,15 +5,16 @@
 <mapper namespace="com.douzon.smartlogistics.domain.porder.dao.mapper.POrderMapper">
   <select id="searchPOrder" resultType="com.douzon.smartlogistics.domain.entity.POrder">
     SELECT
-        porder_code,
-           create_date,
-           create_ip,
-           create_id,
-           modify_date,
-           modify_ip,
-           modify_id,
-           state,
-           account_no
+    porder_code,
+    porder_date,
+    create_date,
+    create_ip,
+    create_id,
+    modify_date,
+    modify_ip,
+    modify_id,
+    state,
+    account_no
     FROM PORDER
     <where>
       <if test="pOrderCode != null and pOrderCode != ''">
@@ -31,6 +32,15 @@
       <if test="accountNo != null">
         AND ACCOUNT_NO = #{accountNo}
       </if>
-    </where>
+      <if test="startDate != null and startDate != ''">
+        <![CDATA[ AND DATE(CREATE_DATE) >= #{startDate} ]]>
+      </if>
+      <if test="endDate != null and endDate != ''">
+        <![CDATA[ AND DATE(CREATE_DATE) <= #{endDate} ]]>
+      </if>
+      <if test="pOrderDate != null and pOrderDate != ''">
+        <![CDATA[ AND DATE(porder_date) >= #{pOrderDate} ]]>
+      </if>
+</where>
   </select>
 </mapper>
