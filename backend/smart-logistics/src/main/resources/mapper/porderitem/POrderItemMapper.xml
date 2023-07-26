@@ -13,4 +13,8 @@
              #{pOrderItem.pOrderItemPrice},
              #{pOrderItem.receiveDeadline}, #{pOrderItem.createIp}, #{pOrderItem.createId} );
   </insert>
+  <delete id="delete">
+    DELETE FROM PORDER_ITEM
+    WHERE PORDER_CODE = #{pOrderCode}
+  </delete>
 </mapper>

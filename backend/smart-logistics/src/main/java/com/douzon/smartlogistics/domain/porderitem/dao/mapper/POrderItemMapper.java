@@ -8,4 +8,6 @@ import org.apache.ibatis.annotations.Param;
 public interface POrderItemMapper {
 
     void insert(@Param("pOrderItem") POrderItemDto pOrderItem);
+
+    void delete(String retrievePOrderCode);
 }

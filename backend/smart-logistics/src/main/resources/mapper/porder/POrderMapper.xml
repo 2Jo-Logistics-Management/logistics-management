@@ -6,8 +6,26 @@
   <!-- 발주 등록  -->
   <insert id="insert">
     INSERT INTO PORDER(porder_code, porder_date, create_ip, create_id, account_no)
-    VALUES ( #{pOrderCode}, CURRENT_TIMESTAMP, #{createIp}, #{createId}, #{accountNo})
+    VALUES (#{pOrderCode}, CURRENT_TIMESTAMP, #{createIp}, #{createId}, #{accountNo})
   </insert>
+
+  <!-- 발주 수정 -->
+  <update id="modify">
+    UPDATE PORDER
+    SET PORDER_DATE = CURRENT_TIMESTAMP,
+        MODIFY_IP   = #{pOrderModifyDto.modifyIp},
+        MODIFY_ID   = #{pOrderModifyDto.modifyId},
+        STATE       = #{pOrderModifyDto.state},
+        ACCOUNT_NO  = #{pOrderModifyDto.accountNo}
+    WHERE PORDER_CODE = #{pOrderCode}
+  </update>
+
+  <!-- 발주 삭제 -->
+  <delete id="delete">
+    DELETE
+    FROM PORDER
+    WHERE PORDER_CODE = #{pOrderCode}
+  </delete>
 
   <!-- 발주 조회 -->
   <select id="searchPOrder" resultType="com.douzon.smartlogistics.domain.entity.POrder">
@@ -48,20 +66,19 @@
       <if test="pOrderDate != null and pOrderDate != ''">
         <![CDATA[ AND DATE(porder_date) >= #{pOrderDate} ]]>
       </if>
-</where>
+    </where>
   </select>
   <select id="retrieve" resultType="com.douzon.smartlogistics.domain.entity.POrder">
-    SELECT
-      porder_code,
-      porder_date,
-      create_date,
-      create_ip,
-      create_id,
-      modify_date,
-      modify_ip,
-      modify_id,
-      state,
-      account_no
+    SELECT porder_code,
+           porder_date,
+           create_date,
+           create_ip,
+           create_id,
+           modify_date,
+           modify_ip,
+           modify_id,
+           state,
+           account_no
     FROM PORDER
     WHERE PORDER_CODE = #{pOrderCode}
   </select>
