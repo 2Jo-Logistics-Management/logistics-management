@@ -3,6 +3,13 @@
   "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
 <mapper namespace="com.douzon.smartlogistics.domain.porder.dao.mapper.POrderMapper">
+  <!-- 발주 등록  -->
+  <insert id="insert">
+    INSERT INTO PORDER(porder_code, porder_date, create_ip, create_id, account_no)
+    VALUES ( #{pOrderCode}, CURRENT_TIMESTAMP, #{createIp}, #{createId}, #{accountNo})
+  </insert>
+
+  <!-- 발주 조회 -->
   <select id="searchPOrder" resultType="com.douzon.smartlogistics.domain.entity.POrder">
     SELECT
     porder_code,
@@ -42,5 +49,20 @@
         <![CDATA[ AND DATE(porder_date) >= #{pOrderDate} ]]>
       </if>
 </where>
+  </select>
+  <select id="retrieve" resultType="com.douzon.smartlogistics.domain.entity.POrder">
+    SELECT
+      porder_code,
+      porder_date,
+      create_date,
+      create_ip,
+      create_id,
+      modify_date,
+      modify_ip,
+      modify_id,
+      state,
+      account_no
+    FROM PORDER
+    WHERE PORDER_CODE = #{pOrderCode}
   </select>
 </mapper>

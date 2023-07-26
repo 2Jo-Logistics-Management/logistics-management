@@ -1,12 +1,16 @@
 package com.douzon.smartlogistics.domain.porder.application;
 
 import com.douzon.smartlogistics.domain.entity.POrder;
+import com.douzon.smartlogistics.domain.entity.constant.SeqCode;
 import com.douzon.smartlogistics.domain.entity.constant.State;
 import com.douzon.smartlogistics.domain.porder.dao.POrderDao;
+import com.douzon.smartlogistics.domain.porder.dto.POrderInsertDto;
+import com.douzon.smartlogistics.global.common.util.AutoSeqGenerator;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 @RequiredArgsConstructor
 @Service
@@ -18,5 +22,12 @@ public class POrderService {
         String startDate, String endDate, String pOrderDate) {
 
         return pOrderDao.searchPOrder(pOrderCode, state, createId, createIp, accountNo, startDate, endDate, pOrderDate);
+    }
+
+    @Transactional
+    public void insert(POrderInsertDto pOrderInsertDto) {
+        pOrderInsertDto.setPOrderCode(AutoSeqGenerator.generate(SeqCode.PO));
+
+        pOrderDao.insert(pOrderInsertDto);
     }
 }

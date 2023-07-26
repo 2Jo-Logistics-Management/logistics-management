@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.douzon.smartlogistics.domain.porderitem.dao.mapper.POrderItemMapper">
+
+  <!--  발주 품목 등록 -->
+  <insert id="insert" parameterType="com.douzon.smartlogistics.domain.porderitem.dto.POrderItemDto">
+    INSERT INTO PORDER_ITEM(PORDER_CODE, MANAGER, ITEM_CODE, PORDER_COUNT, PORDER_PRICE, PORDER_ITEM_PRICE,
+                            RECEIVE_DEADLINE, CREATE_IP, CREATE_ID)
+    VALUES ( #{pOrderItem.pOrderCode}, #{pOrderItem.manager}, #{pOrderItem.itemCode}, #{pOrderItem.pOrderCount},
+             #{pOrderItem.pOrderPrice},
+             #{pOrderItem.pOrderItemPrice},
+             #{pOrderItem.receiveDeadline}, #{pOrderItem.createIp}, #{pOrderItem.createId} );
+  </insert>
+</mapper>

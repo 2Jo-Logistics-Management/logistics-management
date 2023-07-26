@@ -3,14 +3,18 @@ package com.douzon.smartlogistics.domain.porder.api;
 import com.douzon.smartlogistics.domain.entity.POrder;
 import com.douzon.smartlogistics.domain.entity.constant.State;
 import com.douzon.smartlogistics.domain.porder.application.POrderService;
+import com.douzon.smartlogistics.domain.porder.dto.POrderInsertDto;
 import com.douzon.smartlogistics.global.common.response.CommonResponse;
 import java.util.List;
+import javax.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
@@ -41,5 +45,14 @@ public class POrderController {
         return ResponseEntity.status(HttpStatus.OK)
                              .contentType(MediaType.APPLICATION_JSON)
                              .body(CommonResponse.successWith(pOrderList));
+    }
+
+    @PostMapping("/insert")
+    public ResponseEntity<CommonResponse<String>> insert(@RequestBody @Valid POrderInsertDto pOrderInsertDto) {
+        pOrderService.insert(pOrderInsertDto);
+
+        return ResponseEntity.status(HttpStatus.CREATED)
+                             .contentType(MediaType.APPLICATION_JSON)
+                             .body(CommonResponse.successWithDefaultMessage());
     }
 }
