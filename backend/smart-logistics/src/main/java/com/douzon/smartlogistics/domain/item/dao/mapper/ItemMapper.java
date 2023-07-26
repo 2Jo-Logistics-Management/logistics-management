@@ -13,7 +13,7 @@ import org.springframework.transaction.annotation.Transactional;
 public interface ItemMapper {
 
     List<Item> searchItemList(
-        @Param("itemCode") Long itemCode,
+        @Param("itemCode") Integer itemCode,
         @Param("itemName") String itemName,
         @Param("createDate") String createDate,
         @Param("createId") String createId,
@@ -22,7 +22,7 @@ public interface ItemMapper {
     @Transactional
     void insert(ItemInsertDto itemInsertDto);
 
-    Optional<Item> retrieve(Long itemCode);
+    Optional<Item> retrieve(Integer itemCode);
 
     @Transactional
     void modify(@Param("itemCode") Long itemCode, @Param("itemModifyDto") ItemModifyDto itemModifyDto);

@@ -18,7 +18,7 @@ public class ItemDao {
 
     private final ItemMapper itemMapper;
 
-    public List<Item> searchItemList(Long itemCode, String itemName, String createDate, String createId,
+    public List<Item> searchItemList(Integer itemCode, String itemName, String createDate, String createId,
         Integer itemPrice) {
 
         return itemMapper.searchItemList(itemCode, itemName, createDate, createId, itemPrice);
@@ -30,7 +30,7 @@ public class ItemDao {
     }
 
     @Transactional
-    public void modify(Long itemCode, ItemModifyDto itemModifyDto) {
+    public void modify(Integer itemCode, ItemModifyDto itemModifyDto) {
         Long retrieveItemCode = retrieveItem(itemCode);
 
         itemMapper.modify(retrieveItemCode, itemModifyDto);
@@ -38,13 +38,13 @@ public class ItemDao {
 
 
     @Transactional
-    public void delete(Long itemCode) {
+    public void delete(Integer itemCode) {
         Long retrieveItemCode = retrieveItem(itemCode);
 
         itemMapper.delete(retrieveItemCode);
     }
 
-    private Long retrieveItem(Long itemCode) {
+    private Long retrieveItem(Integer itemCode) {
         return itemMapper.retrieve(itemCode).orElseThrow(() -> {
             throw new NoSuchElementException("해당 아이템은 존재하지 않습니다.");
         }).getItemCode();

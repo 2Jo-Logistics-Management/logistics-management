@@ -15,7 +15,7 @@ public class ItemService {
 
     private final ItemDao itemDao;
 
-    public List<Item> searchItemList(Long itemCode, String itemName, String createDate, String createId,
+    public List<Item> searchItemList(Integer itemCode, String itemName, String createDate, String createId,
         Integer itemPrice) {
 
         return itemDao.searchItemList(itemCode, itemName, createDate, createId, itemPrice);
@@ -27,12 +27,12 @@ public class ItemService {
     }
 
     @Transactional
-    public void modify(Long itemCode, ItemModifyDto itemModifyDto) {
+    public void modify(Integer itemCode, ItemModifyDto itemModifyDto) {
         itemDao.modify(itemCode, itemModifyDto);
     }
 
     @Transactional
-    public void delete(Long itemCode) {
+    public void delete(Integer itemCode) {
         itemDao.delete(itemCode);
     }
 }

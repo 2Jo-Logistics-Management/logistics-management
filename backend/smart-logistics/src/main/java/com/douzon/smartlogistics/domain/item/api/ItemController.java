@@ -31,7 +31,7 @@ public class ItemController {
 
     @GetMapping("/list")
     public ResponseEntity<CommonResponse<List<Item>>> searchItemList(
-        @RequestParam(required = false) Long itemCode,
+        @RequestParam(required = false) Integer itemCode,
         @RequestParam(required = false, defaultValue = "") String itemName,
         @RequestParam(required = false, defaultValue = "") String createDate,
         @RequestParam(required = false, defaultValue = "") String createId,
@@ -54,7 +54,7 @@ public class ItemController {
     }
 
     @PatchMapping("/modify")
-    public ResponseEntity<CommonResponse<String>> modify(@RequestParam Long itemCode,
+    public ResponseEntity<CommonResponse<String>> modify(@RequestParam Integer itemCode,
         @RequestBody @Valid ItemModifyDto itemModifyDto) {
 
         itemService.modify(itemCode, itemModifyDto);
@@ -65,7 +65,7 @@ public class ItemController {
     }
 
     @DeleteMapping("/delete")
-    public ResponseEntity<CommonResponse<String>> delete(@RequestParam Long itemCode) {
+    public ResponseEntity<CommonResponse<String>> delete(@RequestParam Integer itemCode) {
         itemService.delete(itemCode);
 
         return ResponseEntity.status(HttpStatus.OK)
