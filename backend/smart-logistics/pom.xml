@@ -59,7 +59,6 @@
 			<artifactId>spring-boot-starter-validation</artifactId>
 		</dependency>
 		<!--	Validation 관련 처리를 위한 의존성	-->
-  </dependencies>
 		<!-- Redis 종속성 -->
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
