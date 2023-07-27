@@ -7,7 +7,7 @@ import lombok.RequiredArgsConstructor;
 @Getter
 public class Item {
 
-    private final Long itemCode;
+    private final Integer itemCode;
     private final String itemName;
     private final String spec;
     private final String unit;
