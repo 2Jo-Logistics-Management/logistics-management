@@ -5,7 +5,7 @@ import lombok.RequiredArgsConstructor;
 
 @RequiredArgsConstructor
 @Getter
-public class ErrorResponse {
+public class ErrorResponse<T> {
 
-    private final String message;
+    private final T message;
 }

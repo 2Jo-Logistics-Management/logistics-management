@@ -7,6 +7,7 @@ import com.douzon.smartlogistics.domain.item.dto.ItemModifyDto;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
 @RequiredArgsConstructor
@@ -14,19 +15,24 @@ public class ItemService {
 
     private final ItemDao itemDao;
 
-    public List<Item> searchItemList(Long itemCode, String itemName, String createDate, String createId) {
-        return itemDao.searchItemList(itemCode, itemName, createDate, createId);
+    public List<Item> searchItemList(Integer itemCode, String itemName, String createDate, String createId,
+        Integer itemPrice) {
+
+        return itemDao.searchItemList(itemCode, itemName, createDate, createId, itemPrice);
     }
 
+    @Transactional
     public void insert(ItemInsertDto itemInsertDto) {
         itemDao.insert(itemInsertDto);
     }
 
-    public void modify(Long itemCode, ItemModifyDto itemModifyDto) {
+    @Transactional
+    public void modify(Integer itemCode, ItemModifyDto itemModifyDto) {
         itemDao.modify(itemCode, itemModifyDto);
     }
 
-    public void delete(Long itemCode) {
+    @Transactional
+    public void delete(Integer itemCode) {
         itemDao.delete(itemCode);
     }
 }
