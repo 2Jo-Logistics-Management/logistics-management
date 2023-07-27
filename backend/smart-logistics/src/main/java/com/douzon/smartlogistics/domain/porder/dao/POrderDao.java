@@ -5,6 +5,7 @@ import com.douzon.smartlogistics.domain.entity.constant.State;
 import com.douzon.smartlogistics.domain.porder.dao.mapper.POrderMapper;
 import com.douzon.smartlogistics.domain.porder.dto.POrderInsertDto;
 import com.douzon.smartlogistics.domain.porder.dto.POrderModifyDto;
+import com.douzon.smartlogistics.domain.porder.exception.NotWaitStateException;
 import com.douzon.smartlogistics.domain.porderitem.dao.mapper.POrderItemMapper;
 import com.douzon.smartlogistics.domain.porderitem.dto.POrderItemDto;
 import java.util.List;
@@ -44,22 +45,27 @@ public class POrderDao {
 
     @Transactional
     public void modify(String pOrderCode, POrderModifyDto pOrderModifyDto) {
-        String retrievePOrderCode = retrievePOrder(pOrderCode);
+        POrder retrievePOrder = retrievePOrder(pOrderCode);
 
-        pOrderMapper.modify(retrievePOrderCode, pOrderModifyDto);
+        pOrderMapper.modify(retrievePOrder.getPOrderCode(), pOrderModifyDto);
     }
 
     @Transactional
     public void delete(String pOrderCode) {
-        String retrievePOrderCode = retrievePOrder(pOrderCode);
+        POrder retrievePOrder = retrievePOrder(pOrderCode);
 
-        pOrderItemMapper.delete(retrievePOrderCode);
-        pOrderMapper.delete(retrievePOrderCode);
+        if (retrievePOrder.getState() == State.WAIT) {
+            pOrderItemMapper.delete(retrievePOrder.getPOrderCode());
+            pOrderMapper.delete(retrievePOrder.getPOrderCode());
+            return;
+        }
+
+        throw new NotWaitStateException();
     }
 
-    private String retrievePOrder(String pOrderCode) {
+    private POrder retrievePOrder(String pOrderCode) {
         return pOrderMapper.retrieve(pOrderCode).orElseThrow(() -> {
             throw new NoSuchElementException("해당 발주 내역은 존재하지 않습니다.");
-        }).getPOrderCode();
+        });
     }
 }
