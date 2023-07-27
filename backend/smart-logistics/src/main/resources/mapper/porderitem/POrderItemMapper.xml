@@ -5,7 +5,7 @@
 <mapper namespace="com.douzon.smartlogistics.domain.porderitem.dao.mapper.POrderItemMapper">
 
   <!--  발주 품목 등록 -->
-  <insert id="insert" parameterType="com.douzon.smartlogistics.domain.porderitem.dto.POrderItemDto">
+  <insert id="insert" parameterType="com.douzon.smartlogistics.domain.porderitem.dto.POrderItemInsertDto">
     INSERT INTO PORDER_ITEM(PORDER_CODE, MANAGER, ITEM_CODE, PORDER_COUNT, PORDER_PRICE, PORDER_ITEM_PRICE,
                             RECEIVE_DEADLINE, CREATE_IP, CREATE_ID)
     VALUES ( #{pOrderItem.pOrderCode}, #{pOrderItem.manager}, #{pOrderItem.itemCode}, #{pOrderItem.pOrderCount},

@@ -7,7 +7,7 @@ import com.douzon.smartlogistics.domain.porder.dto.POrderInsertDto;
 import com.douzon.smartlogistics.domain.porder.dto.POrderModifyDto;
 import com.douzon.smartlogistics.domain.porder.exception.NotWaitStateException;
 import com.douzon.smartlogistics.domain.porderitem.dao.mapper.POrderItemMapper;
-import com.douzon.smartlogistics.domain.porderitem.dto.POrderItemDto;
+import com.douzon.smartlogistics.domain.porderitem.dto.POrderItemInsertDto;
 import java.util.List;
 import java.util.NoSuchElementException;
 import lombok.RequiredArgsConstructor;
@@ -36,7 +36,7 @@ public class POrderDao {
     public void insert(POrderInsertDto pOrderInsertDto) {
         pOrderMapper.insert(pOrderInsertDto);
 
-        for (POrderItemDto pOrderItem : pOrderInsertDto.getPOrderItems()) {
+        for (POrderItemInsertDto pOrderItem : pOrderInsertDto.getPOrderItems()) {
             pOrderItem.setPOrderCode(pOrderInsertDto.getPOrderCode());
 
             pOrderItemMapper.insert(pOrderItem);
