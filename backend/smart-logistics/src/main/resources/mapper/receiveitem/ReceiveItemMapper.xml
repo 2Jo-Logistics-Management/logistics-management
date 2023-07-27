@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.douzon.smartlogistics.domain.receiveitem.dao.mapper.ReceiveItemMapper">
+
+    <insert id="insertReceiveItem" parameterType="com.douzon.smartlogistics.domain.receiveitem.dto.ReceiveItemDto">
+        INSERT INTO RECEIVE_ITEM(RECEIVE_CODE, PORDER_CODE, PORDER_ITEM_NO, ITEM_CODE, MANAGER, RECEIVE_COUNT, ACCOUNT_NO, WAREHOUSE_SECTION_NO, CREATE_IP, CREATE_ID)
+        VALUES (#{receiveItem.receiveCode}, #{receiveItem.porderCode}, #{receiveItem.porderItemNo}, #{receiveItem.itemCode}, #{receiveItem.manager}, #{receiveItem.receiveCount}, #{receiveItem.accountNo}, #{receiveItem.warehouseSectionNo}, #{receiveItem.createIp},#{receiveItem.createId});
+    </insert>
+</mapper>

@@ -5,9 +5,16 @@ import lombok.RequiredArgsConstructor;
 
 @RequiredArgsConstructor
 @Getter
-public class Receive {
+public class ReceiveItem {
+    private final Long receiveItemNo;
     private final String receiveCode;
-    private final String receiveDate;
+    private final String porderCode;
+    private final String porderItemNo;
+    private final Integer itemCode;
+    private final String manager;
+    private final Double receiveCount;
+    private final Integer accountNo;
+    private final Integer warehouseSectionNo;
     private final String createDate;
     private final String createIp;
     private final String createId;
