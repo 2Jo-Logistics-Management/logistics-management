@@ -5,8 +5,8 @@
 <mapper namespace="com.douzon.smartlogistics.domain.item.dao.mapper.ItemMapper">
   <!-- 물품 등록  -->
   <insert id="insert" parameterType="com.douzon.smartlogistics.domain.item.dto.ItemInsertDto">
-    INSERT INTO item (item_name, spec, unit, create_ip, create_id)
-    VALUES (#{itemName}, #{spec}, #{unit}, #{createIp}, #{createId})
+    INSERT INTO item (item_name, spec, unit, item_price, create_ip, create_id)
+    VALUES (#{itemName}, #{spec}, #{unit}, #{itemPrice}, #{createIp}, #{createId})
   </insert>
 
   <!-- 상품 수정  -->
@@ -31,12 +31,23 @@
 
   <!-- 물품 리스트 조회  -->
   <select id="searchItemList" resultType="com.douzon.smartlogistics.domain.entity.Item">
-    SELECT *
+    SELECT
+        ITEM_CODE,
+        ITEM_NAME,
+        SPEC,
+        UNIT,
+        ITEM_PRICE,
+        CREATE_DATE,
+        CREATE_IP,
+        CREATE_ID,
+        MODIFY_DATE,
+        MODIFY_IP,
+        MODIFY_ID
     FROM item
     <where>
       <!-- 검색 조건이 있는 경우에만 해당 조건을 추가 -->
-      <if test="itemCode != null and itemCode != ''">
-        AND item_code LIKE CONCAT('%', #{itemCode}, '%')
+      <if test="itemCode != null">
+        AND item_code LIKE concat(CONCAT('%', #{itemCode}), '%')
       </if>
       <if test="itemName != null and itemName != ''">
         AND item_name LIKE CONCAT('%', #{itemName}, '%')
@@ -47,12 +58,26 @@
       <if test="createId != null and createId != ''">
         AND create_id LIKE CONCAT('%', #{createId}, '%')
       </if>
+      <if test="itemPrice != null">
+        AND item_price LIKE CONCAT('%', #{itemPrice}, '%')
+      </if>
     </where>
   </select>
 
   <!-- 물품 단건 조회 -->
   <select id="retrieve" resultType="com.douzon.smartlogistics.domain.entity.Item">
-    SELECT *
+    SELECT
+      ITEM_CODE,
+      ITEM_NAME,
+      SPEC,
+      UNIT,
+      ITEM_PRICE,
+      CREATE_DATE,
+      CREATE_IP,
+      CREATE_ID,
+      MODIFY_DATE,
+      MODIFY_IP,
+      MODIFY_ID
     FROM ITEM
     WHERE ITEM_CODE = #{itemCode}
   </select>

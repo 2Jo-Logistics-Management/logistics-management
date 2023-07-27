@@ -9,6 +9,7 @@ import java.util.NoSuchElementException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
 
 @Repository
 @RequiredArgsConstructor
@@ -17,31 +18,35 @@ public class ItemDao {
 
     private final ItemMapper itemMapper;
 
-    public List<Item> searchItemList(Long itemCode, String itemName, String createDate, String createId) {
-        return itemMapper.searchItemList(itemCode, itemName, createDate, createId);
+    public List<Item> searchItemList(Integer itemCode, String itemName, String createDate, String createId,
+        Integer itemPrice) {
+
+        return itemMapper.searchItemList(itemCode, itemName, createDate, createId, itemPrice);
     }
 
+    @Transactional
     public void insert(ItemInsertDto itemInsertDto) {
         itemMapper.insert(itemInsertDto);
     }
 
-    public void modify(Long itemCode, ItemModifyDto itemModifyDto) {
-        retrieveItem(itemCode);
+    @Transactional
+    public void modify(Integer itemCode, ItemModifyDto itemModifyDto) {
+        Long retrieveItemCode = retrieveItem(itemCode);
 
-        itemMapper.modify(itemCode, itemModifyDto);
+        itemMapper.modify(retrieveItemCode, itemModifyDto);
     }
 
 
-    public void delete(Long itemCode) {
-        retrieveItem(itemCode);
+    @Transactional
+    public void delete(Integer itemCode) {
+        Long retrieveItemCode = retrieveItem(itemCode);
 
-        itemMapper.delete(itemCode);
+        itemMapper.delete(retrieveItemCode);
     }
 
-    //TODO: 전역 예외처리 필요
-    private void retrieveItem(Long itemCode) {
-        itemMapper.retrieve(itemCode).orElseThrow(() -> {
+    private Long retrieveItem(Integer itemCode) {
+        return itemMapper.retrieve(itemCode).orElseThrow(() -> {
             throw new NoSuchElementException("해당 아이템은 존재하지 않습니다.");
-        });
+        }).getItemCode();
     }
 }
