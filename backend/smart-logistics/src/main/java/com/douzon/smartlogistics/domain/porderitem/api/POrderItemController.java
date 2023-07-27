@@ -3,6 +3,7 @@ package com.douzon.smartlogistics.domain.porderitem.api;
 import com.douzon.smartlogistics.domain.porderitem.application.POrderItemService;
 import com.douzon.smartlogistics.domain.porderitem.dto.POrderItemInsertDto;
 import com.douzon.smartlogistics.global.common.response.CommonResponse;
+import javax.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -20,7 +21,7 @@ public class POrderItemController {
     private final POrderItemService pOrderItemService;
 
     @PostMapping("/insert")
-    public ResponseEntity<CommonResponse<String>> insert(@RequestBody POrderItemInsertDto pOrderItemInsertDto) {
+    public ResponseEntity<CommonResponse<String>> insert(@RequestBody @Valid POrderItemInsertDto pOrderItemInsertDto) {
 
         pOrderItemService.insert(pOrderItemInsertDto);
 
