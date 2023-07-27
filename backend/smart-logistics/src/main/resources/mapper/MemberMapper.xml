@@ -7,11 +7,24 @@
     <select id="memberLogin" parameterType="com.douzon.smartlogistics.domain.member.dto.LoginDto"
                              resultType="com.douzon.smartlogistics.domain.entity.Member">
         SELECT
-            *
+            member_no,
+            member_id,
+            member_role,
+            create_date,
+            ipaddress
         FROM
             MEMBER
         WHERE
-            MEMBER_ID = #{memberId}
-            AND PASSWORD = #{password}
+            member_id = #{memberId}
+            AND password = #{password}
     </select>
+
+    <update id="saveIpAddress" parameterType="java.util.HashMap">
+        UPDATE
+            MEMBER
+        SET
+            ipaddress = #{ipAddress}
+        WHERE
+            member_no = #{memberNo}
+    </update>
 </mapper>
