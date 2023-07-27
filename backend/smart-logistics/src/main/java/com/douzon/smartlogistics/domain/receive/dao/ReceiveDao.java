@@ -1,11 +1,16 @@
 package com.douzon.smartlogistics.domain.receive.dao;
 
 import com.douzon.smartlogistics.domain.entity.CmpPOrder;
+import com.douzon.smartlogistics.domain.entity.ReceiveItem;
 import com.douzon.smartlogistics.domain.entity.ReceiveList;
 import com.douzon.smartlogistics.domain.receive.dao.mapper.ReceiveMapper;
+import com.douzon.smartlogistics.domain.receive.dto.ReceiveInsertDto;
+import com.douzon.smartlogistics.domain.receiveitem.dao.mapper.ReceiveItemMapper;
+import com.douzon.smartlogistics.domain.receiveitem.dto.ReceiveItemDto;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.text.SimpleDateFormat;
 import java.util.*;
@@ -16,6 +21,8 @@ import java.util.*;
 public class ReceiveDao {
 
     private final ReceiveMapper receiveMapper;
+    private final ReceiveItemMapper receiveItemMapper;
+
     public List<ReceiveList> findReceive(String receiveCode, String manager, Integer itemCode, String itemName, Integer accountNo, String accountName, String startDate, String endDate) {
         return receiveMapper.findReceive(receiveCode, manager, itemCode, itemName, accountNo, accountName, startDate, endDate);
     }
@@ -44,11 +51,27 @@ public class ReceiveDao {
             item.put("createIp",map.get("createIp"));
             item.put("createId",map.get("createId"));
         }
+
+
         System.out.println("receive = " + receive);
         System.out.println("receiveItem = " + receiveItem);
         receiveMapper.insertReceive(receive);
         receiveMapper.insertReceiveItem(receiveItem);
+
+        //등록된 입고품목을 찾아옴
+        List<Map<String, Object>> rvItems = receiveMapper.findReceiveItem(receiveCode);
+        System.out.println("rvItems = " + rvItems);
+        for (Map<String, Object> Items : rvItems) {
+            System.out.println("CREATE_DATE: " + Items.get("CREATE_DATE"));
+            System.out.println("RECEIVE_CODE: " + Items.get("RECEIVE_CODE"));
+            System.out.println("PORDER_ITEM_NO: " + Items.get("PORDER_ITEM_NO"));
+            System.out.println("WAREHOUSE_SECTION_NO : " + Items.get("WAREHOUSE_SECTION_NO"));
+            receiveMapper.insertWarehouse(Items);
+        }
+
     }
+
+
 
     public void deleteReceive(String receiveCode) {
         retrieveReceive(receiveCode);

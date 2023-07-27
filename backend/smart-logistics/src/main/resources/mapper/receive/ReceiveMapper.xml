@@ -3,9 +3,9 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
 <mapper namespace="com.douzon.smartlogistics.domain.receive.dao.mapper.ReceiveMapper">
-    <insert id="insertReceive" parameterType="java.util.Map">
-        INSERT INTO RECEIVE(RECEIVE_CODE, CREATE_IP, CREATE_ID)
-        VALUES (#{receiveCode},#{createIp},#{createId})
+    <insert id="insertReceive">
+        INSERT INTO RECEIVE(RECEIVE_CODE, RECEIVE_DATE, CREATE_IP, CREATE_ID)
+        VALUES (#{receiveCode}, CURRENT_TIMESTAMP ,#{createIp},#{createId})
     </insert>
     <insert id="insertReceiveItem" parameterType="list">
         INSERT INTO RECEIVE_ITEM (RECEIVE_CODE, PORDER_CODE, PORDER_ITEM_NO, ITEM_CODE, MANAGER, RECEIVE_COUNT, ACCOUNT_NO, WAREHOUSE_SECTION_NO, CREATE_IP, CREATE_ID)
@@ -13,6 +13,11 @@
         <foreach collection="receiveItem" item="receiveItem" separator=",">
             (#{receiveItem.receiveCode},#{receiveItem.porderCode},#{receiveItem.porderItemNo},#{receiveItem.itemCode},#{receiveItem.manager},#{receiveItem.receiveCount},#{receiveItem.accountNo},#{receiveItem.warehouseSectionNo},#{receiveItem.createIp},#{receiveItem.createId})
         </foreach>
+    </insert>
+    <insert id="insertWarehouse" parameterType="java.util.Map">
+        INSERT INTO WAREHOUSE(SECTION_NO, RECEIVE_CODE, RECEIVE_ITEM_NO, ITEM_CODE, COUNT, CREATE_IP, CREATE_ID)
+        VALUES
+            (#{WAREHOUSE_SECTION_NO},#{RECEIVE_CODE},#{RECEIVE_ITEM_NO},#{ITEM_CODE},#{RECEIVE_COUNT},#{CREATE_IP},#{CREATE_ID});
     </insert>
     <delete id="deleteReceive">
         DELETE
@@ -124,6 +129,11 @@
     <select id="retrieve" resultType="com.douzon.smartlogistics.domain.entity.Receive">
         SELECT RECEIVE_CODE, RECEIVE_DATE, CREATE_DATE, CREATE_IP, CREATE_ID, MODIFY_DATE, MODIFY_IP, MODIFY_ID
         FROM RECEIVE
+        WHERE RECEIVE_CODE = #{receiveCode};
+    </select>
+    <select id="findReceiveItem" resultType="java.util.Map">
+        SELECT RECEIVE_ITEM_NO, RECEIVE_CODE, PORDER_CODE, PORDER_ITEM_NO, ITEM_CODE, MANAGER, RECEIVE_COUNT, ACCOUNT_NO, WAREHOUSE_SECTION_NO, CREATE_DATE, CREATE_IP, CREATE_ID, MODIFY_DATE, MODIFY_IP, MODIFY_ID
+        FROM RECEIVE_ITEM
         WHERE RECEIVE_CODE = #{receiveCode};
     </select>
 </mapper>

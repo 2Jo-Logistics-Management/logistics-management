@@ -3,6 +3,7 @@ package com.douzon.smartlogistics.domain.receive.api;
 import com.douzon.smartlogistics.domain.entity.ReceiveList;
 import com.douzon.smartlogistics.domain.entity.CmpPOrder;
 import com.douzon.smartlogistics.domain.receive.application.ReceiveService;
+import com.douzon.smartlogistics.domain.receive.dto.ReceiveInsertDto;
 import com.douzon.smartlogistics.global.common.response.CommonResponse;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -11,6 +12,7 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -78,6 +80,8 @@ public class ReceiveController {
                 .contentType(MediaType.APPLICATION_JSON)
                 .body(CommonResponse.successWithDefaultMessage());
     }
+
+
 
     @DeleteMapping("/delete")
     public ResponseEntity<CommonResponse<String>> deleteReceive(@RequestParam String receiveCode){
