@@ -25,4 +25,7 @@ public interface POrderItemMapper {
     Optional<POrderItem> retrieve(@Param("pOrderItemNo") Long pOrderItemNo);
 
     List<POrderItem> searchPOrderItemList(@Param("pOrderCode") String pOrderCode);
+
+    @Transactional
+    void deletePOrderItem(@Param("pOrderItemNo") Long pOrderItemNo);
 }

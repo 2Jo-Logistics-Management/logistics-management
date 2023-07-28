@@ -30,6 +30,10 @@
     DELETE FROM PORDER_ITEM
     WHERE PORDER_CODE = #{pOrderCode}
   </delete>
+  <delete id="deletePOrderItem">
+    DELETE FROM PORDER_ITEM
+    WHERE PORDER_ITEM_NO = #{pOrderItemNo}
+  </delete>
   <select id="retrieve" resultType="com.douzon.smartlogistics.domain.entity.POrderItem">
     SELECT PORDER_ITEM_NO,
            PORDER_CODE,

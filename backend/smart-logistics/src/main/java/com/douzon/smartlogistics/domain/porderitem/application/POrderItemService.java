@@ -28,4 +28,9 @@ public class POrderItemService {
     public List<POrderItem> searchPOrderItemList(String pOrderCode) {
         return pOrderItemDao.searchPOrderItemList(pOrderCode);
     }
+
+    @Transactional
+    public void delete(Long pOrderItemNo) {
+        pOrderItemDao.delete(pOrderItemNo);
+    }
 }

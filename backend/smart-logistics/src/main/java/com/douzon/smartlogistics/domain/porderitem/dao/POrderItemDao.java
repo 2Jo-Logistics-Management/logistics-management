@@ -47,6 +47,13 @@ public class POrderItemDao {
         return pOrderItems;
     }
 
+    @Transactional
+    public void delete(Long pOrderItemNo) {
+        retrievePOrderItem(pOrderItemNo);
+
+        pOrderItemMapper.deletePOrderItem(pOrderItemNo);
+    }
+
     private POrderItem retrievePOrderItem(Long pOrderItemNo) {
         return pOrderItemMapper.retrieve(pOrderItemNo).orElseThrow(
             () -> {
