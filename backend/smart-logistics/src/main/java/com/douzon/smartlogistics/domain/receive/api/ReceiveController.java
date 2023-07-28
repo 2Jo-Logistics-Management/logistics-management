@@ -64,24 +64,13 @@ public class ReceiveController {
     }
 
     @PostMapping("/insert")
-    public ResponseEntity<CommonResponse<String>> insertReceive(@RequestBody List<Map<String,Object>> receiveList){
-
-        String createIp = "192.168.0.250";
-        String createId = "admin";
-
-        Map<String, Object> map = new HashMap<>();
-        map.put("createIp", createIp);
-        map.put("createId", createId);
-        map.put("receiveList",receiveList);
-        System.out.println("map = " + map);
-        receiveService.insertReceive(map);
+    public ResponseEntity<CommonResponse<String>> insertReceive(@RequestBody @Valid ReceiveInsertDto receiveInsertDto){
+        receiveService.insertReceive(receiveInsertDto);
 
         return ResponseEntity.status(HttpStatus.CREATED)
                 .contentType(MediaType.APPLICATION_JSON)
                 .body(CommonResponse.successWithDefaultMessage());
     }
-
-
 
     @DeleteMapping("/delete")
     public ResponseEntity<CommonResponse<String>> deleteReceive(@RequestParam String receiveCode){

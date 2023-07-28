@@ -1,18 +1,18 @@
 package com.douzon.smartlogistics.domain.receive.dao;
 
 import com.douzon.smartlogistics.domain.entity.CmpPOrder;
-import com.douzon.smartlogistics.domain.entity.ReceiveItem;
 import com.douzon.smartlogistics.domain.entity.ReceiveList;
 import com.douzon.smartlogistics.domain.receive.dao.mapper.ReceiveMapper;
 import com.douzon.smartlogistics.domain.receive.dto.ReceiveInsertDto;
 import com.douzon.smartlogistics.domain.receiveitem.dao.mapper.ReceiveItemMapper;
 import com.douzon.smartlogistics.domain.receiveitem.dto.ReceiveItemDto;
+import com.douzon.smartlogistics.domain.warehouse.dao.mapper.WarehouseMapper;
+import com.douzon.smartlogistics.domain.warehouse.dto.WarehouseDto;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.text.SimpleDateFormat;
 import java.util.*;
 
 @Slf4j
@@ -22,6 +22,7 @@ public class ReceiveDao {
 
     private final ReceiveMapper receiveMapper;
     private final ReceiveItemMapper receiveItemMapper;
+    private final WarehouseMapper warehouseMapper;
 
     public List<ReceiveList> findReceive(String receiveCode, String manager, Integer itemCode, String itemName, Integer accountNo, String accountName, String startDate, String endDate) {
         return receiveMapper.findReceive(receiveCode, manager, itemCode, itemName, accountNo, accountName, startDate, endDate);
@@ -31,47 +32,23 @@ public class ReceiveDao {
         return receiveMapper.waitingReceive(porderCode, itemCode, itemName, manager, accountNo, accountName, startDate, endDate);
     }
 
-    public void insertReceive(Map<String, Object> map) {
-        Map<String, Object> receive = new HashMap<>();
+    @Transactional
+    public void insertReceive(ReceiveInsertDto receiveInsertDto){
+        receiveMapper.insertReceive(receiveInsertDto);
 
-        //receive_code 생성
-        SimpleDateFormat milliDate = new SimpleDateFormat("yyyy.MM.dd hh.mm.ss.SSS");
-        String receiveCode = "RV" + milliDate.format(new Date()).replaceAll("[. ]", "");
-
-        //receive, receiveItem 분리
-        //receive
-        receive.put("receiveCode",receiveCode);
-        receive.put("createIp",map.get("createIp"));
-        receive.put("createId",map.get("createId"));
-
-        //receiveItem
-        List<Map<String, Object>> receiveItem = (List<Map<String, Object>>) map.get("receiveList");
-        for (Map<String, Object> item : receiveItem) {
-            item.put("receiveCode", receiveCode);
-            item.put("createIp",map.get("createIp"));
-            item.put("createId",map.get("createId"));
+        for(ReceiveItemDto receiveItem : receiveInsertDto.getReceiveItems()){
+            receiveItem.setReceiveCode(receiveInsertDto.getReceiveCode());
+            receiveItemMapper.insertReceiveItem(receiveItem);
+            // 입고 후 해당 데이터를 불러와서 창고 적재
+            String rvCode = receiveItem.getReceiveCode();
+            String poCode = receiveItem.getPorderCode();
+            Integer itemCode = receiveItem.getItemCode();
+            Integer accountNo = receiveItem.getAccountNo();
+            Integer sectionNo= receiveItem.getWarehouseSectionNo();
+            ReceiveItemDto rvItem = receiveItemMapper.findReceiveItem(rvCode, poCode, itemCode, accountNo, sectionNo);
+            warehouseMapper.insertWarehouse(rvItem);
         }
-
-
-        System.out.println("receive = " + receive);
-        System.out.println("receiveItem = " + receiveItem);
-        receiveMapper.insertReceive(receive);
-        receiveMapper.insertReceiveItem(receiveItem);
-
-        //등록된 입고품목을 찾아옴
-        List<Map<String, Object>> rvItems = receiveMapper.findReceiveItem(receiveCode);
-        System.out.println("rvItems = " + rvItems);
-        for (Map<String, Object> Items : rvItems) {
-            System.out.println("CREATE_DATE: " + Items.get("CREATE_DATE"));
-            System.out.println("RECEIVE_CODE: " + Items.get("RECEIVE_CODE"));
-            System.out.println("PORDER_ITEM_NO: " + Items.get("PORDER_ITEM_NO"));
-            System.out.println("WAREHOUSE_SECTION_NO : " + Items.get("WAREHOUSE_SECTION_NO"));
-            receiveMapper.insertWarehouse(Items);
-        }
-
     }
-
-
 
     public void deleteReceive(String receiveCode) {
         retrieveReceive(receiveCode);
@@ -80,7 +57,7 @@ public class ReceiveDao {
 
     public void deleteReceiveItem(Long receiveItemNo) {
         retrieveReceiveItem(receiveItemNo);
-        receiveMapper.deleteReceiveItem(receiveItemNo);
+        receiveItemMapper.deleteReceiveItem(receiveItemNo);
     }
 
     //TODO: 전역 예외처리 필요
@@ -91,7 +68,7 @@ public class ReceiveDao {
     }
 
     private void retrieveReceiveItem(Long receiveItemNo) {
-        receiveMapper.retrieveReceiveItem(receiveItemNo).orElseThrow(() -> {
+        receiveItemMapper.retrieveReceiveItem(receiveItemNo).orElseThrow(() -> {
             throw new NoSuchElementException("해당 입고물품은 존재하지 않습니다.");
         });
     }

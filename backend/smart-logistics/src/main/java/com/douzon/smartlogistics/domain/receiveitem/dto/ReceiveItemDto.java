@@ -1,14 +1,15 @@
 package com.douzon.smartlogistics.domain.receiveitem.dto;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
-@NoArgsConstructor
+@RequiredArgsConstructor
 @Getter
 @Setter
+@ToString
 public class ReceiveItemDto {
+    private Long receiveItemNo;
+
     private String receiveCode;
     private String porderCode;
     private Long porderItemNo;
@@ -19,6 +20,10 @@ public class ReceiveItemDto {
     private Integer accountNo;
     @JsonProperty(value = "warehouseSectionNo")
     private Integer warehouseSectionNo;
+    private String createDate;
     private String createIp;
     private String createId;
+    private String modifyDate;
+    private String modifyIp;
+    private String modifyId;
 }
