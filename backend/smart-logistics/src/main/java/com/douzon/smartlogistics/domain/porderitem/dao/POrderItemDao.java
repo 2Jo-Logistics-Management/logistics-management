@@ -8,6 +8,7 @@ import com.douzon.smartlogistics.domain.porder.dao.mapper.POrderMapper;
 import com.douzon.smartlogistics.domain.porderitem.dao.mapper.POrderItemMapper;
 import com.douzon.smartlogistics.domain.porderitem.dto.POrderItemInsertDto;
 import com.douzon.smartlogistics.domain.porderitem.dto.POrderItemModifyDto;
+import java.util.List;
 import java.util.NoSuchElementException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -36,6 +37,14 @@ public class POrderItemDao {
         retrievePOrderItem(pOrderItemNo);
 
         pOrderItemMapper.modify(pOrderItemNo, pOrderItemModifyDto);
+    }
+
+    public List<POrderItem> searchPOrderItemList(String pOrderCode) {
+        retrievePOrder(pOrderCode);
+
+        List<POrderItem> pOrderItems = pOrderItemMapper.searchPOrderItemList(pOrderCode);
+
+        return pOrderItems;
     }
 
     private POrderItem retrievePOrderItem(Long pOrderItemNo) {

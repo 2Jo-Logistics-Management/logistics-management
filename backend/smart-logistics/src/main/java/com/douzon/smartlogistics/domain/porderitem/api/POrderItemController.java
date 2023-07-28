@@ -1,14 +1,17 @@
 package com.douzon.smartlogistics.domain.porderitem.api;
 
+import com.douzon.smartlogistics.domain.entity.POrderItem;
 import com.douzon.smartlogistics.domain.porderitem.application.POrderItemService;
 import com.douzon.smartlogistics.domain.porderitem.dto.POrderItemInsertDto;
 import com.douzon.smartlogistics.domain.porderitem.dto.POrderItemModifyDto;
 import com.douzon.smartlogistics.global.common.response.CommonResponse;
+import java.util.List;
 import javax.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -43,5 +46,15 @@ public class POrderItemController {
         return ResponseEntity.status(HttpStatus.OK)
                              .contentType(MediaType.APPLICATION_JSON)
                              .body(CommonResponse.successWithDefaultMessage());
+    }
+
+    @GetMapping("/list")
+    public ResponseEntity<CommonResponse<List<POrderItem>>> searchPOrderItemList(@RequestParam String pOrderCode) {
+
+        List<POrderItem> pOrderItems = pOrderItemService.searchPOrderItemList(pOrderCode);
+
+        return ResponseEntity.status(HttpStatus.OK)
+                             .contentType(MediaType.APPLICATION_JSON)
+                             .body(CommonResponse.successWith(pOrderItems));
     }
 }

@@ -3,6 +3,7 @@ package com.douzon.smartlogistics.domain.porderitem.dao.mapper;
 import com.douzon.smartlogistics.domain.entity.POrderItem;
 import com.douzon.smartlogistics.domain.porderitem.dto.POrderItemInsertDto;
 import com.douzon.smartlogistics.domain.porderitem.dto.POrderItemModifyDto;
+import java.util.List;
 import java.util.Optional;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
@@ -22,4 +23,6 @@ public interface POrderItemMapper {
         @Param("pOrderItemModifyDto") POrderItemModifyDto pOrderItemModifyDto);
 
     Optional<POrderItem> retrieve(@Param("pOrderItemNo") Long pOrderItemNo);
+
+    List<POrderItem> searchPOrderItemList(@Param("pOrderCode") String pOrderCode);
 }

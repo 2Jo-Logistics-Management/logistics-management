@@ -48,4 +48,22 @@
     FROM PORDER_ITEM
     WHERE PORDER_ITEM_NO = #{pOrderItemNo};
   </select>
+  <select id="searchPOrderItemList" resultType="com.douzon.smartlogistics.domain.entity.POrderItem">
+    SELECT PORDER_ITEM_NO,
+           PORDER_CODE,
+           MANAGER,
+           ITEM_CODE,
+           PORDER_COUNT,
+           PORDER_PRICE,
+           PORDER_ITEM_PRICE,
+           RECEIVE_DEADLINE,
+           CREATE_DATE,
+           CREATE_IP,
+           CREATE_ID,
+           MODIFY_DATE,
+           MODIFY_IP,
+           MODIFY_ID
+    FROM PORDER_ITEM
+    WHERE PORDER_CODE = #{pOrderCode};
+  </select>
 </mapper>
