@@ -44,12 +44,13 @@ public class ReceiveService {
         return receiveDao.waitingReceive(porderCode, itemCode, itemName, manager, accountNo, accountName, startDate, endDate);
     }
 
-
     @Transactional
     public void insertReceive(ReceiveInsertDto receiveInsertDto){
         receiveInsertDto.setReceiveCode(AutoSeqGenerator.generate(SeqCode.RV));
         receiveDao.insertReceive(receiveInsertDto);
+
     }
+
 
     public void deleteReceive(String receiveCode) {
         receiveDao.deleteReceive(receiveCode);

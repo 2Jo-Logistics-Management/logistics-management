@@ -13,9 +13,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 @Slf4j
 @RestController
@@ -65,12 +63,14 @@ public class ReceiveController {
 
     @PostMapping("/insert")
     public ResponseEntity<CommonResponse<String>> insertReceive(@RequestBody @Valid ReceiveInsertDto receiveInsertDto){
-        receiveService.insertReceive(receiveInsertDto);
+            receiveService.insertReceive(receiveInsertDto);
 
         return ResponseEntity.status(HttpStatus.CREATED)
                 .contentType(MediaType.APPLICATION_JSON)
                 .body(CommonResponse.successWithDefaultMessage());
     }
+
+
 
     @DeleteMapping("/delete")
     public ResponseEntity<CommonResponse<String>> deleteReceive(@RequestParam String receiveCode){

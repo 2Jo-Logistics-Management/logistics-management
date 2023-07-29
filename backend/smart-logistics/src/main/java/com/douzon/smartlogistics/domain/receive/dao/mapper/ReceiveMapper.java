@@ -2,6 +2,7 @@ package com.douzon.smartlogistics.domain.receive.dao.mapper;
 
 import com.douzon.smartlogistics.domain.entity.CmpPOrder;
 import com.douzon.smartlogistics.domain.entity.Receive;
+import com.douzon.smartlogistics.domain.entity.ReceiveItem;
 import com.douzon.smartlogistics.domain.entity.ReceiveList;
 import com.douzon.smartlogistics.domain.receive.dto.ReceiveInsertDto;
 import org.apache.ibatis.annotations.Mapper;
@@ -35,13 +36,16 @@ public interface ReceiveMapper {
             @Param("startDate") String startDate,
             @Param("endDate") String endDate
     );
-
     @Transactional
     void insertReceive(ReceiveInsertDto receiveInsertDto);
+
+    Optional<ReceiveItem> retrieveReceiveItem(Long receiveItemNo);
 
     Optional<Receive> retrieve(String receiveCode);
 
     void deleteReceive(String receiveCode);
+
+    void deleteReceiveItem(Long receiveItemNo);
 
 
 }
