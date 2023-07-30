@@ -8,4 +8,14 @@
         VALUES
             (#{warehouseSectionNo},#{receiveCode},#{receiveItemNo},#{itemCode},#{receiveCount},CURRENT_TIMESTAMP,#{createIp},#{createId});
     </insert>
+    <update id="modifyWarehouse">
+        UPDATE WAREHOUSE
+        SET SECTION_NO = #{receiveItemDto.warehouseSectionNo},
+            COUNT = #{receiveItemDto.receiveCount},
+            REGIST_DATE = CURRENT_TIMESTAMP,
+            MODIFY_DATE = CURRENT_TIMESTAMP,
+            MODIFY_IP = #{receiveItemDto.modifyIp},
+            MODIFY_ID = #{receiveItemDto.modifyId}
+        WHERE RECEIVE_ITEM_NO = #{receiveItemNo}
+    </update>
 </mapper>

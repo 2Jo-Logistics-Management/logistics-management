@@ -5,6 +5,8 @@ import com.douzon.smartlogistics.domain.entity.ReceiveList;
 import com.douzon.smartlogistics.domain.entity.constant.SeqCode;
 import com.douzon.smartlogistics.domain.receive.dao.ReceiveDao;
 import com.douzon.smartlogistics.domain.receive.dto.ReceiveInsertDto;
+import com.douzon.smartlogistics.domain.receive.dto.ReceiveModifyDto;
+import com.douzon.smartlogistics.domain.receiveitem.dto.ReceiveItemDto;
 import com.douzon.smartlogistics.global.common.util.AutoSeqGenerator;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -33,7 +35,6 @@ public class ReceiveService {
     }
 
     public List<CmpPOrder> waitingReceive(String porderCode, Integer itemCode, String itemName, String manager, Integer accountNo, String accountName, String startDate, String endDate) {
-        log.info("---------------------Service----------------------");
         if (startDate != null && !startDate.isEmpty()) {
             startDate += " 00:00:00";
         }
@@ -58,5 +59,14 @@ public class ReceiveService {
 
     public void deleteReceiveItem(Long receiveItemNo) {
         receiveDao.deleteReceiveItem(receiveItemNo);
+    }
+
+    @Transactional
+    public void modifyReceive(String receiveCode, ReceiveModifyDto receiveModifyDto) {
+        receiveDao.modifyReceive(receiveCode, receiveModifyDto);
+    }
+
+    public void modifyReceiveItem(Long receiveItemNo, ReceiveItemDto receiveItemDto) {
+        receiveDao.modifyReceiveItem(receiveItemNo,receiveItemDto);
     }
 }

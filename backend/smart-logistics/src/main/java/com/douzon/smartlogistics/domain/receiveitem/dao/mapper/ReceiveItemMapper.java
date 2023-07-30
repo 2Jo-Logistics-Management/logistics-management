@@ -10,4 +10,9 @@ public interface ReceiveItemMapper {
     void insertReceiveItem(@Param("receiveItem") ReceiveItemDto receiveItem);
 
     ReceiveItemDto findReceiveItem(String rvCode, String poCode, Integer itemCode, Integer accountNo, Integer sectionNo);
+
+    void modifyReceiveItem(
+            @Param("receiveItemNo") Long retrieveReceiveItemNo,
+            @Param("receiveItemDto") ReceiveItemDto receiveItemDto
+    );
 }

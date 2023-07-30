@@ -19,6 +19,14 @@
         VALUES
             (#{WAREHOUSE_SECTION_NO},#{RECEIVE_CODE},#{RECEIVE_ITEM_NO},#{ITEM_CODE},#{RECEIVE_COUNT},#{CREATE_IP},#{CREATE_ID});
     </insert>
+    <update id="modifyReceive">
+        UPDATE RECEIVE
+        SET RECEIVE_DATE = CURRENT_TIMESTAMP,
+            MODIFY_DATE = CURRENT_TIMESTAMP,
+            MODIFY_IP = #{receiveModifyDto.modifyIp},
+            MODIFY_ID = #{receiveModifyDto.modifyId}
+        WHERE RECEIVE_CODE = #{receiveCode}
+    </update>
     <delete id="deleteReceive">
         DELETE
         FROM RECEIVE
@@ -121,7 +129,7 @@
         HAVING PORDER_ITEM.PORDER_COUNT > COALESCE(SUM(RECEIVE_ITEM.RECEIVE_COUNT), 0)
         ORDER BY PORDER.CREATE_DATE DESC;
     </select>
-    <select id="retrieveReceiveItem" resultType="com.douzon.smartlogistics.domain.entity.ReceiveItem">
+    <select id="retrieveReceiveItem" resultType="com.douzon.smartlogistics.domain.receiveitem.dto.ReceiveItemDto">
         SELECT RECEIVE_ITEM_NO, RECEIVE_CODE, PORDER_CODE, PORDER_ITEM_NO, ITEM_CODE, MANAGER, RECEIVE_COUNT, ACCOUNT_NO, WAREHOUSE_SECTION_NO, CREATE_DATE, CREATE_IP, CREATE_ID, MODIFY_DATE, MODIFY_IP, MODIFY_ID
         FROM RECEIVE_ITEM
         WHERE RECEIVE_ITEM_NO=#{receiveItemNo};

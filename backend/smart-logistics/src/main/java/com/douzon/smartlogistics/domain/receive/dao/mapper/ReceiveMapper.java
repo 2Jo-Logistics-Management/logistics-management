@@ -2,9 +2,10 @@ package com.douzon.smartlogistics.domain.receive.dao.mapper;
 
 import com.douzon.smartlogistics.domain.entity.CmpPOrder;
 import com.douzon.smartlogistics.domain.entity.Receive;
-import com.douzon.smartlogistics.domain.entity.ReceiveItem;
 import com.douzon.smartlogistics.domain.entity.ReceiveList;
 import com.douzon.smartlogistics.domain.receive.dto.ReceiveInsertDto;
+import com.douzon.smartlogistics.domain.receive.dto.ReceiveModifyDto;
+import com.douzon.smartlogistics.domain.receiveitem.dto.ReceiveItemDto;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 import org.springframework.transaction.annotation.Transactional;
@@ -39,7 +40,7 @@ public interface ReceiveMapper {
     @Transactional
     void insertReceive(ReceiveInsertDto receiveInsertDto);
 
-    Optional<ReceiveItem> retrieveReceiveItem(Long receiveItemNo);
+    Optional<ReceiveItemDto> retrieveReceiveItem(Long receiveItemNo);
 
     Optional<Receive> retrieve(String receiveCode);
 
@@ -47,5 +48,9 @@ public interface ReceiveMapper {
 
     void deleteReceiveItem(Long receiveItemNo);
 
+
+    void modifyReceive(
+            @Param("receiveCode") String retrieveReceiveCode,
+            @Param("receiveModifyDto") ReceiveModifyDto receiveModifyDto);
 
 }

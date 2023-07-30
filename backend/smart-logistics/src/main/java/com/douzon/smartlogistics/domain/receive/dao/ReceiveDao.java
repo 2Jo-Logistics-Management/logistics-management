@@ -4,9 +4,11 @@ import com.douzon.smartlogistics.domain.entity.CmpPOrder;
 import com.douzon.smartlogistics.domain.entity.ReceiveList;
 import com.douzon.smartlogistics.domain.receive.dao.mapper.ReceiveMapper;
 import com.douzon.smartlogistics.domain.receive.dto.ReceiveInsertDto;
+import com.douzon.smartlogistics.domain.receive.dto.ReceiveModifyDto;
 import com.douzon.smartlogistics.domain.receiveitem.dao.mapper.ReceiveItemMapper;
 import com.douzon.smartlogistics.domain.receiveitem.dto.ReceiveItemDto;
 import com.douzon.smartlogistics.domain.warehouse.dao.mapper.WarehouseMapper;
+import com.douzon.smartlogistics.domain.warehouse.dto.WarehouseModifyDto;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Repository;
@@ -38,18 +40,20 @@ public class ReceiveDao {
         for(ReceiveItemDto receiveItem : receiveInsertDto.getReceiveItems()) {
             receiveItem.setReceiveCode(receiveInsertDto.getReceiveCode());
             receiveItemMapper.insertReceiveItem(receiveItem);
+
             // 입고 후 해당 데이터를 불러와서 창고 적재
-            String rvCode = receiveItem.getReceiveCode();
-            String poCode = receiveItem.getPorderCode();
-            Integer itemCode = receiveItem.getItemCode();
-            Integer accountNo = receiveItem.getAccountNo();
-            Integer sectionNo = receiveItem.getWarehouseSectionNo();
-            ReceiveItemDto rvItem = receiveItemMapper.findReceiveItem(rvCode, poCode, itemCode, accountNo, sectionNo);
+            ReceiveItemDto rvItem = receiveItemMapper.findReceiveItem(
+                    receiveItem.getReceiveCode(),
+                    receiveItem.getPorderCode(),
+                    receiveItem.getItemCode(),
+                    receiveItem.getAccountNo(),
+                    receiveItem.getWarehouseSectionNo()
+            );
             warehouseMapper.insertWarehouse(rvItem);
         }
     }
 
-            public void deleteReceive(String receiveCode) {
+    public void deleteReceive(String receiveCode) {
         retrieveReceive(receiveCode);
         receiveMapper.deleteReceive(receiveCode);
     }
@@ -60,15 +64,26 @@ public class ReceiveDao {
     }
 
     //TODO: 전역 예외처리 필요
-    private void retrieveReceive(String receiveCode) {
-        receiveMapper.retrieve(receiveCode).orElseThrow(() -> {
+    private String retrieveReceive(String receiveCode) {
+        return receiveMapper.retrieve(receiveCode).orElseThrow(() -> {
             throw new NoSuchElementException("해당 입고는 존재하지 않습니다.");
-        });
+        }).getReceiveCode();
     }
 
-    private void retrieveReceiveItem(Long receiveItemNo) {
-        receiveMapper.retrieveReceiveItem(receiveItemNo).orElseThrow(() -> {
+    private Long retrieveReceiveItem(Long receiveItemNo) {
+        return receiveMapper.retrieveReceiveItem(receiveItemNo).orElseThrow(() -> {
             throw new NoSuchElementException("해당 입고물품은 존재하지 않습니다.");
-        });
+        }).getReceiveItemNo();
+    }
+
+    public void modifyReceive(String receiveCode, ReceiveModifyDto receiveModifyDto) {
+        String retrieveReceiveCode= retrieveReceive(receiveCode);
+        receiveMapper.modifyReceive(retrieveReceiveCode, receiveModifyDto);
+    }
+
+    public void modifyReceiveItem(Long receiveItemNo, ReceiveItemDto receiveItemDto) {
+        Long retrieveReceiveItemNo = retrieveReceiveItem(receiveItemNo);
+        receiveItemMapper.modifyReceiveItem(retrieveReceiveItemNo,receiveItemDto);
+        warehouseMapper.modifyWarehouse(retrieveReceiveItemNo, receiveItemDto);
     }
 }

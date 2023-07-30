@@ -10,17 +10,13 @@ import reactor.util.annotation.Nullable;
 @Getter
 @Setter
 @ToString
-public class WarehouseDto {
+public class WarehouseModifyDto {
     private Integer sectionNo;
-    private String receiveCode;
     private Long receiveItemNo;
-    private Integer itemCode;
     private Double count;
     @Nullable
     private String registDate;
-    private String createDate;
-    private String createIp;
-    private String createId;
+    @Nullable
     private String modifyDate;
     private String modifyIp;
     private String modifyId;
