@@ -6,7 +6,6 @@ import com.douzon.smartlogistics.domain.entity.constant.SeqCode;
 import com.douzon.smartlogistics.domain.receive.dao.ReceiveDao;
 import com.douzon.smartlogistics.domain.receive.dto.ReceiveInsertDto;
 import com.douzon.smartlogistics.domain.receive.dto.ReceiveModifyDto;
-import com.douzon.smartlogistics.domain.receiveitem.dto.ReceiveItemDto;
 import com.douzon.smartlogistics.global.common.util.AutoSeqGenerator;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -14,7 +13,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
-import java.util.Map;
 
 @Slf4j
 @Service
@@ -52,13 +50,9 @@ public class ReceiveService {
 
     }
 
-
+    @Transactional
     public void deleteReceive(String receiveCode) {
         receiveDao.deleteReceive(receiveCode);
-    }
-
-    public void deleteReceiveItem(Long receiveItemNo) {
-        receiveDao.deleteReceiveItem(receiveItemNo);
     }
 
     @Transactional
@@ -66,7 +60,4 @@ public class ReceiveService {
         receiveDao.modifyReceive(receiveCode, receiveModifyDto);
     }
 
-    public void modifyReceiveItem(Long receiveItemNo, ReceiveItemDto receiveItemDto) {
-        receiveDao.modifyReceiveItem(receiveItemNo,receiveItemDto);
-    }
 }

@@ -3,11 +3,11 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
 <mapper namespace="com.douzon.smartlogistics.domain.receiveitem.dao.mapper.ReceiveItemMapper">
-    <insert id="insertReceiveItem" parameterType="com.douzon.smartlogistics.domain.receiveitem.dto.ReceiveItemDto">
+    <insert id="insertReceiveItem" parameterType="com.douzon.smartlogistics.domain.receiveitem.dto.ReceiveItemInsertDto">
         INSERT INTO RECEIVE_ITEM(RECEIVE_CODE, PORDER_CODE, PORDER_ITEM_NO, ITEM_CODE, MANAGER, RECEIVE_COUNT, ACCOUNT_NO, WAREHOUSE_SECTION_NO, CREATE_IP, CREATE_ID)
         VALUES (#{receiveItem.receiveCode}, #{receiveItem.porderCode}, #{receiveItem.porderItemNo}, #{receiveItem.itemCode}, #{receiveItem.manager}, #{receiveItem.receiveCount}, #{receiveItem.accountNo}, #{receiveItem.warehouseSectionNo}, #{receiveItem.createIp},#{receiveItem.createId});
     </insert>
-    <select id="findReceiveItem" resultType="com.douzon.smartlogistics.domain.receiveitem.dto.ReceiveItemDto">
+    <select id="findReceiveItem" resultType="com.douzon.smartlogistics.domain.entity.ReceiveItem">
         SELECT RECEIVE_ITEM_NO, RECEIVE_CODE, PORDER_CODE, PORDER_ITEM_NO, ITEM_CODE, MANAGER, RECEIVE_COUNT, ACCOUNT_NO, WAREHOUSE_SECTION_NO, CREATE_DATE, CREATE_IP, CREATE_ID, MODIFY_DATE, MODIFY_IP, MODIFY_ID
         FROM RECEIVE_ITEM
         <where>
@@ -20,11 +20,21 @@
     </select>
     <update id="modifyReceiveItem">
         UPDATE RECEIVE_ITEM
-        SET RECEIVE_COUNT = #{receiveItemDto.receiveCount},
-            WAREHOUSE_SECTION_NO = #{receiveItemDto.warehouseSectionNo},
+        SET RECEIVE_COUNT = #{ReceiveItem.receiveCount},
+            WAREHOUSE_SECTION_NO = #{ReceiveItem.warehouseSectionNo},
             MODIFY_DATE = CURRENT_TIMESTAMP,
-            MODIFY_IP = #{receiveItemDto.modifyIp},
-            MODIFY_ID = #{receiveItemDto.modifyId}
+            MODIFY_IP = #{ReceiveItem.modifyIp},
+            MODIFY_ID = #{ReceiveItem.modifyId}
         WHERE RECEIVE_ITEM_NO = #{receiveItemNo}
     </update>
+    <delete id="deleteReceiveItem">
+        DELETE
+        FROM RECEIVE_ITEM
+        WHERE PORDER_ITEM_NO=#{receiveItemNo};
+    </delete>
+    <select id="retrieveReceiveItem" resultType="com.douzon.smartlogistics.domain.entity.ReceiveItem">
+        SELECT RECEIVE_ITEM_NO, RECEIVE_CODE, PORDER_CODE, PORDER_ITEM_NO, ITEM_CODE, MANAGER, RECEIVE_COUNT, ACCOUNT_NO, WAREHOUSE_SECTION_NO, CREATE_DATE, CREATE_IP, CREATE_ID, MODIFY_DATE, MODIFY_IP, MODIFY_ID
+        FROM RECEIVE_ITEM
+        WHERE RECEIVE_ITEM_NO=#{receiveItemNo};
+    </select>
 </mapper>

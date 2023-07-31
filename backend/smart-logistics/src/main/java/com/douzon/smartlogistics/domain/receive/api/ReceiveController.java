@@ -5,7 +5,6 @@ import com.douzon.smartlogistics.domain.entity.CmpPOrder;
 import com.douzon.smartlogistics.domain.receive.application.ReceiveService;
 import com.douzon.smartlogistics.domain.receive.dto.ReceiveInsertDto;
 import com.douzon.smartlogistics.domain.receive.dto.ReceiveModifyDto;
-import com.douzon.smartlogistics.domain.receiveitem.dto.ReceiveItemDto;
 import com.douzon.smartlogistics.global.common.response.CommonResponse;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -79,13 +78,6 @@ public class ReceiveController {
                 .body(CommonResponse.successWithDefaultMessage());
     }
 
-    @DeleteMapping("/delete/receive-item")
-    public ResponseEntity<CommonResponse<String>> deleteReceiveItem(@RequestParam Long receiveItemNo) {
-        receiveService.deleteReceiveItem(receiveItemNo);
-        return ResponseEntity.status(HttpStatus.OK)
-                .contentType(MediaType.APPLICATION_JSON)
-                .body(CommonResponse.successWithDefaultMessage());
-    }
 
     @PatchMapping("/modify")
     public ResponseEntity<CommonResponse<String>> modifyReceive(
@@ -94,19 +86,7 @@ public class ReceiveController {
 
         receiveService.modifyReceive(receiveCode, receiveModifyDto);
 
-        return ResponseEntity.status(HttpStatus.CREATED)
-                .contentType(MediaType.APPLICATION_JSON)
-                .body(CommonResponse.successWithDefaultMessage());
-    }
-    @PatchMapping("/modify/receive-item")
-    public ResponseEntity<CommonResponse<String>> modifyReceiveItem(
-            @RequestParam Long receiveItemNo,
-            @RequestBody @Valid ReceiveItemDto receiveItemDto
-            ){
-
-        receiveService.modifyReceiveItem(receiveItemNo, receiveItemDto);
-
-        return ResponseEntity.status(HttpStatus.CREATED)
+        return ResponseEntity.status(HttpStatus.OK)
                 .contentType(MediaType.APPLICATION_JSON)
                 .body(CommonResponse.successWithDefaultMessage());
     }

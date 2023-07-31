@@ -10,12 +10,12 @@
     </insert>
     <update id="modifyWarehouse">
         UPDATE WAREHOUSE
-        SET SECTION_NO = #{receiveItemDto.warehouseSectionNo},
-            COUNT = #{receiveItemDto.receiveCount},
+        SET SECTION_NO = #{ReceiveItem.warehouseSectionNo},
+            COUNT = #{ReceiveItem.receiveCount},
             REGIST_DATE = CURRENT_TIMESTAMP,
             MODIFY_DATE = CURRENT_TIMESTAMP,
-            MODIFY_IP = #{receiveItemDto.modifyIp},
-            MODIFY_ID = #{receiveItemDto.modifyId}
+            MODIFY_IP = #{ReceiveItem.modifyIp},
+            MODIFY_ID = #{ReceiveItem.modifyId}
         WHERE RECEIVE_ITEM_NO = #{receiveItemNo}
     </update>
 </mapper>
