@@ -5,6 +5,7 @@ import com.douzon.smartlogistics.domain.entity.ReceiveList;
 import com.douzon.smartlogistics.domain.entity.constant.SeqCode;
 import com.douzon.smartlogistics.domain.receive.dao.ReceiveDao;
 import com.douzon.smartlogistics.domain.receive.dto.ReceiveInsertDto;
+import com.douzon.smartlogistics.domain.receive.dto.ReceiveModifyDto;
 import com.douzon.smartlogistics.global.common.util.AutoSeqGenerator;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -12,7 +13,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
-import java.util.Map;
 
 @Slf4j
 @Service
@@ -33,7 +33,6 @@ public class ReceiveService {
     }
 
     public List<CmpPOrder> waitingReceive(String porderCode, Integer itemCode, String itemName, String manager, Integer accountNo, String accountName, String startDate, String endDate) {
-        log.info("---------------------Service----------------------");
         if (startDate != null && !startDate.isEmpty()) {
             startDate += " 00:00:00";
         }
@@ -44,16 +43,21 @@ public class ReceiveService {
         return receiveDao.waitingReceive(porderCode, itemCode, itemName, manager, accountNo, accountName, startDate, endDate);
     }
 
-    public void insertReceive(Map<String, Object> map) {
-        receiveDao.insertReceive(map);
+    @Transactional
+    public void insertReceive(ReceiveInsertDto receiveInsertDto){
+        receiveInsertDto.setReceiveCode(AutoSeqGenerator.generate(SeqCode.RV));
+        receiveDao.insertReceive(receiveInsertDto);
+
     }
 
-
+    @Transactional
     public void deleteReceive(String receiveCode) {
         receiveDao.deleteReceive(receiveCode);
     }
 
-    public void deleteReceiveItem(Long receiveItemNo) {
-        receiveDao.deleteReceiveItem(receiveItemNo);
+    @Transactional
+    public void modifyReceive(String receiveCode, ReceiveModifyDto receiveModifyDto) {
+        receiveDao.modifyReceive(receiveCode, receiveModifyDto);
     }
+
 }

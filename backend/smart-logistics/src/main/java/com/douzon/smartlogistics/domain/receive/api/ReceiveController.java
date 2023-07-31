@@ -4,6 +4,7 @@ import com.douzon.smartlogistics.domain.entity.ReceiveList;
 import com.douzon.smartlogistics.domain.entity.CmpPOrder;
 import com.douzon.smartlogistics.domain.receive.application.ReceiveService;
 import com.douzon.smartlogistics.domain.receive.dto.ReceiveInsertDto;
+import com.douzon.smartlogistics.domain.receive.dto.ReceiveModifyDto;
 import com.douzon.smartlogistics.global.common.response.CommonResponse;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -13,9 +14,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 @Slf4j
 @RestController
@@ -64,25 +63,13 @@ public class ReceiveController {
     }
 
     @PostMapping("/insert")
-    public ResponseEntity<CommonResponse<String>> insertReceive(@RequestBody List<Map<String,Object>> receiveList){
-
-        String createIp = "192.168.0.250";
-        String createId = "admin";
-
-        Map<String, Object> map = new HashMap<>();
-        map.put("createIp", createIp);
-        map.put("createId", createId);
-        map.put("receiveList",receiveList);
-        System.out.println("map = " + map);
-        receiveService.insertReceive(map);
+    public ResponseEntity<CommonResponse<String>> insertReceive(@RequestBody @Valid ReceiveInsertDto receiveInsertDto){
+            receiveService.insertReceive(receiveInsertDto);
 
         return ResponseEntity.status(HttpStatus.CREATED)
                 .contentType(MediaType.APPLICATION_JSON)
                 .body(CommonResponse.successWithDefaultMessage());
     }
-
-
-
     @DeleteMapping("/delete")
     public ResponseEntity<CommonResponse<String>> deleteReceive(@RequestParam String receiveCode){
         receiveService.deleteReceive(receiveCode);
@@ -91,9 +78,14 @@ public class ReceiveController {
                 .body(CommonResponse.successWithDefaultMessage());
     }
 
-    @DeleteMapping("/delete/receive-item")
-    public ResponseEntity<CommonResponse<String>> deleteReceiveItem(@RequestParam Long receiveItemNo) {
-        receiveService.deleteReceiveItem(receiveItemNo);
+
+    @PatchMapping("/modify")
+    public ResponseEntity<CommonResponse<String>> modifyReceive(
+            @RequestParam String receiveCode,
+            @RequestBody @Valid ReceiveModifyDto receiveModifyDto){
+
+        receiveService.modifyReceive(receiveCode, receiveModifyDto);
+
         return ResponseEntity.status(HttpStatus.OK)
                 .contentType(MediaType.APPLICATION_JSON)
                 .body(CommonResponse.successWithDefaultMessage());
