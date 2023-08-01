@@ -1,6 +1,6 @@
 package com.douzon.smartlogistics.domain.porder.dto;
 
-import com.douzon.smartlogistics.domain.porderitem.dto.POrderItemDto;
+import com.douzon.smartlogistics.domain.porderitem.dto.POrderItemInsertDto;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 import javax.validation.constraints.Digits;
@@ -25,5 +25,5 @@ public class POrderInsertDto {
     @Digits(integer = 10, fraction = 0)
     private Integer accountNo;
     @JsonProperty(value = "pOrderItems")
-    private List<POrderItemDto> pOrderItems;
+    private List<POrderItemInsertDto> pOrderItems;
 }
