@@ -5,6 +5,7 @@ import com.douzon.smartlogistics.domain.item.application.ItemService;
 import com.douzon.smartlogistics.domain.item.dto.ItemInsertDto;
 import com.douzon.smartlogistics.domain.item.dto.ItemModifyDto;
 import com.douzon.smartlogistics.global.common.response.CommonResponse;
+import io.swagger.annotations.Api;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.media.Content;
@@ -27,6 +28,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 @Slf4j
+@Api(tags = "물품관리 API 명세서")
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/api/item")
@@ -87,7 +89,8 @@ public class ItemController {
                                         content = @Content(mediaType = "application/json",
                                                            schema = @Schema(implementation = CommonResponse.class))))
     @PatchMapping("/modify")
-    public ResponseEntity<CommonResponse<String>> modify(@RequestParam @Parameter(description = "수정할 물품의 코드") Integer itemCode,
+    public ResponseEntity<CommonResponse<String>> modify(
+        @RequestParam @Parameter(description = "수정할 물품의 코드") Integer itemCode,
         @RequestBody @Valid @Parameter(description = "물품 수정을 위한 데이터") ItemModifyDto itemModifyDto) {
 
         itemService.modify(itemCode, itemModifyDto);
@@ -100,7 +103,8 @@ public class ItemController {
     @Operation(summary = "물품 삭제",
                description = "물품 삭제에 알맞은 데이터를 받아 데이터베이스의 데이터를 삭제합니다.")
     @DeleteMapping("/delete")
-    public ResponseEntity<CommonResponse<String>> delete(@RequestParam @Parameter(description = "삭제할 물품의 코드") Integer itemCode) {
+    public ResponseEntity<CommonResponse<String>> delete(
+        @RequestParam @Parameter(description = "삭제할 물품의 코드") Integer itemCode) {
         itemService.delete(itemCode);
 
         return ResponseEntity.status(HttpStatus.OK)
@@ -108,3 +112,4 @@ public class ItemController {
                              .body(CommonResponse.successWithDefaultMessage());
     }
 }
+
