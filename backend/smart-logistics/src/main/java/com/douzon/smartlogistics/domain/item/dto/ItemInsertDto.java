@@ -5,9 +5,11 @@ import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Size;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
+import lombok.Setter;
 
 @RequiredArgsConstructor
 @Getter
+@Setter
 public class ItemInsertDto {
 
     @NotBlank
@@ -21,6 +23,15 @@ public class ItemInsertDto {
     private final String unit;
     @Digits(integer = 10, fraction = 0)
     private final Integer itemPrice;
-    private final String createIp;
-    private final String createId;
+    private  String createIp;
+    private  String createId;
+
+    public void setCreateIp(String createIp) {
+        this.createIp = createIp;
+    }
+
+    public void setCreateId(String createId) {
+        this.createId = createId;
+    }
+
 }
