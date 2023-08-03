@@ -41,47 +41,38 @@ public class IpInseartAspect {
     public void beforeControllerMethod(JoinPoint joinPoint) {
         Object[] args = joinPoint.getArgs();
         for (Object arg : args) {
-            
-            if (arg instanceof AccountInsertDto) {
-                ((AccountInsertDto) arg).setCreateId(getId());
-                ((AccountInsertDto) arg).setCreateIp(getIpAddress());
-                break;
-            }
-
-            if (arg instanceof ItemInsertDto) {
-                ((ItemInsertDto) arg).setCreateId(getId());
-                ((ItemInsertDto) arg).setCreateIp(getIpAddress());
-                break;
-            }
-
-
-            if (arg instanceof POrderInsertDto) {
-                ((POrderInsertDto) arg).setCreateId(getId());
-                ((POrderInsertDto) arg).setCreateIp(getIpAddress());
-                break;
-            }
-
-            if (arg instanceof POrderItemInsertDto) {
-                ((POrderItemInsertDto) arg).setCreateId(getId());
-                ((POrderItemInsertDto) arg).setCreateIp(getIpAddress());
-                break;
-            }
-
-            if (arg instanceof ReceiveInsertDto) {
-                ((ReceiveInsertDto) arg).setCreateId(getId());
-                ((ReceiveInsertDto) arg).setCreateIp(getIpAddress());
-                break;
-            }
-
-            if (arg instanceof ReceiveItemInsertDto) {
-                ((ReceiveItemInsertDto) arg).setCreateId(getId());
-                ((ReceiveItemInsertDto) arg).setCreateIp(getIpAddress());
-                break;
-            }
-
-
+            handleInsertDto(arg);
         }
     }
+
+    private void handleInsertDto(Object arg) {
+        if (arg instanceof AccountInsertDto) {
+            AccountInsertDto accountInsertDto = (AccountInsertDto) arg;
+            accountInsertDto.setCreateId(getId());
+            accountInsertDto.setCreateIp(getIpAddress());
+        } else if (arg instanceof ItemInsertDto) {
+            ItemInsertDto itemInsertDto = (ItemInsertDto) arg;
+            itemInsertDto.setCreateId(getId());
+            itemInsertDto.setCreateIp(getIpAddress());
+        } else if (arg instanceof POrderInsertDto) {
+            POrderInsertDto pOrderInsertDto = (POrderInsertDto) arg;
+            pOrderInsertDto.setCreateId(getId());
+            pOrderInsertDto.setCreateIp(getIpAddress());
+        } else if (arg instanceof POrderItemInsertDto) {
+            POrderItemInsertDto pOrderItemInsertDto = (POrderItemInsertDto) arg;
+            pOrderItemInsertDto.setCreateId(getId());
+            pOrderItemInsertDto.setCreateIp(getIpAddress());
+        } else if (arg instanceof ReceiveInsertDto) {
+            ReceiveInsertDto receiveInsertDto = (ReceiveInsertDto) arg;
+            receiveInsertDto.setCreateId(getId());
+            receiveInsertDto.setCreateIp(getIpAddress());
+        } else if (arg instanceof ReceiveItemInsertDto) {
+            ReceiveItemInsertDto receiveItemInsertDto = (ReceiveItemInsertDto) arg;
+            receiveItemInsertDto.setCreateId(getId());
+            receiveItemInsertDto.setCreateIp(getIpAddress());
+        }
+    }
+
     private String getIpAddress() {
         try {
             InetAddress localhost = InetAddress.getLocalHost();

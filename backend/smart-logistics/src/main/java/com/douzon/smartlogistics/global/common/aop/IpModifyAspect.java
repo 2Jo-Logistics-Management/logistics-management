@@ -43,46 +43,44 @@ public class IpModifyAspect {
     @Pointcut("@annotation(org.springframework.web.bind.annotation.PatchMapping)")
     public void PatchMapping() {
     }
+
     @Before("PatchMapping()")
     public void beforeControllerMethod(JoinPoint joinPoint) {
         Object[] args = joinPoint.getArgs();
         for (Object arg : args) {
-            if (arg instanceof AccountModifyDto) {
-                ((AccountModifyDto) arg).setModifyId(getId());
-                ((AccountModifyDto) arg).setModifyIp(getIpAddress());
-                break;
-            }
-
-            if (arg instanceof ItemModifyDto) {
-                ((ItemModifyDto) arg).setModifyId(getId());
-                ((ItemModifyDto) arg).setModifyIp(getIpAddress());
-                break;
-            }
-            if (arg instanceof POrderModifyDto) {
-                ((POrderModifyDto) arg).setModifyId(getId());
-                ((POrderModifyDto) arg).setModifyIp(getIpAddress());
-                break;
-            }
-
-            if (arg instanceof POrderItemModifyDto) {
-                ((POrderItemModifyDto) arg).setModifyId(getId());
-                ((POrderItemModifyDto) arg).setModifyIp(getIpAddress());
-                break;
-            }
-
-            if (arg instanceof ReceiveModifyDto) {
-                ((ReceiveModifyDto) arg).setModifyId(getId());
-                ((ReceiveModifyDto) arg).setModifyIp(getIpAddress());
-                break;
-            }
-
-            if (arg instanceof ReceiveItemModifyDto) {
-                ((ReceiveItemModifyDto) arg).setModifyId(getId());
-                ((ReceiveItemModifyDto) arg).setModifyIp(getIpAddress());
-                break;
-            }
+            handleModifyDto(arg);
         }
     }
+
+    private void handleModifyDto(Object arg) {
+        if (arg instanceof AccountModifyDto) {
+            AccountModifyDto accountModifyDto = (AccountModifyDto) arg;
+            accountModifyDto.setModifyId(getId());
+            accountModifyDto.setModifyIp(getIpAddress());
+        } else if (arg instanceof ItemModifyDto) {
+            ItemModifyDto itemModifyDto = (ItemModifyDto) arg;
+            itemModifyDto.setModifyId(getId());
+            itemModifyDto.setModifyIp(getIpAddress());
+        } else if (arg instanceof POrderModifyDto) {
+            POrderModifyDto pOrderModifyDto = (POrderModifyDto) arg;
+            pOrderModifyDto.setModifyId(getId());
+            pOrderModifyDto.setModifyIp(getIpAddress());
+        } else if (arg instanceof POrderItemModifyDto) {
+            POrderItemModifyDto pOrderItemModifyDto = (POrderItemModifyDto) arg;
+            pOrderItemModifyDto.setModifyId(getId());
+            pOrderItemModifyDto.setModifyIp(getIpAddress());
+        } else if (arg instanceof ReceiveModifyDto) {
+            ReceiveModifyDto receiveModifyDto = (ReceiveModifyDto) arg;
+            receiveModifyDto.setModifyId(getId());
+            receiveModifyDto.setModifyIp(getIpAddress());
+        } else if (arg instanceof ReceiveItemModifyDto) {
+            ReceiveItemModifyDto receiveItemModifyDto = (ReceiveItemModifyDto) arg;
+            receiveItemModifyDto.setModifyId(getId());
+            receiveItemModifyDto.setModifyIp(getIpAddress());
+        }
+    }
+
+
     private String getIpAddress() {
         try {
             InetAddress localhost = InetAddress.getLocalHost();
