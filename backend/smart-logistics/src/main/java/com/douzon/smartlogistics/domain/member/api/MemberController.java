@@ -57,10 +57,10 @@ public class MemberController {
 
     @PostMapping("/logout")
     public ResponseEntity<CommonResponse<String>> logout(HttpSession session) {
-        session.invalidate();
+        session.removeAttribute("session");
         return ResponseEntity.ok()
                 .contentType(MediaType.APPLICATION_JSON)
-                .body(CommonResponse.successWith(" Logged out successfully."));
+                .body(CommonResponse.successWith(" Logout successful!!."));
     }
 
     @Auth
