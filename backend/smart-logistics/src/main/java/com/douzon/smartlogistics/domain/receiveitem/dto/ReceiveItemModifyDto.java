@@ -23,4 +23,6 @@ public class ReceiveItemModifyDto {
     private String modifyDate;
     private String modifyIp;
     private String modifyId;
+
+
 }

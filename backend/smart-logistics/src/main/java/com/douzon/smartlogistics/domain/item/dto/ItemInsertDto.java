@@ -5,6 +5,7 @@ import javax.validation.constraints.Digits;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Size;
 import lombok.Getter;
+import lombok.RequiredArgsConstructor;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
@@ -32,4 +33,5 @@ public class ItemInsertDto {
     private String createIp;
     @Schema(title = "생성 ID", description = "등록할 물품의 생성 IP 입니다.", example = "테스트 ID")
     private String createId;
+
 }

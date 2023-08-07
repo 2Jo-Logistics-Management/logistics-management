@@ -39,7 +39,6 @@ public class AccountController {
     @PostMapping("/insert")
     public ResponseEntity<CommonResponse<AccountInsertDto>> insert(@RequestBody @Valid AccountInsertDto accountInsertDto){
         accountService.insert(accountInsertDto);
-
         return ResponseEntity.status(HttpStatus.CREATED)
                 .contentType(MediaType.APPLICATION_JSON)
                 .body(CommonResponse.successWith(accountInsertDto));

@@ -55,6 +55,14 @@ public class MemberController {
                 .body(CommonResponse.successWith(member));
     }
 
+    @PostMapping("/logout")
+    public ResponseEntity<CommonResponse<String>> logout(HttpSession session) {
+        session.removeAttribute("session");
+        return ResponseEntity.ok()
+                .contentType(MediaType.APPLICATION_JSON)
+                .body(CommonResponse.successWith(" Logout successful!!."));
+    }
+
     @Auth
     @GetMapping("/list")
     public ResponseEntity<CommonResponse<List<Member>>> searchMemberList(
@@ -67,7 +75,7 @@ public class MemberController {
                 .contentType(MediaType.APPLICATION_JSON)
                 .body(CommonResponse.successWith(memberList));
     }
-
+    @Auth
     @PostMapping("/insert")
     public ResponseEntity<CommonResponse<Member>> insert(@RequestBody @Valid Member member) {
         memberService.insert(member);
@@ -76,7 +84,7 @@ public class MemberController {
                 .contentType(MediaType.APPLICATION_JSON)
                 .body(CommonResponse.successWith(member));
     }
-
+    @Auth
     @PatchMapping("/modify")
     public ResponseEntity<CommonResponse<String>> modify(@RequestParam Integer memberNo,
                                                          @RequestBody @Valid Member member) {
@@ -86,7 +94,7 @@ public class MemberController {
                 .contentType(MediaType.APPLICATION_JSON)
                 .body(CommonResponse.successWithDefaultMessage());
     }
-
+    @Auth
     @DeleteMapping("/delete")
     public ResponseEntity<CommonResponse<String>> delete(@RequestParam Integer memberNo) {
         memberService.delete(memberNo);
