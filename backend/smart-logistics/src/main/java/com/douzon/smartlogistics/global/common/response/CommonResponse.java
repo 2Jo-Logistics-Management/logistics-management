@@ -14,7 +14,7 @@ public class CommonResponse<T> {
     @Schema(title = "응답 결과 데이터", description = "API 요청에 대한 응답 결과 데이터입니다.",
             anyOf = { Item.class })
     private final T data;
-    private final ErrorResponse<T> error;
+    private final ErrorResponse error;
 
     /**
      * 리턴 타입이 Void 일 때 사용
@@ -30,7 +30,7 @@ public class CommonResponse<T> {
         return new CommonResponse<>(true, data, null);
     }
 
-    public static <T> CommonResponse<T> error(ErrorResponse<T> error) {
+    public static <T> CommonResponse<T> error(ErrorResponse error) {
         return new CommonResponse<>(false, null, error);
     }
 }
