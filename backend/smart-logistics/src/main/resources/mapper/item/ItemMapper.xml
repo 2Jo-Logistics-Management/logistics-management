@@ -24,7 +24,7 @@
   </update>
 
   <!-- 상품 삭제 -->
-  <delete id="delete" parameterType="Long">
+  <delete id="delete">
     DELETE FROM item
     WHERE item_code = #{itemCode}
   </delete>

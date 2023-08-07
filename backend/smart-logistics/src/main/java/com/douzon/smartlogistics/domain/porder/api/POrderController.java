@@ -6,6 +6,12 @@ import com.douzon.smartlogistics.domain.porder.application.POrderService;
 import com.douzon.smartlogistics.domain.porder.dto.POrderInsertDto;
 import com.douzon.smartlogistics.domain.porder.dto.POrderModifyDto;
 import com.douzon.smartlogistics.global.common.response.CommonResponse;
+import io.swagger.annotations.Api;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.media.Schema;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import java.util.List;
 import javax.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -22,6 +28,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+@Api(tags = "발주관리 API 명세서")
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/api/porder")
@@ -30,16 +37,21 @@ public class POrderController {
 
     private final POrderService pOrderService;
 
+    @Operation(summary = "발주 리스트 조회",
+               description = "발주 리스트 조회 요청을 처리하고 데이터베이스를 조회해 리스트로 결과를 반환합니다.",
+               responses = {@ApiResponse(responseCode = "200",
+                                         content = @Content(mediaType = "application/json", schema = @Schema(implementation = CommonResponse.class)
+    ))})
     @GetMapping("/list")
     public ResponseEntity<CommonResponse<List<POrder>>> searchPOrderList(
-        @RequestParam(required = false, defaultValue = "") String pOrderCode,
-        @RequestParam(required = false) State state,
-        @RequestParam(required = false, defaultValue = "") String createId,
-        @RequestParam(required = false, defaultValue = "") String createIp,
-        @RequestParam(required = false) Long accountNo,
-        @RequestParam(required = false, defaultValue = "") String startDate,
-        @RequestParam(required = false, defaultValue = "") String endDate,
-        @RequestParam(required = false, defaultValue = "") String pOrderDate
+        @RequestParam(required = false, defaultValue = "") @Parameter(description = "발주코드") String pOrderCode,
+        @RequestParam(required = false) @Parameter(description = "상태") State state,
+        @RequestParam(required = false, defaultValue = "") @Parameter(description = "생성ID") String createId,
+        @RequestParam(required = false, defaultValue = "") @Parameter(description = "생성IP") String createIp,
+        @RequestParam(required = false) @Parameter(description = "거래처번호") Long accountNo,
+        @RequestParam(required = false, defaultValue = "") @Parameter(description = "조회 시작날짜") String startDate,
+        @RequestParam(required = false, defaultValue = "") @Parameter(description = "조회 마감날짜") String endDate,
+        @RequestParam(required = false, defaultValue = "") @Parameter(description = "발주 날짜") String pOrderDate
     ) {
 
         List<POrder> pOrderList = pOrderService.searchPOrder(pOrderCode, state, createId, createIp, accountNo,
@@ -50,8 +62,13 @@ public class POrderController {
                              .body(CommonResponse.successWith(pOrderList));
     }
 
+    @Operation(summary = "발주 등록",
+               description = "발주 등록에 알맞은 데이터를 받아 데이터베이스에 삽입합니다.",
+               responses = @ApiResponse(responseCode = "201",
+                                        content = @Content(mediaType = "application/json",
+                                                           schema = @Schema(implementation = CommonResponse.class))))
     @PostMapping("/insert")
-    public ResponseEntity<CommonResponse<String>> insert(@RequestBody @Valid POrderInsertDto pOrderInsertDto) {
+    public ResponseEntity<CommonResponse<String>> insert(@RequestBody @Valid @Parameter(description = "발주 등록을 위한 데이터") POrderInsertDto pOrderInsertDto) {
         pOrderService.insert(pOrderInsertDto);
 
         return ResponseEntity.status(HttpStatus.CREATED)
@@ -59,9 +76,14 @@ public class POrderController {
                              .body(CommonResponse.successWithDefaultMessage());
     }
 
+    @Operation(summary = "발주 수정",
+               description = "발주 수정에 알맞은 데이터를 받아 데이터베이스의 데이터를 수정합니다.",
+               responses = @ApiResponse(responseCode = "200",
+                                        content = @Content(mediaType = "application/json",
+                                                           schema = @Schema(implementation = CommonResponse.class))))
     @PatchMapping("/modify")
-    public ResponseEntity<CommonResponse<String>> modify(@RequestParam String pOrderCode,
-        @RequestBody @Valid POrderModifyDto pOrderModifyDto) {
+    public ResponseEntity<CommonResponse<String>> modify(@RequestParam @Parameter(description = "수정할 발주의 코드") String pOrderCode,
+        @RequestBody @Valid @Parameter(description = "발주 수정을 위한 데이터") POrderModifyDto pOrderModifyDto) {
 
         pOrderService.modify(pOrderCode, pOrderModifyDto);
 
@@ -70,8 +92,11 @@ public class POrderController {
                              .body(CommonResponse.successWithDefaultMessage());
     }
 
+    @Operation(summary = "발주 삭제",
+               description = "발주 삭제에 알맞은 데이터를 받아 데이터베이스의 데이터를 삭제합니다.",
+               responses = @ApiResponse(responseCode = "200"))
     @DeleteMapping("/delete")
-    public ResponseEntity<CommonResponse<String>> delete(@RequestParam String pOrderCode) {
+    public ResponseEntity<CommonResponse<String>> delete(@RequestParam @Parameter(description = "삭제할 발주의 코드") String pOrderCode) {
 
         pOrderService.delete(pOrderCode);
 

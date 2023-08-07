@@ -28,5 +28,5 @@ public interface ItemMapper {
     void modify(@Param("itemCode") Integer itemCode, @Param("itemModifyDto") ItemModifyDto itemModifyDto);
 
     @Transactional
-    void delete(Integer itemCode);
+    void delete(@Param("itemCode") Integer itemCode);
 }
