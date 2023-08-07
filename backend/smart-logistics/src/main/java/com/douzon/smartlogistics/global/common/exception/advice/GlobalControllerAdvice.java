@@ -34,7 +34,7 @@ public class GlobalControllerAdvice {
         log.error(e.toString());
         return ResponseEntity.status(HttpStatus.NOT_FOUND)
                              .contentType(MediaType.APPLICATION_JSON)
-                             .body(CommonResponse.error(new ErrorResponse<>("요청한 path에 알맞는 Handler를 찾지 못했습니다.")));
+                             .body(CommonResponse.error(new ErrorResponse("요청한 path에 알맞는 Handler를 찾지 못했습니다.")));
     }
 
     /**
@@ -67,12 +67,12 @@ public class GlobalControllerAdvice {
                 responseBody.setNotValidInput(notValidInput);
             }
         } catch (NullPointerException e) {
-            log.info("Field Error Null");
+            log.warn("Field Error Null");
         }
 
         return ResponseEntity.status(HttpStatus.BAD_REQUEST)
                              .contentType(MediaType.APPLICATION_JSON)
-                             .body(CommonResponse.error(new ErrorResponse<>(responseBody.toString())));
+                             .body(CommonResponse.error(new ErrorResponse(responseBody.toString())));
     }
 
     /**
@@ -88,6 +88,6 @@ public class GlobalControllerAdvice {
         log.error("", ex);
         return ResponseEntity.status(HttpStatus.BAD_REQUEST)
                              .contentType(MediaType.APPLICATION_JSON)
-                             .body(CommonResponse.error(new ErrorResponse<>("잘못된 요청입니다.")));
+                             .body(CommonResponse.error(new ErrorResponse("잘못된 요청입니다.")));
     }
 }
