@@ -14,7 +14,8 @@
       <onMismatch>DENY</onMismatch> <!-- 다른 수준의 레벨은 기록하지 않는다.(상위 레벨도 기록 안함), 상위 수준의 레벨에 대한 기록을 원하면 ACCEPT 로 하면 기록된다. -->
     </filter> <!-- 레벨별 필터링이 필요없을 경우 filter class 관련된 부분을 삭제하면 됨-->
     <encoder>
-      <pattern>[%d{yyyy-MM-dd HH:mm:ss}:%-3relative][%thread] %-5level %logger{35} - %msg%n</pattern> <!-- 해당 패턴 네이밍으로 현재 로그가 기록됨 -->
+      <pattern>[%d{yyyy-MM-dd HH:mm:ss}:%-3relative][%thread] %-5level %logger{35} - %msg%n
+      </pattern> <!-- 해당 패턴 네이밍으로 현재 로그가 기록됨 -->
     </encoder>
     <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
       <fileNamePattern>./was-logs/info.%d{yyyy-MM-dd}.%i.log.gz</fileNamePattern> <!-- 해당 패턴 네이밍으로 이전 파일이 기록됨 -->
@@ -63,20 +64,22 @@
     </rollingPolicy>
   </appender>
 
-  <root level="INFO">
-    <appender-ref ref="CONSOLE_LOG"/>
-  </root>
+  <springProfile name="default">
+    <root level="INFO">
+      <appender-ref ref="CONSOLE_LOG"/>
+    </root>
+  </springProfile>
 
   <springProfile name="dev">
     <root>
-      <appender-ref ref="CONSOLE_LOG" />
+      <appender-ref ref="CONSOLE_LOG"/>
     </root>
   </springProfile>
 
   <springProfile name="prod">
     <root>
-      <appender-ref ref="WARN_LOG" />
-      <appender-ref ref="ERROR_LOG" />
+      <appender-ref ref="WARN_LOG"/>
+      <appender-ref ref="ERROR_LOG"/>
     </root>
   </springProfile>
 
