@@ -45,6 +45,9 @@
         FROM
             MEMBER
         <where>
+            <if test="memberNo != null">
+                AND member_no LIKE concat(CONCAT('%', #{memberNo}), '%')
+            </if>
             <if test="memberId != null">
                 AND member_id LIKE concat(CONCAT('%', #{memberId}), '%')
             </if>
