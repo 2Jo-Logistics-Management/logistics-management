@@ -1,7 +1,9 @@
-package com.douzon.smartlogistics.domain.member.interceptor;
+package com.douzon.smartlogistics.global.common.config.interceptor;
 
 import com.douzon.smartlogistics.domain.member.application.MemberService;
 import com.douzon.smartlogistics.domain.entity.Member;
+import com.douzon.smartlogistics.global.common.exception.auth.Auth;
+import com.douzon.smartlogistics.global.common.exception.auth.AuthException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;

@@ -3,7 +3,7 @@ package com.douzon.smartlogistics.domain.member.api;
 import com.douzon.smartlogistics.domain.entity.Member;
 import com.douzon.smartlogistics.domain.member.application.MemberService;
 import com.douzon.smartlogistics.domain.member.dto.LoginDto;
-import com.douzon.smartlogistics.domain.member.interceptor.Auth;
+import com.douzon.smartlogistics.global.common.exception.auth.Auth;
 import com.douzon.smartlogistics.global.common.response.CommonResponse;
 import io.swagger.annotations.Api;
 import io.swagger.v3.oas.annotations.Operation;

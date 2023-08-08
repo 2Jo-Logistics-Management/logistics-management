@@ -1,4 +1,4 @@
-package com.douzon.smartlogistics.domain.member.interceptor;
+package com.douzon.smartlogistics.global.common.exception.auth;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;

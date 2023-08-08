@@ -2,11 +2,10 @@ package com.douzon.smartlogistics.global.common.config;
 
 import static springfox.documentation.builders.PathSelectors.regex;
 
-import com.douzon.smartlogistics.domain.member.interceptor.SessionAuthInterceptor;
+import com.douzon.smartlogistics.global.common.config.interceptor.SessionAuthInterceptor;
 import com.douzon.smartlogistics.global.common.response.CommonResponse;
 import com.fasterxml.classmate.TypeResolver;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
