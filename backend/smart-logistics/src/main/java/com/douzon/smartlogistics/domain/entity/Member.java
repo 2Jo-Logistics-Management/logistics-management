@@ -1,20 +1,18 @@
 package com.douzon.smartlogistics.domain.entity;
 
-import lombok.Getter;
-import lombok.RequiredArgsConstructor;
-import lombok.ToString;
+import lombok.*;
 
 import java.util.Date;
 
-@RequiredArgsConstructor
+@NoArgsConstructor
 @Getter
-@ToString
+@Setter
 public class Member {
-    private final Long memberNo;
-    private final String memberName;
-    private final String memberId;
-    private final String password;
-    private final String memberRole;
-    private final Date createDate;
-    private final String ipaddress;
+    private Long memberNo;
+    private String memberName;
+    private String memberId;
+    private String password;
+    private String memberRole;
+    private Date createDate;
+    private String ipaddress;
 }
