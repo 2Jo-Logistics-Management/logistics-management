@@ -2,10 +2,13 @@ package com.douzon.smartlogistics.global.common.config;
 
 import static springfox.documentation.builders.PathSelectors.regex;
 
+import com.douzon.smartlogistics.global.common.config.interceptor.SessionAuthInterceptor;
 import com.douzon.smartlogistics.global.common.response.CommonResponse;
 import com.fasterxml.classmate.TypeResolver;
+import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
 import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurationSupport;
 import springfox.documentation.builders.ApiInfoBuilder;
@@ -15,8 +18,12 @@ import springfox.documentation.spi.DocumentationType;
 import springfox.documentation.spring.web.plugins.Docket;
 
 // http://localhost:8888/swagger-ui/index.html
+
+@RequiredArgsConstructor
 @Configuration
 public class SpringFoxConfig extends WebMvcConfigurationSupport {
+
+    private final SessionAuthInterceptor sessionAuthInterceptor;
 
     @Bean
     public Docket api(TypeResolver typeResolver) {
@@ -35,6 +42,11 @@ public class SpringFoxConfig extends WebMvcConfigurationSupport {
                 .addResourceLocations("classpath:/META-INF/resources/webjars/springfox-swagger-ui/");
         registry.addResourceHandler("/webjars/**")
                 .addResourceLocations("classpath:/META-INF/resources/webjars/springfox-swagger-ui/");
+    }
+
+    @Override
+    public void addInterceptors(InterceptorRegistry registry) {
+        registry.addInterceptor(sessionAuthInterceptor).addPathPatterns("/api/member/*");
     }
 
     public ApiInfo apiInfo() {

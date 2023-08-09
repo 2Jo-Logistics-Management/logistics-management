@@ -1,17 +1,22 @@
 package com.douzon.smartlogistics.global.common.exception.advice;
 
+import com.douzon.smartlogistics.global.common.exception.auth.AuthException;
 import com.douzon.smartlogistics.global.common.response.CommonResponse;
 import com.douzon.smartlogistics.global.common.response.ErrorResponse;
 import com.douzon.smartlogistics.global.common.response.ValidationBindingResultErrorResponse;
+
+import java.nio.charset.StandardCharsets;
 import java.util.Objects;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.core.annotation.Order;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
+import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 import org.springframework.web.servlet.NoHandlerFoundException;
 
@@ -73,6 +78,17 @@ public class GlobalControllerAdvice {
         return ResponseEntity.status(HttpStatus.BAD_REQUEST)
                              .contentType(MediaType.APPLICATION_JSON)
                              .body(CommonResponse.error(new ErrorResponse(responseBody.toString())));
+    }
+
+    @ResponseStatus(HttpStatus.UNAUTHORIZED)
+    @ExceptionHandler(AuthException.class)
+    public ResponseEntity<String> authException(AuthException e) {
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(new MediaType(MediaType.TEXT_PLAIN, StandardCharsets.UTF_8));
+
+        return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
+                .headers(headers)
+                .body("인증오류: " + e.getLocalizedMessage());
     }
 
     /**
