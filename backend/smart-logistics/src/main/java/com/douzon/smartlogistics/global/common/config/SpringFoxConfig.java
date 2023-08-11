@@ -28,12 +28,12 @@ public class SpringFoxConfig extends WebMvcConfigurationSupport {
     @Bean
     public Docket api(TypeResolver typeResolver) {
         return new Docket(DocumentationType.OAS_30)
-            .additionalModels(typeResolver.resolve(CommonResponse.class))
-            .apiInfo(apiInfo())
-            .select()
-            .apis(RequestHandlerSelectors.any())
-            .paths(regex("/api/.*"))
-            .build();
+                .additionalModels(typeResolver.resolve(CommonResponse.class))
+                .apiInfo(apiInfo())
+                .select()
+                .apis(RequestHandlerSelectors.any())
+                .paths(regex("/api/.*"))
+                .build();
     }
 
     @Override
@@ -51,9 +51,9 @@ public class SpringFoxConfig extends WebMvcConfigurationSupport {
 
     public ApiInfo apiInfo() {
         return new ApiInfoBuilder()
-            .title("Smart-Logistics-Project-Rest-Docs-Swagger")
-            .description("스마트 물류 관리 백엔드 서버의 Rest Docs 입니다.")
-            .version("0.1")
-            .build();
+                .title("Smart-Logistics-Project-Rest-Docs-Swagger")
+                .description("스마트 물류 관리 백엔드 서버의 Rest Docs 입니다.")
+                .version("0.1")
+                .build();
     }
 }

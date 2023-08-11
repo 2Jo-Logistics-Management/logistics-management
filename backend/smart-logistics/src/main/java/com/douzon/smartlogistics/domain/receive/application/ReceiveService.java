@@ -1,7 +1,7 @@
 package com.douzon.smartlogistics.domain.receive.application;
 
-import com.douzon.smartlogistics.domain.entity.CmpPOrder;
-import com.douzon.smartlogistics.domain.entity.ReceiveList;
+import com.douzon.smartlogistics.domain.receive.dto.CmpPOrderDto;
+import com.douzon.smartlogistics.domain.receive.dto.ReceiveListDto;
 import com.douzon.smartlogistics.domain.entity.constant.SeqCode;
 import com.douzon.smartlogistics.domain.receive.dao.ReceiveDao;
 import com.douzon.smartlogistics.domain.receive.dto.ReceiveInsertDto;
@@ -20,7 +20,7 @@ import java.util.List;
 public class ReceiveService {
     private final ReceiveDao receiveDao;
 
-    public List<ReceiveList> findReceive(String receiveCode, String manager, Integer itemCode, String itemName, Integer accountNo, String accountName, String startDate, String endDate) {
+    public List<ReceiveListDto> findReceive(String receiveCode, String manager, Integer itemCode, String itemName, Integer accountNo, String accountName, String startDate, String endDate) {
         if (startDate != null && !startDate.isEmpty()) {
             startDate += " 00:00:00";
         }
@@ -32,7 +32,7 @@ public class ReceiveService {
         return receiveDao.findReceive(receiveCode, manager, itemCode, itemName, accountNo, accountName, startDate, endDate);
     }
 
-    public List<CmpPOrder> waitingReceive(String porderCode, Integer itemCode, String itemName, String manager, Integer accountNo, String accountName, String startDate, String endDate) {
+    public List<CmpPOrderDto> waitingReceive(String porderCode, Integer itemCode, String itemName, String manager, Integer accountNo, String accountName, String startDate, String endDate) {
         if (startDate != null && !startDate.isEmpty()) {
             startDate += " 00:00:00";
         }
@@ -59,5 +59,6 @@ public class ReceiveService {
     public void modifyReceive(String receiveCode, ReceiveModifyDto receiveModifyDto) {
         receiveDao.modifyReceive(receiveCode, receiveModifyDto);
     }
+
 
 }
