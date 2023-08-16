@@ -41,7 +41,7 @@ public class ReceiveController {
                     ))})
     @TimeOut
     @GetMapping("/list")
-    public ResponseEntity<CommonResponse<PageInfo<ReceiveListDto>>> findReceive(
+    public ResponseEntity<CommonResponse<List<ReceiveListDto>>> findReceive(
             @RequestParam(required = false, defaultValue = "") @Parameter(description = "입고코드") String receiveCode,
             @RequestParam(required = false, defaultValue = "") @Parameter(description = "담당자") String manager,
             @RequestParam(required = false, defaultValue = "0") @Parameter(description = "상품코드") Integer itemCode,
@@ -50,6 +50,8 @@ public class ReceiveController {
             @RequestParam(required = false, defaultValue = "") @Parameter(description = "거래처명") String accountName,
             @RequestParam(required = false, defaultValue = "") @Parameter(description = "조회 시작날짜") String startDate,
             @RequestParam(required = false, defaultValue = "") @Parameter(description = "조회 마감날짜") String endDate,
+            @RequestParam(required = false, defaultValue = "") @Parameter(description = "작성자 ip") String createIp,
+            @RequestParam(required = false, defaultValue = "") @Parameter(description = "작성자 id") String createId,
             @RequestParam(defaultValue = "1") @Parameter(description = "페이지 번호") int pageNum,
             @RequestParam(defaultValue = "50") @Parameter(description = "페이지 크기") int pageSize
     ) {
@@ -57,13 +59,13 @@ public class ReceiveController {
         PageHelper.startPage(pageNum, pageSize);
 
         List<ReceiveListDto> receiveListDto = receiveService.findReceive(
-                receiveCode, manager, itemCode, itemName, accountNo, accountName, startDate, endDate);
+                receiveCode, manager, createIp, createId, startDate, endDate);
         PageInfo<ReceiveListDto> pageInfo = new PageInfo<>(receiveListDto);
 
         log.info("ReceiveControllerListOUT");
         return ResponseEntity.status(HttpStatus.OK)
                 .contentType(MediaType.APPLICATION_JSON)
-                .body(CommonResponse.successWith(pageInfo));
+                .body(CommonResponse.successWith(receiveListDto));
     }
     @Operation(summary = "입고 등록 전 발주 완료 리스트 조회",
             description = "입고 등록 전 발주 완료 리스트 조회 요청을 처리하고 데이터베이스를 조회해 리스트로 결과를 반환합니다.",

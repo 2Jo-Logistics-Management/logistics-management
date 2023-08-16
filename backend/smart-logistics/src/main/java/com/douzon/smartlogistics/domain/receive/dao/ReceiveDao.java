@@ -25,10 +25,12 @@ public class ReceiveDao {
     private final ReceiveItemMapper receiveItemMapper;
     private final WarehouseMapper warehouseMapper;
 
-    public List<ReceiveListDto> findReceive(String receiveCode, String manager, Integer itemCode, String itemName, Integer accountNo, String accountName, String startDate, String endDate) {
-        return receiveMapper.findReceive(receiveCode, manager, itemCode, itemName, accountNo, accountName, startDate, endDate);
+//    public List<ReceiveListDto> findReceive(String receiveCode, String manager, Integer itemCode, String itemName, Integer accountNo, String accountName, String startDate, String endDate) {
+//        return receiveMapper.findReceive(receiveCode, manager, itemCode, itemName, accountNo, accountName, startDate, endDate);
+//    }
+    public List<ReceiveListDto> findReceive(String receiveCode, String manager, String createIp, String createId, String startDate, String endDate) {
+        return receiveMapper.findReceive(receiveCode, manager, createIp, createId, startDate, endDate);
     }
-
     public List<CmpPOrderDto> waitingReceive(String porderCode, Integer itemCode, String itemName, String manager, Integer accountNo, String accountName, String startDate, String endDate) {
         return receiveMapper.waitingReceive(porderCode, itemCode, itemName, manager, accountNo, accountName, startDate, endDate);
     }

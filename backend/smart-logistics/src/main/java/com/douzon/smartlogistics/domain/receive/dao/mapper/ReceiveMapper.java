@@ -15,14 +15,23 @@ import java.util.Optional;
 
 @Mapper
 public interface ReceiveMapper {
+//    @TimeTrace
+//    List<ReceiveListDto> findReceive(
+//            @Param("receiveCode") String receiveCode,
+//            @Param("manager") String manager,
+//            @Param("itemCode") Integer itemCode,
+//            @Param("itemName") String itemName,
+//            @Param("accountNo") Integer accountNo,
+//            @Param("accountName") String accountName,
+//            @Param("startDate") String startDate,
+//            @Param("endDate") String endDate
+//    );
     @TimeTrace
     List<ReceiveListDto> findReceive(
             @Param("receiveCode") String receiveCode,
             @Param("manager") String manager,
-            @Param("itemCode") Integer itemCode,
-            @Param("itemName") String itemName,
-            @Param("accountNo") Integer accountNo,
-            @Param("accountName") String accountName,
+            @Param("createIp") String createIp,
+            @Param("createId") String createId,
             @Param("startDate") String startDate,
             @Param("endDate") String endDate
     );

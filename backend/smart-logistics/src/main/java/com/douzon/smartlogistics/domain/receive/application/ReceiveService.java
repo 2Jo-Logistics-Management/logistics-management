@@ -20,7 +20,7 @@ import java.util.List;
 public class ReceiveService {
     private final ReceiveDao receiveDao;
 
-    public List<ReceiveListDto> findReceive(String receiveCode, String manager, Integer itemCode, String itemName, Integer accountNo, String accountName, String startDate, String endDate) {
+    public List<ReceiveListDto> findReceive(String receiveCode, String manager, String createIp, String createId, String startDate, String endDate) {
         if (startDate != null && !startDate.isEmpty()) {
             startDate += " 00:00:00";
         }
@@ -29,7 +29,7 @@ public class ReceiveService {
             endDate += " 23:59:59";
         }
 
-        return receiveDao.findReceive(receiveCode, manager, itemCode, itemName, accountNo, accountName, startDate, endDate);
+        return receiveDao.findReceive(receiveCode, manager, createIp, createId, startDate, endDate);
     }
 
     public List<CmpPOrderDto> waitingReceive(String porderCode, Integer itemCode, String itemName, String manager, Integer accountNo, String accountName, String startDate, String endDate) {
