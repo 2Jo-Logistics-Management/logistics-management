@@ -23,10 +23,10 @@ public class POrderDao {
     private final POrderMapper pOrderMapper;
     private final POrderItemMapper pOrderItemMapper;
 
-    public List<POrder> searchPOrder(String pOrderCode, State state, String createId, String createIp,
-        Long accountNo, String startDate, String endDate, String pOrderDate) {
+    public List<POrder> searchPOrder(String pOrderCode, String manager, State state, String createId, String createIp,
+        Integer accountNo, String startDate, String endDate, String pOrderDate) {
 
-        List<POrder> pOrderList = pOrderMapper.searchPOrder(pOrderCode, createId, createIp, accountNo, state,
+        List<POrder> pOrderList = pOrderMapper.searchPOrder(pOrderCode, manager, createId, createIp, accountNo, state,
             startDate, endDate, pOrderDate);
 
         return pOrderList;

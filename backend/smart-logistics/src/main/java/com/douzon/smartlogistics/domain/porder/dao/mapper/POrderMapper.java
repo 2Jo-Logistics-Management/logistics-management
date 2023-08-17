@@ -13,8 +13,8 @@ import org.springframework.transaction.annotation.Transactional;
 @Mapper
 public interface POrderMapper {
 
-    List<POrder> searchPOrder(String pOrderCode, String createId, String createIp, Long accountNo, State state,
-        String startDate, String endDate, String pOrderDate);
+    List<POrder> searchPOrder(String pOrderCode, String manager, String createId, String createIp, Integer accountNo,
+        State state, String startDate, String endDate, String pOrderDate);
 
     @Transactional
     void insert(POrderInsertDto pOrderInsertDto);

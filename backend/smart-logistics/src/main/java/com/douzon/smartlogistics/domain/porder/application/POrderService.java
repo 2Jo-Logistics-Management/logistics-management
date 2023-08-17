@@ -19,10 +19,11 @@ import org.springframework.transaction.annotation.Transactional;
 public class POrderService {
 
     private final POrderDao pOrderDao;
-    public List<POrder> searchPOrder(String pOrderCode, State state, String createId, String createIp, Long accountNo,
-        String startDate, String endDate, String pOrderDate) {
+    public List<POrder> searchPOrder(String pOrderCode, String manager, State state, String createId, String createIp,
+        Integer accountNo, String startDate, String endDate, String pOrderDate) {
 
-        return pOrderDao.searchPOrder(pOrderCode, state, createId, createIp, accountNo, startDate, endDate, pOrderDate);
+        return pOrderDao.searchPOrder(pOrderCode,manager, state, createId, createIp, accountNo, startDate, endDate,
+            pOrderDate);
     }
 
     @Transactional
