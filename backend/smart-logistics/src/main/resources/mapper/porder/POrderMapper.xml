@@ -13,6 +13,7 @@
   <update id="modify">
     UPDATE PORDER
     SET PORDER_DATE = CURRENT_TIMESTAMP,
+        MANAGER     = #{pOrderModifyDto.manager},
         MODIFY_IP   = #{pOrderModifyDto.modifyIp},
         MODIFY_ID   = #{pOrderModifyDto.modifyId},
         STATE       = #{pOrderModifyDto.state},

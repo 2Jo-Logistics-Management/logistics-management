@@ -86,11 +86,11 @@ public class POrderController {
     public ResponseEntity<CommonResponse<String>> modify(@RequestParam @Parameter(description = "수정할 발주의 코드") String pOrderCode,
         @RequestBody @Valid @Parameter(description = "발주 수정을 위한 데이터") POrderModifyDto pOrderModifyDto) {
 
-        pOrderService.modify(pOrderCode, pOrderModifyDto);
+        String modifiedPOrderCode = pOrderService.modify(pOrderCode, pOrderModifyDto);
 
         return ResponseEntity.status(HttpStatus.CREATED)
                              .contentType(MediaType.APPLICATION_JSON)
-                             .body(CommonResponse.successWithDefaultMessage());
+                             .body(CommonResponse.successWith(modifiedPOrderCode));
     }
 
     @Operation(summary = "발주 삭제",

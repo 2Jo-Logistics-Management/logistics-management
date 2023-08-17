@@ -52,10 +52,12 @@ public class POrderDao {
     }
 
     @Transactional
-    public void modify(String pOrderCode, POrderModifyDto pOrderModifyDto) {
+    public String modify(String pOrderCode, POrderModifyDto pOrderModifyDto) {
         POrder retrievePOrder = retrievePOrder(pOrderCode);
 
         pOrderMapper.modify(retrievePOrder.getPOrderCode(), pOrderModifyDto);
+
+        return pOrderCode;
     }
 
     @Transactional

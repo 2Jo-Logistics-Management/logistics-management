@@ -37,8 +37,8 @@ public class POrderService {
     }
 
     @Transactional
-    public void modify(String pOrderCode, POrderModifyDto pOrderModifyDto) {
-        pOrderDao.modify(pOrderCode, pOrderModifyDto);
+    public String modify(String pOrderCode, POrderModifyDto pOrderModifyDto) {
+        return pOrderDao.modify(pOrderCode, pOrderModifyDto);
     }
 
     public void delete(String pOrderCode) {
