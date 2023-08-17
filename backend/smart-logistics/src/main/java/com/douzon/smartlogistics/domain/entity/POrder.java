@@ -10,12 +10,13 @@ public class POrder {
 
     private final String pOrderCode;
     private final String pOrderDate;
+    private final String manager;
+    private final Integer accountNo;
+    private final State state;
     private final String createDate;
     private final String createIp;
     private final String createId;
     private final String modifyDate;
     private final String modifyIp;
     private final String modifyId;
-    private final State state;
-    private final Long accountNo;
 }
