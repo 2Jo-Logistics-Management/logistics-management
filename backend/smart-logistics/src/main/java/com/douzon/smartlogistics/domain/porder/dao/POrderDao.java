@@ -10,6 +10,7 @@ import com.douzon.smartlogistics.domain.porderitem.dao.mapper.POrderItemMapper;
 import com.douzon.smartlogistics.domain.porderitem.dto.POrderItemInsertDto;
 import java.util.List;
 import java.util.NoSuchElementException;
+import java.util.concurrent.atomic.AtomicInteger;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Repository;
@@ -36,7 +37,14 @@ public class POrderDao {
     public void insert(POrderInsertDto pOrderInsertDto) {
         pOrderMapper.insert(pOrderInsertDto);
 
+        if (pOrderInsertDto.getPOrderItems().isEmpty()) {
+            return;
+        }
+
+        AtomicInteger pOrderItemNo = new AtomicInteger();
+
         for (POrderItemInsertDto pOrderItem : pOrderInsertDto.getPOrderItems()) {
+            pOrderItem.setPOrderItemNo(pOrderItemNo.incrementAndGet());
             pOrderItem.setPOrderCode(pOrderInsertDto.getPOrderCode());
 
             pOrderItemMapper.insert(pOrderItem);

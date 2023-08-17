@@ -27,9 +27,13 @@ public class POrderService {
     }
 
     @Transactional
-    public void insert(POrderInsertDto pOrderInsertDto) {
-        pOrderInsertDto.setPOrderCode(AutoSeqGenerator.generate(SeqCode.PO));
+    public String insert(POrderInsertDto pOrderInsertDto) {
+        String generatedSeqCode = AutoSeqGenerator.generate(SeqCode.PO);
+
+        pOrderInsertDto.setPOrderCode(generatedSeqCode);
         pOrderDao.insert(pOrderInsertDto);
+
+        return generatedSeqCode;
     }
 
     @Transactional

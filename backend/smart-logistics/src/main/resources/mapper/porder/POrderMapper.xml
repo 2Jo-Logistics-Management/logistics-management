@@ -5,8 +5,8 @@
 <mapper namespace="com.douzon.smartlogistics.domain.porder.dao.mapper.POrderMapper">
   <!-- 발주 등록  -->
   <insert id="insert">
-    INSERT INTO PORDER(porder_code, porder_date, create_ip, create_id, account_no)
-    VALUES (#{pOrderCode}, CURRENT_TIMESTAMP, #{createIp}, #{createId}, #{accountNo})
+    INSERT INTO PORDER(porder_code, manager, porder_date, create_ip, create_id, account_no)
+    VALUES (#{pOrderCode}, #{manager}, CURRENT_TIMESTAMP, #{createIp}, #{createId}, #{accountNo})
   </insert>
 
   <!-- 발주 수정 -->
