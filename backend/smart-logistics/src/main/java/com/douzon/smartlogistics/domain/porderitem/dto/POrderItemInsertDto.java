@@ -8,22 +8,22 @@ import javax.validation.constraints.Size;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.springframework.lang.Nullable;
 
 @NoArgsConstructor
 @Getter
 @Setter
 public class POrderItemInsertDto {
 
+    @Schema(title = "발주 물품 순서", description = "등록할 발주 물품 순서입니다.", example = "1")
+    @Nullable
+    private Integer pOrderItemNo;
+
     @Schema(title = "발주 코드", description = "등록할 발주 코드 입니다.", example = "PO20230726145745750")
     @NotBlank
     @Size(max = 20)
     @JsonProperty(value = "pOrderCode")
     private String pOrderCode;
-
-    @Schema(title = "담당자", description = "등록할 담당자 입니다.", example = "테스트 담당자")
-    @NotBlank
-    @Size(max = 15)
-    private String manager;
 
     @Schema(title = "물품 코드", description = "등록할 물품 코드 입니다.", example = "4")
     @NotBlank

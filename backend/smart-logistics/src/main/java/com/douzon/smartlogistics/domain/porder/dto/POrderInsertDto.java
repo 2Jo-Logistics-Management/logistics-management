@@ -23,6 +23,8 @@ public class POrderInsertDto {
     @Schema(title = "발주 날짜", description = "등록할 발주 날짜 입니다.")
     @Nullable
     private String pOrderDate;
+    @Schema(title = "담당자", description = "등록할 담당자 입니다.", example = "admin")
+    private String manager;
     @Schema(title = "생성 IP", description = "등록할 발주의 생성 IP 입니다.", example = "발주 테스트 IP")
     private String createIp;
     @Schema(title = "생성 ID", description = "등록할 발주의 생성 IP 입니다.", example = "발주 테스트 ID")

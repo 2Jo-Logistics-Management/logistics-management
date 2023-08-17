@@ -19,21 +19,26 @@ import org.springframework.transaction.annotation.Transactional;
 public class POrderService {
 
     private final POrderDao pOrderDao;
-    public List<POrder> searchPOrder(String pOrderCode, State state, String createId, String createIp, Long accountNo,
-        String startDate, String endDate, String pOrderDate) {
+    public List<POrder> searchPOrder(String pOrderCode, String manager, State state, String createId, String createIp,
+        Integer accountNo, String startDate, String endDate, String pOrderDate) {
 
-        return pOrderDao.searchPOrder(pOrderCode, state, createId, createIp, accountNo, startDate, endDate, pOrderDate);
+        return pOrderDao.searchPOrder(pOrderCode,manager, state, createId, createIp, accountNo, startDate, endDate,
+            pOrderDate);
     }
 
     @Transactional
-    public void insert(POrderInsertDto pOrderInsertDto) {
-        pOrderInsertDto.setPOrderCode(AutoSeqGenerator.generate(SeqCode.PO));
+    public String insert(POrderInsertDto pOrderInsertDto) {
+        String generatedSeqCode = AutoSeqGenerator.generate(SeqCode.PO);
+
+        pOrderInsertDto.setPOrderCode(generatedSeqCode);
         pOrderDao.insert(pOrderInsertDto);
+
+        return generatedSeqCode;
     }
 
     @Transactional
-    public void modify(String pOrderCode, POrderModifyDto pOrderModifyDto) {
-        pOrderDao.modify(pOrderCode, pOrderModifyDto);
+    public String modify(String pOrderCode, POrderModifyDto pOrderModifyDto) {
+        return pOrderDao.modify(pOrderCode, pOrderModifyDto);
     }
 
     public void delete(String pOrderCode) {
