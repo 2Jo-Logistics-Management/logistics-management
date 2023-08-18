@@ -19,7 +19,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 
-@Api(tags = "입고상품 관리 API 명세서")
+@Api(tags = "입고물품 관리 API 명세서")
 @Slf4j
 @RestController
 @RequiredArgsConstructor
@@ -28,8 +28,8 @@ public class ReceiveItemController {
 
     private final ReceiveItemService receiveItemService;
 
-    @Operation(summary = "입고상품 등록",
-            description = "입고상품 등록에 알맞은 데이터를 받아 데이터베이스에 삽입합니다.",
+    @Operation(summary = "입고물품 등록",
+            description = "입고물품 등록에 알맞은 데이터를 받아 데이터베이스에 삽입합니다.",
             responses = @ApiResponse(responseCode = "201",
                     content = @Content(mediaType = "application/json",
                             schema = @Schema(implementation = CommonResponse.class))))
@@ -42,19 +42,19 @@ public class ReceiveItemController {
                 .body(CommonResponse.successWithDefaultMessage());
     }
 
-    @Operation(summary = "입고상품 삭제",
-            description = "입고상품 삭제에 알맞은 데이터를 받아 데이터베이스의 데이터를 삭제합니다.",
+    @Operation(summary = "입고물품 삭제",
+            description = "입고물품 삭제에 알맞은 데이터를 받아 데이터베이스의 데이터를 삭제합니다.",
             responses = @ApiResponse(responseCode = "200"))
     @DeleteMapping("/delete")
-    public ResponseEntity<CommonResponse<String>> deleteReceiveItem(@RequestParam @Parameter(description = "입고상품번호") Long receiveItemNo) {
+    public ResponseEntity<CommonResponse<String>> deleteReceiveItem(@RequestParam @Parameter(description = "입고물품번호") Long receiveItemNo) {
         receiveItemService.deleteReceiveItem(receiveItemNo);
         return ResponseEntity.status(HttpStatus.OK)
                 .contentType(MediaType.APPLICATION_JSON)
                 .body(CommonResponse.successWithDefaultMessage());
     }
 
-    @Operation(summary = "입고상품 수정",
-            description = "입고상품 수정에 알맞은 데이터를 받아 데이터베이스를 수정합니다.",
+    @Operation(summary = "입고물품 수정",
+            description = "입고물품 수정에 알맞은 데이터를 받아 데이터베이스를 수정합니다.",
             responses = @ApiResponse(responseCode = "200",
                     content = @Content(mediaType = "application/json",
                             schema = @Schema(implementation = CommonResponse.class))))

@@ -42,8 +42,8 @@ public class ReceiveController {
     public ResponseEntity<CommonResponse<List<ReceiveListDto>>> findReceive(
             @RequestParam(required = false, defaultValue = "") @Parameter(description = "입고코드") String receiveCode,
             @RequestParam(required = false, defaultValue = "") @Parameter(description = "담당자") String manager,
-            @RequestParam(required = false, defaultValue = "0") @Parameter(description = "상품코드") Integer itemCode,
-            @RequestParam(required = false, defaultValue = "") @Parameter(description = "상품명") String itemName,
+            @RequestParam(required = false, defaultValue = "0") @Parameter(description = "물품코드") Integer itemCode,
+            @RequestParam(required = false, defaultValue = "") @Parameter(description = "물품명") String itemName,
             @RequestParam(required = false, defaultValue = "0") @Parameter(description = "거래처번호") Integer accountNo,
             @RequestParam(required = false, defaultValue = "") @Parameter(description = "거래처명") String accountName,
             @RequestParam(required = false, defaultValue = "") @Parameter(description = "조회 시작날짜") String startDate,
@@ -65,8 +65,8 @@ public class ReceiveController {
     @GetMapping("/insert")
     public ResponseEntity<CommonResponse<List<CmpPOrderDto>>> waitingReceive(
             @RequestParam(required = false, defaultValue = "") @Parameter(description = "발주코드") String porderCode,
-            @RequestParam(required = false, defaultValue = "0")@Parameter(description = "상품코드")  Integer itemCode,
-            @RequestParam(required = false, defaultValue = "") @Parameter(description = "상품명") String itemName,
+            @RequestParam(required = false, defaultValue = "0")@Parameter(description = "물품코드")  Integer itemCode,
+            @RequestParam(required = false, defaultValue = "") @Parameter(description = "물품명") String itemName,
             @RequestParam(required = false, defaultValue = "") @Parameter(description = "담당자") String manager,
             @RequestParam(required = false, defaultValue = "0")@Parameter(description = "거래처번호")  Integer accountNo,
             @RequestParam(required = false, defaultValue = "") @Parameter(description = "거래처명") String accountName,

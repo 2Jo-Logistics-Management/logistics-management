@@ -9,7 +9,7 @@
     VALUES (#{itemName}, #{spec}, #{unit}, #{itemPrice}, #{createIp}, #{createId})
   </insert>
 
-  <!-- 상품 수정  -->
+  <!-- 물품 수정  -->
   <update id="modify" parameterType="com.douzon.smartlogistics.domain.item.dto.ItemModifyDto">
     UPDATE item
     <set>
@@ -23,7 +23,7 @@
     WHERE item_code = #{itemCode}
   </update>
 
-  <!-- 상품 삭제 -->
+  <!-- 물품 삭제 -->
   <delete id="delete">
     DELETE FROM item
     WHERE item_code = #{itemCode}

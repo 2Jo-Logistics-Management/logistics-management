@@ -26,7 +26,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-@Api(tags = "발주상품 관리 API 명세서")
+@Api(tags = "발주물품 관리 API 명세서")
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/api/porder-item")
@@ -34,8 +34,8 @@ public class POrderItemController {
 
     private final POrderItemService pOrderItemService;
 
-    @Operation(summary = "발주상품 등록",
-               description = "발주상품 등록에 알맞은 데이터를 받아 데이터베이스에 삽입합니다.",
+    @Operation(summary = "발주물품 등록",
+               description = "발주물품 등록에 알맞은 데이터를 받아 데이터베이스에 삽입합니다.",
                responses = @ApiResponse(responseCode = "201",
                                         content = @Content(mediaType = "application/json",
                                                            schema = @Schema(implementation = CommonResponse.class))))
@@ -50,8 +50,8 @@ public class POrderItemController {
                              .body(CommonResponse.successWithDefaultMessage());
     }
 
-    @Operation(summary = "발주상품 수정",
-               description = "발주상품 수정에 알맞은 데이터를 받아 데이터베이스를 수정합니다.",
+    @Operation(summary = "발주물품 수정",
+               description = "발주물품 수정에 알맞은 데이터를 받아 데이터베이스를 수정합니다.",
                responses = @ApiResponse(responseCode = "200",
                                         content = @Content(mediaType = "application/json",
                                                            schema = @Schema(implementation = CommonResponse.class))))
@@ -67,8 +67,8 @@ public class POrderItemController {
                              .body(CommonResponse.successWithDefaultMessage());
     }
 
-    @Operation(summary = "발주상품 리스트 조회",
-               description = "발주상품 리스트 조회 요청을 처리하고 데이터베이스를 조회해",
+    @Operation(summary = "발주물품 리스트 조회",
+               description = "발주물품 리스트 조회 요청을 처리하고 데이터베이스를 조회해",
                responses = {@ApiResponse(responseCode = "200",
                                          content = @Content(mediaType = "application/json", schema = @Schema(implementation = CommonResponse.class)
                                          ))})
@@ -82,11 +82,11 @@ public class POrderItemController {
                              .body(CommonResponse.successWith(pOrderItems));
     }
 
-    @Operation(summary = "발주상품 삭제",
-               description = "발주상품 삭제에 알맞은 데이터를 받아 데이터베이스의 데이터를 삭제합니다.",
+    @Operation(summary = "발주물품 삭제",
+               description = "발주물품 삭제에 알맞은 데이터를 받아 데이터베이스의 데이터를 삭제합니다.",
                responses = @ApiResponse(responseCode = "200"))
     @DeleteMapping("/delete")
-    public ResponseEntity<CommonResponse<String>> delete(@RequestParam @Parameter(description = "발주상품번호") Long pOrderItemNo) {
+    public ResponseEntity<CommonResponse<String>> delete(@RequestParam @Parameter(description = "발주물품번호") Long pOrderItemNo) {
         pOrderItemService.delete(pOrderItemNo);
 
         return ResponseEntity.status(HttpStatus.OK)
