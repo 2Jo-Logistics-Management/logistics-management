@@ -3,6 +3,7 @@ package com.douzon.smartlogistics.domain.porderitem.dao.mapper;
 import com.douzon.smartlogistics.domain.entity.POrderItem;
 import com.douzon.smartlogistics.domain.porderitem.dto.POrderItemInsertDto;
 import com.douzon.smartlogistics.domain.porderitem.dto.POrderItemModifyDto;
+import com.douzon.smartlogistics.domain.porderitem.dto.POrderItemStateModifyDto;
 import java.util.List;
 import java.util.Optional;
 import org.apache.ibatis.annotations.Mapper;
@@ -19,13 +20,19 @@ public interface POrderItemMapper {
     void delete(String retrievePOrderCode);
 
     @Transactional
-    void modify(@Param("pOrderCode") Long pOrderItemNo,
+    void modify(@Param("pOrderItemNo") Integer pOrderItemNo,
         @Param("pOrderItemModifyDto") POrderItemModifyDto pOrderItemModifyDto);
 
-    Optional<POrderItem> retrieve(@Param("pOrderItemNo") Long pOrderItemNo);
+    Optional<POrderItem> retrieve(@Param("pOrderItemNo") Integer pOrderItemNo,
+        @Param("pOrderCode") String pOrderCode);
 
     List<POrderItem> searchPOrderItemList(@Param("pOrderCode") String pOrderCode);
 
     @Transactional
-    void deletePOrderItem(@Param("pOrderItemNo") Long pOrderItemNo);
+    void deletePOrderItem(@Param("pOrderItemNo") Integer pOrderItemNo,
+        @Param("pOrderCode") String pOrderCode);
+
+    @Transactional
+    void modifyState(@Param("pOrderItemNo") Integer pOrderItemNo,
+        @Param("pOrderItemStateModifyDto") POrderItemStateModifyDto pOrderItemStateModifyDto);
 }

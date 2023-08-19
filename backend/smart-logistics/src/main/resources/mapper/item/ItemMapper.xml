@@ -81,4 +81,12 @@
     FROM ITEM
     WHERE ITEM_CODE = #{itemCode}
   </select>
+  <!-- 물품 단건 존재여부 -->
+  <select id="checkExistItem" resultType="boolean">
+    SELECT CASE WHEN EXISTS (
+      SELECT 1
+      FROM ITEM
+      WHERE ITEM_CODE = #{itemCode}
+      ) THEN true ELSE false END
+  </select>
 </mapper>
