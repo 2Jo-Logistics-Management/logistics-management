@@ -1,5 +1,6 @@
 package com.douzon.smartlogistics.domain.receive.application;
 
+import com.douzon.smartlogistics.domain.entity.Receive;
 import com.douzon.smartlogistics.domain.receive.dto.CmpPOrderDto;
 import com.douzon.smartlogistics.domain.receive.dto.ReceiveListDto;
 import com.douzon.smartlogistics.domain.entity.constant.SeqCode;
@@ -20,7 +21,7 @@ import java.util.List;
 public class ReceiveService {
     private final ReceiveDao receiveDao;
 
-    public List<ReceiveListDto> findReceive(String receiveCode, String manager, String createIp, String createId, String startDate, String endDate) {
+    public List<Receive> findReceive(String receiveCode, String manager, String createIp, String createId, String startDate, String endDate) {
         if (startDate != null && !startDate.isEmpty()) {
             startDate += " 00:00:00";
         }

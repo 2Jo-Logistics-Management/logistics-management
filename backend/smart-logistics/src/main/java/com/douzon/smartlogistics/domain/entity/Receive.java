@@ -8,6 +8,7 @@ import lombok.RequiredArgsConstructor;
 public class Receive {
     private final String receiveCode;
     private final String receiveDate;
+    private final String manager;
     private final String createDate;
     private final String createIp;
     private final String createId;

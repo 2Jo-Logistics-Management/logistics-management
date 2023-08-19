@@ -60,38 +60,37 @@
 <!--        </where>-->
 <!--        ORDER BY RECEIVE.CREATE_DATE DESC-->
 <!--    </select>-->
-    <select id="findReceive" resultType="com.douzon.smartlogistics.domain.receive.dto.ReceiveListDto">
+    <select id="findReceive" resultType="com.douzon.smartlogistics.domain.entity.Receive">
         SELECT
-            RECEIVE.RECEIVE_CODE, RECEIVE.RECEIVE_DATE , RECEIVE_ITEM.MANAGER,
-            RECEIVE.CREATE_DATE, RECEIVE.CREATE_IP, RECEIVE.CREATE_ID
+            RECEIVE_CODE, RECEIVE_DATE , MANAGER,
+            CREATE_DATE, CREATE_IP, CREATE_ID,
+            MODIFY_DATE, MODIFY_IP, MODIFY_ID
         FROM RECEIVE
-        LEFT JOIN RECEIVE_ITEM
-        ON RECEIVE.RECEIVE_CODE = RECEIVE_ITEM.RECEIVE_CODE
         <where>
             <if test="receiveCode != null and receiveCode != ''">
-                AND RECEIVE.RECEIVE_CODE LIKE CONCAT(CONCAT('%', #{receiveCode}), '%')
+                AND RECEIVE_CODE LIKE CONCAT(CONCAT('%', #{receiveCode}), '%')
             </if>
             <if test="manager != null and manager != ''">
-                AND RECEIVE_ITEM.MANAGER LIKE CONCAT(CONCAT('%', #{manager}), '%')
+                AND MANAGER LIKE CONCAT(CONCAT('%', #{manager}), '%')
             </if>
             <if test="createId != null and createId != ''">
-                AND RECEIVE.CREATE_ID LIKE CONCAT('%', #{createId}, '%')
+                AND CREATE_ID LIKE CONCAT('%', #{createId}, '%')
             </if>
             <if test="createIp != null and createIp != ''">
-                AND RECEIVE.CREATE_IP LIKE CONCAT('%', #{createIp}, '%')
+                AND CREATE_IP LIKE CONCAT('%', #{createIp}, '%')
             </if>
             <if test="startDate != null and startDate != ''">
                 <![CDATA[
-                    AND RECEIVE.CREATE_DATE >= #{startDate}
+                    AND CREATE_DATE >= #{startDate}
                 ]]>
             </if>
             <if test="endDate != null and endDate != ''">
                 <![CDATA[
-                    AND RECEIVE.CREATE_DATE <= #{endDate}
+                    AND CREATE_DATE <= #{endDate}
                 ]]>
             </if>
         </where>
-        ORDER BY RECEIVE.RECEIVE_DATE DESC
+        ORDER BY RECEIVE_DATE DESC
     </select>
     <select id="waitingReceive" resultType="com.douzon.smartlogistics.domain.receive.dto.CmpPOrderDto">
         SELECT PORDER_ITEM.PORDER_ITEM_NO, PORDER.PORDER_CODE, PORDER.STATE, PORDER_ITEM.MANAGER,

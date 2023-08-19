@@ -1,5 +1,6 @@
 package com.douzon.smartlogistics.domain.receive.api;
 
+import com.douzon.smartlogistics.domain.entity.Receive;
 import com.douzon.smartlogistics.domain.receive.dto.ReceiveListDto;
 import com.douzon.smartlogistics.domain.receive.dto.CmpPOrderDto;
 import com.douzon.smartlogistics.domain.receive.application.ReceiveService;
@@ -41,7 +42,7 @@ public class ReceiveController {
                     ))})
     @TimeOut
     @GetMapping("/list")
-    public ResponseEntity<CommonResponse<List<ReceiveListDto>>> findReceive(
+    public ResponseEntity<CommonResponse<List<Receive>>> findReceive(
             @RequestParam(required = false, defaultValue = "") @Parameter(description = "입고코드") String receiveCode,
             @RequestParam(required = false, defaultValue = "") @Parameter(description = "담당자") String manager,
             @RequestParam(required = false, defaultValue = "0") @Parameter(description = "상품코드") Integer itemCode,
@@ -58,14 +59,14 @@ public class ReceiveController {
         log.info("ReceiveControllerListIN");
         PageHelper.startPage(pageNum, pageSize);
 
-        List<ReceiveListDto> receiveListDto = receiveService.findReceive(
+        List<Receive> receiveList = receiveService.findReceive(
                 receiveCode, manager, createIp, createId, startDate, endDate);
-        PageInfo<ReceiveListDto> pageInfo = new PageInfo<>(receiveListDto);
+        PageInfo<Receive> pageInfo = new PageInfo<>(receiveList);
 
         log.info("ReceiveControllerListOUT");
         return ResponseEntity.status(HttpStatus.OK)
                 .contentType(MediaType.APPLICATION_JSON)
-                .body(CommonResponse.successWith(receiveListDto));
+                .body(CommonResponse.successWith(receiveList));
     }
     @Operation(summary = "입고 등록 전 발주 완료 리스트 조회",
             description = "입고 등록 전 발주 완료 리스트 조회 요청을 처리하고 데이터베이스를 조회해 리스트로 결과를 반환합니다.",
