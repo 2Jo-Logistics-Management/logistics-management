@@ -29,4 +29,6 @@ public interface ItemMapper {
 
     @Transactional
     void delete(@Param("itemCode") Integer itemCode);
+
+    boolean checkExistItem(Integer itemCode);
 }

@@ -4,7 +4,6 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import io.swagger.v3.oas.annotations.media.Schema;
 import javax.validation.constraints.Digits;
 import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.Size;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -14,10 +13,8 @@ import lombok.Setter;
 @Setter
 public class POrderItemModifyDto {
 
-    @Schema(title = "담당자", description = "수정할 발주물품의 담당자 입니다.", example = "수정된 테스트 담당자")
-    @NotBlank
-    @Size(max = 15)
-    private String manager;
+    @Schema(title = "발주코드", description = "수정할 발주물품의 발주코드입니다.", example = "")
+    private String pOrderCode;
 
     @Schema(title = "품목코드", description = "수정할 발주물품의 품목코드 입니다.", example = "1")
     @Digits(integer = 10, fraction = 0)
