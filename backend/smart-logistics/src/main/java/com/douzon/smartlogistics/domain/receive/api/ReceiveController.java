@@ -109,8 +109,11 @@ public class ReceiveController {
             description = "입고 삭제에 알맞은 데이터를 받아 데이터베이스의 데이터를 삭제합니다.",
             responses = @ApiResponse(responseCode = "200"))
     @DeleteMapping("/delete")
-    public ResponseEntity<CommonResponse<String>> deleteReceive(@RequestParam @Parameter(description = "삭제할 입고의 코드") String receiveCode) {
-        receiveService.deleteReceive(receiveCode);
+    public ResponseEntity<CommonResponse<String>> deleteReceive(
+//            @RequestParam @Parameter(description = "삭제할 입고의 코드") String receiveCode
+            @RequestBody @Parameter(description = "삭제할 입고의 코드") List<String> receiveCodes
+    ) {
+        receiveService.deleteReceive(receiveCodes);
         return ResponseEntity.status(HttpStatus.OK)
                 .contentType(MediaType.APPLICATION_JSON)
                 .body(CommonResponse.successWithDefaultMessage());

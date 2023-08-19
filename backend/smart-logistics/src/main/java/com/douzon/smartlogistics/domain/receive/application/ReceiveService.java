@@ -7,6 +7,7 @@ import com.douzon.smartlogistics.domain.entity.constant.SeqCode;
 import com.douzon.smartlogistics.domain.receive.dao.ReceiveDao;
 import com.douzon.smartlogistics.domain.receive.dto.ReceiveInsertDto;
 import com.douzon.smartlogistics.domain.receive.dto.ReceiveModifyDto;
+import com.douzon.smartlogistics.domain.warehouse.dao.WarehouseDao;
 import com.douzon.smartlogistics.global.common.util.AutoSeqGenerator;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -20,6 +21,7 @@ import java.util.List;
 @RequiredArgsConstructor
 public class ReceiveService {
     private final ReceiveDao receiveDao;
+    private final WarehouseDao warehouseDao;
 
     public List<Receive> findReceive(String receiveCode, String manager, String createIp, String createId, String startDate, String endDate) {
         if (startDate != null && !startDate.isEmpty()) {
@@ -52,8 +54,11 @@ public class ReceiveService {
     }
 
     @Transactional
-    public void deleteReceive(String receiveCode) {
-        receiveDao.deleteReceive(receiveCode);
+    public void deleteReceive(List<String> receiveCodes) {
+        for (String receiveCode: receiveCodes) {
+            receiveDao.deleteReceive(receiveCode);
+            warehouseDao.deleteReceiveWarehouse(receiveCode);
+        }
     }
 
     @Transactional

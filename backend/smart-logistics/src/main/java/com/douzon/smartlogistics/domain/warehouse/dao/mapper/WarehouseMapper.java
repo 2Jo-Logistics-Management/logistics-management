@@ -25,4 +25,11 @@ public interface WarehouseMapper {
             @Param("warehouseSectionNo")Integer warehouseSectionNo,
             @Param("receiveItemNo")Integer receiveItemNo,
             @Param("itemCode")Integer itemCode);
+
+    @Transactional
+    void deleteReceiveWarehouse(String receiveCode);
+
+    @Transactional
+    void deleteReceiveItemWarehouse(String receiveCode, Long receiveItemNo);
+
 }

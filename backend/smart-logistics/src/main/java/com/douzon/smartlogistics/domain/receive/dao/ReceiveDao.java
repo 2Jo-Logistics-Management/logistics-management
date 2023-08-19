@@ -3,7 +3,6 @@ package com.douzon.smartlogistics.domain.receive.dao;
 import com.douzon.smartlogistics.domain.entity.Receive;
 import com.douzon.smartlogistics.domain.receive.dto.CmpPOrderDto;
 import com.douzon.smartlogistics.domain.entity.ReceiveItem;
-import com.douzon.smartlogistics.domain.receive.dto.ReceiveListDto;
 import com.douzon.smartlogistics.domain.receive.dao.mapper.ReceiveMapper;
 import com.douzon.smartlogistics.domain.receive.dto.ReceiveInsertDto;
 import com.douzon.smartlogistics.domain.receive.dto.ReceiveModifyDto;
