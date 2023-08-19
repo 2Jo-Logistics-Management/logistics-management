@@ -5,7 +5,7 @@ import com.douzon.smartlogistics.domain.entity.constant.State;
 import com.douzon.smartlogistics.domain.porder.dao.mapper.POrderMapper;
 import com.douzon.smartlogistics.domain.porder.dto.POrderInsertDto;
 import com.douzon.smartlogistics.domain.porder.dto.POrderModifyDto;
-import com.douzon.smartlogistics.domain.porder.exception.NotWaitStateException;
+import com.douzon.smartlogistics.domain.porder.exception.UnModifiableStateException;
 import com.douzon.smartlogistics.domain.porderitem.dao.mapper.POrderItemMapper;
 import com.douzon.smartlogistics.domain.porderitem.dto.POrderItemInsertDto;
 import java.util.List;
@@ -55,6 +55,10 @@ public class POrderDao {
     public String modify(String pOrderCode, POrderModifyDto pOrderModifyDto) {
         POrder retrievePOrder = retrievePOrder(pOrderCode);
 
+        if (retrievePOrder.getState() != State.WAIT) {
+            throw new UnModifiableStateException();
+        }
+
         pOrderMapper.modify(retrievePOrder.getPOrderCode(), pOrderModifyDto);
 
         return pOrderCode;
@@ -70,7 +74,7 @@ public class POrderDao {
             return;
         }
 
-        throw new NotWaitStateException();
+        throw new UnModifiableStateException();
     }
 
     private POrder retrievePOrder(String pOrderCode) {
