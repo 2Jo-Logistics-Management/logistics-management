@@ -10,6 +10,7 @@ import com.douzon.smartlogistics.domain.porderitem.dao.mapper.POrderItemMapper;
 import com.douzon.smartlogistics.domain.porderitem.dto.POrderItemInsertDto;
 import java.util.List;
 import java.util.NoSuchElementException;
+import java.util.concurrent.atomic.AtomicInteger;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Repository;
@@ -23,10 +24,10 @@ public class POrderDao {
     private final POrderMapper pOrderMapper;
     private final POrderItemMapper pOrderItemMapper;
 
-    public List<POrder> searchPOrder(String pOrderCode, State state, String createId, String createIp,
-        Long accountNo, String startDate, String endDate, String pOrderDate) {
+    public List<POrder> searchPOrder(String pOrderCode, String manager, State state, String createId, String createIp,
+        Integer accountNo, String startDate, String endDate, String pOrderDate) {
 
-        List<POrder> pOrderList = pOrderMapper.searchPOrder(pOrderCode, createId, createIp, accountNo, state,
+        List<POrder> pOrderList = pOrderMapper.searchPOrder(pOrderCode, manager, createId, createIp, accountNo, state,
             startDate, endDate, pOrderDate);
 
         return pOrderList;
@@ -36,7 +37,14 @@ public class POrderDao {
     public void insert(POrderInsertDto pOrderInsertDto) {
         pOrderMapper.insert(pOrderInsertDto);
 
+        if (pOrderInsertDto.getPOrderItems().isEmpty()) {
+            return;
+        }
+
+        AtomicInteger pOrderItemNo = new AtomicInteger();
+
         for (POrderItemInsertDto pOrderItem : pOrderInsertDto.getPOrderItems()) {
+            pOrderItem.setPOrderItemNo(pOrderItemNo.incrementAndGet());
             pOrderItem.setPOrderCode(pOrderInsertDto.getPOrderCode());
 
             pOrderItemMapper.insert(pOrderItem);
@@ -44,10 +52,12 @@ public class POrderDao {
     }
 
     @Transactional
-    public void modify(String pOrderCode, POrderModifyDto pOrderModifyDto) {
+    public String modify(String pOrderCode, POrderModifyDto pOrderModifyDto) {
         POrder retrievePOrder = retrievePOrder(pOrderCode);
 
         pOrderMapper.modify(retrievePOrder.getPOrderCode(), pOrderModifyDto);
+
+        return pOrderCode;
     }
 
     @Transactional

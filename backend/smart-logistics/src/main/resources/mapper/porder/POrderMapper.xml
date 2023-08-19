@@ -5,14 +5,15 @@
 <mapper namespace="com.douzon.smartlogistics.domain.porder.dao.mapper.POrderMapper">
   <!-- 발주 등록  -->
   <insert id="insert">
-    INSERT INTO PORDER(porder_code, porder_date, create_ip, create_id, account_no)
-    VALUES (#{pOrderCode}, CURRENT_TIMESTAMP, #{createIp}, #{createId}, #{accountNo})
+    INSERT INTO PORDER(porder_code, manager, porder_date, create_ip, create_id, account_no)
+    VALUES (#{pOrderCode}, #{manager}, CURRENT_TIMESTAMP, #{createIp}, #{createId}, #{accountNo})
   </insert>
 
   <!-- 발주 수정 -->
   <update id="modify">
     UPDATE PORDER
     SET PORDER_DATE = CURRENT_TIMESTAMP,
+        MANAGER     = #{pOrderModifyDto.manager},
         MODIFY_IP   = #{pOrderModifyDto.modifyIp},
         MODIFY_ID   = #{pOrderModifyDto.modifyId},
         STATE       = #{pOrderModifyDto.state},
@@ -32,27 +33,31 @@
     SELECT
     porder_code,
     porder_date,
+    manager,
+    account_no,
+    state,
     create_date,
     create_ip,
     create_id,
     modify_date,
     modify_ip,
-    modify_id,
-    state,
-    account_no
+    modify_id
     FROM PORDER
     <where>
       <if test="pOrderCode != null and pOrderCode != ''">
-        AND PORDER_CODE LIKE CONCAT('%', #{pOrderCode}, '%')
+        AND PORDER_CODE LIKE CONCAT(CONCAT('%', #{pOrderCode}, '%'))
+      </if>
+      <if test="manager != null and manager != ''">
+        AND MANAGER LIKE CONCAT(CONCAT('%', #{manager}, '%'))
       </if>
       <if test="state != null">
         AND STATE = #{state}
       </if>
       <if test="createId != null and createId != ''">
-        AND CREATE_ID LIKE CONCAT('%', #{createId}, '%')
+        AND CREATE_ID LIKE CONCAT(CONCAT('%', #{createId}, '%'))
       </if>
       <if test="createIp != null and createIp != ''">
-        AND CREATE_IP LIKE CONCAT('%', #{createIp}, '%')
+        AND CREATE_IP LIKE CONCAT(CONCAT('%', #{createIp}, '%'))
       </if>
       <if test="accountNo != null">
         AND ACCOUNT_NO = #{accountNo}
