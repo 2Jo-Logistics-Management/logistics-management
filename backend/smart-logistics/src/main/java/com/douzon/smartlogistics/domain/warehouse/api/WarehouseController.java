@@ -4,6 +4,7 @@ package com.douzon.smartlogistics.domain.warehouse.api;
 import com.douzon.smartlogistics.domain.entity.Warehouse;
 import com.douzon.smartlogistics.domain.warehouse.application.WarehouseService;
 import com.douzon.smartlogistics.domain.warehouse.dto.WarehouseInsertDto;
+import com.douzon.smartlogistics.domain.warehouse.dto.WarehouseModifyDto;
 import com.douzon.smartlogistics.global.common.response.CommonResponse;
 import io.swagger.annotations.Api;
 import io.swagger.v3.oas.annotations.Operation;
@@ -20,6 +21,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -68,17 +70,17 @@ public class WarehouseController {
                              .body(CommonResponse.successWithDefaultMessage());
     }
 
-    @Operation(summary = "창고구역 수정",
-               description = "창고구역 수정에 알맞은 데이터를 받아 데이터베이스의 데이터를 수정합니다.",
+    @Operation(summary = "창고수정",
+               description = "창고수정에 알맞은 데이터를 받아 데이터베이스의 데이터를 수정합니다.",
                responses = @ApiResponse(responseCode = "200",
                                         content = @Content(mediaType = "application/json",
                                                            schema = @Schema(implementation = CommonResponse.class))))
-    @PatchMapping("/modify")
-    public ResponseEntity<CommonResponse<String>> modify(
-        @RequestParam(required = false, defaultValue = "") @Parameter(description = "창고구역 넘버") Integer sectionNo,
-        @RequestParam(required = false, defaultValue = "") @Parameter(description = "창고구역명") String sectionName
-    ) {
-        warehouseService.modify(sectionNo, sectionName);
+    @PatchMapping("/modify/{warehouseNo}")
+    public ResponseEntity<CommonResponse<String>> modify(@PathVariable Integer warehouseNo,
+        @RequestBody(required = false) @Parameter(description = "창고수정을 위한 데이터") WarehouseModifyDto warehouseModifyDto
+        ) {
+
+        warehouseService.modify(warehouseNo, warehouseModifyDto);
 
         return ResponseEntity.status(HttpStatus.CREATED)
                              .contentType(MediaType.APPLICATION_JSON)

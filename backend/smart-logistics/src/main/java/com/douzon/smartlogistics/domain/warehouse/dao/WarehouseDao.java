@@ -3,8 +3,11 @@ package com.douzon.smartlogistics.domain.warehouse.dao;
 import com.douzon.smartlogistics.domain.entity.Warehouse;
 import com.douzon.smartlogistics.domain.warehouse.dao.mapper.WarehouseMapper;
 import com.douzon.smartlogistics.domain.warehouse.dto.WarehouseInsertDto;
+import com.douzon.smartlogistics.domain.warehouse.dto.WarehouseModifyDto;
+import java.util.NoSuchElementException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.ibatis.javassist.NotFoundException;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
@@ -20,8 +23,13 @@ public class WarehouseDao {
            return warehouseMapper.warehouseList(warehouseNo, warehouseName);
     }
 
-    public void modify(Integer sectionNo, String sectionName) {
-        warehouseMapper.modify(sectionName,sectionNo);
+    @Transactional
+    public void modify(Integer warehouseNo, WarehouseModifyDto warehouseModifyDto) {
+        if (!checkExistWarehouse(warehouseNo)) {
+            throw new NoSuchElementException("해당 창고번호는 존재하지 않습니다.");
+        }
+
+        warehouseMapper.modify(warehouseNo, warehouseModifyDto);
     }
 
     public void delete(String sectionName) {
@@ -31,5 +39,9 @@ public class WarehouseDao {
     @Transactional
     public void insert(WarehouseInsertDto warehouseInsertDto) {
         warehouseMapper.insert(warehouseInsertDto);
+    }
+
+    private boolean checkExistWarehouse(Integer warehouseNo) {
+        return warehouseMapper.checkExistWarehouse(warehouseNo);
     }
 }
