@@ -13,6 +13,6 @@ public class ExceptionAdviceHandler {
     @ResponseStatus(HttpStatus.UNAUTHORIZED)
     @ExceptionHandler(AuthException.class)
     public ResponseEntity<String> authException(AuthException e) {
-        return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("인증오류: " + e.getLocalizedMessage());
+        return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Auth Error: " + e.getLocalizedMessage());
     }
 }
