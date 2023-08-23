@@ -1,9 +1,11 @@
 package com.douzon.smartlogistics.domain.porderitem.application;
 
 import com.douzon.smartlogistics.domain.entity.POrderItem;
+import com.douzon.smartlogistics.domain.entity.constant.State;
 import com.douzon.smartlogistics.domain.porderitem.dao.POrderItemDao;
 import com.douzon.smartlogistics.domain.porderitem.dto.POrderItemInsertDto;
 import com.douzon.smartlogistics.domain.porderitem.dto.POrderItemModifyDto;
+import com.douzon.smartlogistics.domain.porderitem.dto.POrderItemStateModifyDto;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -16,12 +18,13 @@ public class POrderItemService {
     private final POrderItemDao pOrderItemDao;
 
     @Transactional
-    public void insert(POrderItemInsertDto pOrderItemInsertDto) {
+    public Integer insert(POrderItemInsertDto pOrderItemInsertDto) {
         pOrderItemDao.insert(pOrderItemInsertDto);
+        return pOrderItemInsertDto.getPOrderItemNo();
     }
 
     @Transactional
-    public void modify(Long pOrderItemNo, POrderItemModifyDto pOrderItemModifyDto) {
+    public void modify(Integer pOrderItemNo, POrderItemModifyDto pOrderItemModifyDto) {
         pOrderItemDao.modify(pOrderItemNo, pOrderItemModifyDto);
     }
 
@@ -30,7 +33,16 @@ public class POrderItemService {
     }
 
     @Transactional
-    public void delete(Long pOrderItemNo) {
-        pOrderItemDao.delete(pOrderItemNo);
+    public void delete(Integer pOrderItemNo, String pOrderCode) {
+        pOrderItemDao.delete(pOrderItemNo, pOrderCode);
+    }
+
+    @Transactional
+    public Integer modifyState(Integer pOrderItemNo, POrderItemStateModifyDto pOrderItemStateModifyDto) {
+        if (pOrderItemStateModifyDto.getPOrderState() == State.ING) {
+            return pOrderItemDao.modifyStateToIng(pOrderItemNo, pOrderItemStateModifyDto);
+        }
+
+        return pOrderItemDao.modifyStateToCmp(pOrderItemNo, pOrderItemStateModifyDto);
     }
 }

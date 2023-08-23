@@ -1,18 +1,17 @@
 package com.douzon.smartlogistics.global.common.aop;
 
-import com.douzon.smartlogistics.domain.account.dto.AccountInsertDto;
 import com.douzon.smartlogistics.domain.account.dto.AccountModifyDto;
-import com.douzon.smartlogistics.domain.item.dto.ItemInsertDto;
 import com.douzon.smartlogistics.domain.item.dto.ItemModifyDto;
 import com.douzon.smartlogistics.domain.member.application.MemberService;
-import com.douzon.smartlogistics.domain.porder.dto.POrderInsertDto;
 import com.douzon.smartlogistics.domain.porder.dto.POrderModifyDto;
-import com.douzon.smartlogistics.domain.porderitem.dto.POrderItemInsertDto;
 import com.douzon.smartlogistics.domain.porderitem.dto.POrderItemModifyDto;
-import com.douzon.smartlogistics.domain.receive.dto.ReceiveInsertDto;
+import com.douzon.smartlogistics.domain.porderitem.dto.POrderItemStateModifyDto;
 import com.douzon.smartlogistics.domain.receive.dto.ReceiveModifyDto;
-import com.douzon.smartlogistics.domain.receiveitem.dto.ReceiveItemInsertDto;
 import com.douzon.smartlogistics.domain.receiveitem.dto.ReceiveItemModifyDto;
+import java.net.InetAddress;
+import java.net.UnknownHostException;
+import javax.servlet.http.HttpSession;
+import lombok.extern.slf4j.Slf4j;
 import org.aspectj.lang.JoinPoint;
 import org.aspectj.lang.annotation.Aspect;
 import org.aspectj.lang.annotation.Before;
@@ -22,10 +21,7 @@ import org.springframework.core.annotation.Order;
 import org.springframework.stereotype.Component;
 import org.springframework.web.bind.annotation.SessionAttributes;
 
-import javax.servlet.http.HttpSession;
-import java.net.InetAddress;
-import java.net.UnknownHostException;
-
+@Slf4j
 @Aspect
 @Component
 @Order(1)
@@ -34,8 +30,9 @@ public class IpModifyAspect {
 
     private final HttpSession httpSession;
     private final MemberService memberService;
+
     @Autowired
-    public IpModifyAspect(MemberService memberService, HttpSession httpSession ) {
+    public IpModifyAspect(MemberService memberService, HttpSession httpSession) {
         this.httpSession = httpSession;
         this.memberService = memberService;
     }
@@ -69,6 +66,10 @@ public class IpModifyAspect {
             POrderItemModifyDto pOrderItemModifyDto = (POrderItemModifyDto) arg;
             pOrderItemModifyDto.setModifyId(getId());
             pOrderItemModifyDto.setModifyIp(getIpAddress());
+        } else if (arg instanceof POrderItemStateModifyDto) {
+            POrderItemStateModifyDto pOrderItemStateModifyDto = (POrderItemStateModifyDto) arg;
+            pOrderItemStateModifyDto.setModifyId(getId());
+            pOrderItemStateModifyDto.setModifyIp(getIpAddress());
         } else if (arg instanceof ReceiveModifyDto) {
             ReceiveModifyDto receiveModifyDto = (ReceiveModifyDto) arg;
             receiveModifyDto.setModifyId(getId());
@@ -86,12 +87,13 @@ public class IpModifyAspect {
             InetAddress localhost = InetAddress.getLocalHost();
             return localhost.getHostAddress();
         } catch (UnknownHostException e) {
-            e.printStackTrace();
+            log.error("error message: {}", e.getMessage());
         }
         return "Failed to retrieve IP address";
     }
+
     private String getId() {
         return memberService.searchMember(
-                (Long)httpSession.getAttribute("session")).getMemberId();
+            (Long) httpSession.getAttribute("session")).getMemberId();
     }
 }

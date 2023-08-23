@@ -9,7 +9,7 @@
     VALUES (#{itemName}, #{spec}, #{unit}, #{itemPrice}, #{createIp}, #{createId})
   </insert>
 
-  <!-- 상품 수정  -->
+  <!-- 물품 수정  -->
   <update id="modify" parameterType="com.douzon.smartlogistics.domain.item.dto.ItemModifyDto">
     UPDATE item
     <set>
@@ -23,7 +23,7 @@
     WHERE item_code = #{itemCode}
   </update>
 
-  <!-- 상품 삭제 -->
+  <!-- 물품 삭제 -->
   <delete id="delete">
     DELETE FROM item
     WHERE item_code = #{itemCode}
@@ -80,5 +80,13 @@
       MODIFY_ID
     FROM ITEM
     WHERE ITEM_CODE = #{itemCode}
+  </select>
+  <!-- 물품 단건 존재여부 -->
+  <select id="checkExistItem" resultType="boolean">
+    SELECT CASE WHEN EXISTS (
+      SELECT 1
+      FROM ITEM
+      WHERE ITEM_CODE = #{itemCode}
+      ) THEN true ELSE false END
   </select>
 </mapper>

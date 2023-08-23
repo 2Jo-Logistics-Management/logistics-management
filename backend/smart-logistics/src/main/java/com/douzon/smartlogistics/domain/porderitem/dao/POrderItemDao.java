@@ -1,13 +1,16 @@
 package com.douzon.smartlogistics.domain.porderitem.dao;
 
-import com.douzon.smartlogistics.domain.entity.Item;
 import com.douzon.smartlogistics.domain.entity.POrder;
 import com.douzon.smartlogistics.domain.entity.POrderItem;
+import com.douzon.smartlogistics.domain.entity.constant.State;
 import com.douzon.smartlogistics.domain.item.dao.mapper.ItemMapper;
 import com.douzon.smartlogistics.domain.porder.dao.mapper.POrderMapper;
+import com.douzon.smartlogistics.domain.porder.exception.InvalidStateException;
+import com.douzon.smartlogistics.domain.porder.exception.UnModifiableStateException;
 import com.douzon.smartlogistics.domain.porderitem.dao.mapper.POrderItemMapper;
 import com.douzon.smartlogistics.domain.porderitem.dto.POrderItemInsertDto;
 import com.douzon.smartlogistics.domain.porderitem.dto.POrderItemModifyDto;
+import com.douzon.smartlogistics.domain.porderitem.dto.POrderItemStateModifyDto;
 import java.util.List;
 import java.util.NoSuchElementException;
 import lombok.RequiredArgsConstructor;
@@ -26,36 +29,81 @@ public class POrderItemDao {
 
     @Transactional
     public void insert(POrderItemInsertDto pOrderItemInsertDto) {
-        retrievePOrder(pOrderItemInsertDto.getPOrderCode());
-        retrieveItem(pOrderItemInsertDto.getItemCode());
+        if (!checkExistItem(pOrderItemInsertDto.getItemCode())) {
+            throw new NoSuchElementException("해당 물품 데이터는 존재하지 않습니다.");
+        }
+
+        if (checkExistPOrder(pOrderItemInsertDto.getPOrderCode())) {
+            throw new NoSuchElementException("해당 발주 데이터는 존재하지 않습니다.");
+        }
 
         pOrderItemMapper.insert(pOrderItemInsertDto);
     }
 
     @Transactional
-    public void modify(Long pOrderItemNo, POrderItemModifyDto pOrderItemModifyDto) {
-        retrievePOrderItem(pOrderItemNo);
+    public void modify(Integer pOrderItemNo, POrderItemModifyDto pOrderItemModifyDto) {
+        if (retrievePOrderItem(pOrderItemNo, pOrderItemModifyDto.getPOrderCode()).getPOrderState() != State.WAIT) {
+            throw new UnModifiableStateException();
+        }
 
         pOrderItemMapper.modify(pOrderItemNo, pOrderItemModifyDto);
     }
 
     public List<POrderItem> searchPOrderItemList(String pOrderCode) {
-        retrievePOrder(pOrderCode);
+        POrder retrievePOrder = retrievePOrder(pOrderCode);
 
-        List<POrderItem> pOrderItems = pOrderItemMapper.searchPOrderItemList(pOrderCode);
-
-        return pOrderItems;
+        return pOrderItemMapper.searchPOrderItemList(retrievePOrder.getPOrderCode());
     }
 
     @Transactional
-    public void delete(Long pOrderItemNo) {
-        retrievePOrderItem(pOrderItemNo);
+    public void delete(Integer pOrderItemNo, String pOrderCode) {
+        if (retrievePOrderItem(pOrderItemNo, pOrderCode).getPOrderState() != State.ING) {
+            pOrderItemMapper.deletePOrderItem(pOrderItemNo, pOrderCode);
+        }
 
-        pOrderItemMapper.deletePOrderItem(pOrderItemNo);
+        throw new InvalidStateException();
     }
 
-    private POrderItem retrievePOrderItem(Long pOrderItemNo) {
-        return pOrderItemMapper.retrieve(pOrderItemNo).orElseThrow(
+    @Transactional
+    public Integer modifyStateToIng(Integer pOrderItemNo, POrderItemStateModifyDto pOrderItemStateModifyDto) {
+        POrderItem modifiedPOrderItem = modifyStatePOrderItem(pOrderItemNo, pOrderItemStateModifyDto);
+
+        pOrderMapper.modifyStateToIng(modifiedPOrderItem.getPOrderCode(), pOrderItemStateModifyDto);
+
+        return modifiedPOrderItem.getPOrderItemNo();
+    }
+
+    @Transactional
+    public Integer modifyStateToCmp(Integer pOrderItemNo, POrderItemStateModifyDto pOrderItemStateModifyDto) {
+        // 2. 상태 업데이트 후 해당 발주의 모든 발주 물품의 상태를 확인 한 뒤 CMP 라면 발주 상태를 CMP로 업데이트 한다.
+        POrderItem modifiedPOrderItem = modifyStatePOrderItem(pOrderItemNo, pOrderItemStateModifyDto);
+
+        List<POrderItem> pOrderItems = searchPOrderItemList(pOrderItemStateModifyDto.getPOrderCode());
+
+        int totalPOrderItems = pOrderItems.size();
+
+        long countCmpNum = pOrderItems.stream()
+                                      .map(POrderItem::getPOrderState)
+                                      .takeWhile(state -> state == State.CMP)
+                                      .count();
+
+        if (totalPOrderItems == countCmpNum) {
+            pOrderMapper.modifyStateToCmp(modifiedPOrderItem.getPOrderCode(), pOrderItemStateModifyDto);
+        }
+
+        return modifiedPOrderItem.getPOrderItemNo();
+    }
+
+    @Transactional
+    public POrderItem modifyStatePOrderItem(Integer pOrderItemNo, POrderItemStateModifyDto pOrderItemStateModifyDto) {
+        POrderItem retrievePOrderItem = retrievePOrderItem(pOrderItemNo, pOrderItemStateModifyDto.getPOrderCode());
+        pOrderItemMapper.modifyState(retrievePOrderItem.getItemCode(), pOrderItemStateModifyDto);
+
+        return retrievePOrderItem;
+    }
+
+    private POrderItem retrievePOrderItem(Integer pOrderItemNo, String pOrderCode) {
+        return pOrderItemMapper.retrieve(pOrderItemNo, pOrderCode).orElseThrow(
             () -> {
                 throw new NoSuchElementException("해당 발주 물품 데이터는 존재하지 않습니다.");
             }
@@ -70,11 +118,11 @@ public class POrderItemDao {
         );
     }
 
-    private Item retrieveItem(Integer itemCode) {
-        return itemMapper.retrieve(itemCode).orElseThrow(
-            () -> {
-                throw new NoSuchElementException("해당 물품 데이터는 존재하지 않습니다.");
-            }
-        );
+    private boolean checkExistItem(Integer itemCode) {
+        return itemMapper.checkExistItem(itemCode);
+    }
+
+    private boolean checkExistPOrder(String pOrderCode) {
+        return pOrderMapper.checkExistPOrder(pOrderCode);
     }
 }

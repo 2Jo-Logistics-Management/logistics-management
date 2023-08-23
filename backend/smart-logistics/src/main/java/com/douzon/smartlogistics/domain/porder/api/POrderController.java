@@ -45,16 +45,17 @@ public class POrderController {
     @GetMapping("/list")
     public ResponseEntity<CommonResponse<List<POrder>>> searchPOrderList(
         @RequestParam(required = false, defaultValue = "") @Parameter(description = "발주코드") String pOrderCode,
-        @RequestParam(required = false) @Parameter(description = "상태") State state,
+        @RequestParam(required = false, defaultValue = "") @Parameter(description = "담당자") String manager,
+        @RequestParam(required = false, defaultValue = "") @Parameter(description = "상태") State state,
+        @RequestParam(required = false, defaultValue = "") @Parameter(description = "거래처번호") Integer accountNo,
         @RequestParam(required = false, defaultValue = "") @Parameter(description = "생성ID") String createId,
         @RequestParam(required = false, defaultValue = "") @Parameter(description = "생성IP") String createIp,
-        @RequestParam(required = false) @Parameter(description = "거래처번호") Long accountNo,
         @RequestParam(required = false, defaultValue = "") @Parameter(description = "조회 시작날짜") String startDate,
         @RequestParam(required = false, defaultValue = "") @Parameter(description = "조회 마감날짜") String endDate,
         @RequestParam(required = false, defaultValue = "") @Parameter(description = "발주 날짜") String pOrderDate
     ) {
 
-        List<POrder> pOrderList = pOrderService.searchPOrder(pOrderCode, state, createId, createIp, accountNo,
+        List<POrder> pOrderList = pOrderService.searchPOrder(pOrderCode, manager, state, createId, createIp, accountNo,
             startDate, endDate, pOrderDate);
 
         return ResponseEntity.status(HttpStatus.OK)
@@ -69,11 +70,11 @@ public class POrderController {
                                                            schema = @Schema(implementation = CommonResponse.class))))
     @PostMapping("/insert")
     public ResponseEntity<CommonResponse<String>> insert(@RequestBody @Valid @Parameter(description = "발주 등록을 위한 데이터") POrderInsertDto pOrderInsertDto) {
-        pOrderService.insert(pOrderInsertDto);
+        String generatedSeqCode = pOrderService.insert(pOrderInsertDto);
 
         return ResponseEntity.status(HttpStatus.CREATED)
                              .contentType(MediaType.APPLICATION_JSON)
-                             .body(CommonResponse.successWithDefaultMessage());
+                             .body(CommonResponse.successWith(generatedSeqCode));
     }
 
     @Operation(summary = "발주 수정",
@@ -85,11 +86,11 @@ public class POrderController {
     public ResponseEntity<CommonResponse<String>> modify(@RequestParam @Parameter(description = "수정할 발주의 코드") String pOrderCode,
         @RequestBody @Valid @Parameter(description = "발주 수정을 위한 데이터") POrderModifyDto pOrderModifyDto) {
 
-        pOrderService.modify(pOrderCode, pOrderModifyDto);
+        String modifiedPOrderCode = pOrderService.modify(pOrderCode, pOrderModifyDto);
 
         return ResponseEntity.status(HttpStatus.CREATED)
                              .contentType(MediaType.APPLICATION_JSON)
-                             .body(CommonResponse.successWithDefaultMessage());
+                             .body(CommonResponse.successWith(modifiedPOrderCode));
     }
 
     @Operation(summary = "발주 삭제",

@@ -41,7 +41,7 @@ public class SessionAuthInterceptor implements HandlerInterceptor {
             Object memberNo = session.getAttribute("session");
 
             if (memberNo == null) {
-                throw new AuthException("로그인 중이 아닙니다.");
+                throw new AuthException("not logged in");
             }
 
             Member member = memberService.searchMember((Long) memberNo);
@@ -50,7 +50,7 @@ public class SessionAuthInterceptor implements HandlerInterceptor {
                 return true;
             } else {
 
-                throw new AuthException("권한이 없습니다.");
+                throw new AuthException("do not have permission");
             }
         }
 
