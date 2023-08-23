@@ -5,6 +5,7 @@ import com.douzon.smartlogistics.domain.member.application.MemberService;
 import com.douzon.smartlogistics.domain.member.dto.LoginDto;
 import com.douzon.smartlogistics.global.common.exception.auth.Auth;
 import com.douzon.smartlogistics.global.common.response.CommonResponse;
+import com.douzon.smartlogistics.global.common.response.ErrorResponse;
 import io.swagger.annotations.Api;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
@@ -52,18 +53,21 @@ public class MemberController {
                 String ipAddress = localhost.getHostAddress();
                 paramsMap.put("ipAddress", ipAddress);
                 paramsMap.put("memberNo", member.getMemberNo());
-            } catch (UnknownHostException e)
 
-            {
+                memberService.saveIpAddress(paramsMap);
+                session.setAttribute("session",member.getMemberNo());
+
+                return ResponseEntity.ok()
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .body(CommonResponse.successWith(member));
+            } catch (UnknownHostException e) {
                 e.printStackTrace();
             }
 
-            memberService.saveIpAddress(paramsMap);
-            session.setAttribute("session",member.getMemberNo());
         }
         return ResponseEntity.ok()
                 .contentType(MediaType.APPLICATION_JSON)
-                .body(CommonResponse.successWith(member));
+                .body(CommonResponse.error(new ErrorResponse("로그인에 실패하였습니다.")));
     }
 
     @Operation(summary = "로그아웃",
@@ -73,13 +77,13 @@ public class MemberController {
                     @Schema(implementation = CommonResponse.class)))})
     @PostMapping("/logout")
     public ResponseEntity<CommonResponse<String>> logout(HttpSession session) {
-        session.removeAttribute("session");
+        session.invalidate();
         return ResponseEntity.ok()
                 .contentType(MediaType.APPLICATION_JSON)
                 .body(CommonResponse.successWith(" Logout successful!!."));
     }
 
-    @Auth
+
     @Operation(summary = "멤버 리스트 조회",
             description = "멤버 리스트 조회 요청을 처리하고 데이터 베이스를 조회해 리스트로 결과를 반환합니다.",
             responses = {@ApiResponse(responseCode = "200",
