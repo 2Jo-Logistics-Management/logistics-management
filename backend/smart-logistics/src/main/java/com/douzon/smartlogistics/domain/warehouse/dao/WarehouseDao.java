@@ -32,8 +32,13 @@ public class WarehouseDao {
         warehouseMapper.modify(warehouseNo, warehouseModifyDto);
     }
 
-    public void delete(String sectionName) {
-        warehouseMapper.delete(sectionName);
+    @Transactional
+    public void delete(Integer warehouseNo) {
+        if (!checkExistWarehouse(warehouseNo)) {
+            throw new NoSuchElementException("해당 창고번호는 존재하지 않습니다.");
+        }
+
+        warehouseMapper.delete(warehouseNo);
     }
 
     @Transactional

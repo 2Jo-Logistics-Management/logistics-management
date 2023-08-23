@@ -87,13 +87,11 @@ public class WarehouseController {
                              .body(CommonResponse.successWithDefaultMessage());
     }
 
-    @Operation(summary = "창고구역 삭제",
-               description = "창고구역 삭제에 알맞은 데이터를 받아 데이터베이스의 데이터를 삭제합니다.")
-    @DeleteMapping("/delete")
-    public ResponseEntity<CommonResponse<String>> delete(
-        @RequestParam(required = false, defaultValue = "") @Parameter(description = "창고구역명") String sectionName
-    ) {
-        warehouseService.delete(sectionName);
+    @Operation(summary = "창고삭제",
+               description = "창고삭제에 알맞은 데이터를 받아 데이터베이스의 데이터를 삭제합니다.")
+    @DeleteMapping("/delete/{warehouseNo}")
+    public ResponseEntity<CommonResponse<String>> delete(@PathVariable Integer warehouseNo) {
+        warehouseService.delete(warehouseNo);
         return ResponseEntity.status(HttpStatus.CREATED)
                              .contentType(MediaType.APPLICATION_JSON)
                              .body(CommonResponse.successWithDefaultMessage());

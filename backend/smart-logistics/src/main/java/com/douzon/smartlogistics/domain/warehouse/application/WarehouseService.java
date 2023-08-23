@@ -19,12 +19,14 @@ public class WarehouseService {
         return warehouseDao.warehouseSectionList(warehouseNo, warehouseName);
     }
 
+    @Transactional
     public void modify(Integer warehouseNo, WarehouseModifyDto warehouseModifyDto) {
         warehouseDao.modify(warehouseNo, warehouseModifyDto);
     }
 
-    public void delete(String sectionName) {
-        warehouseDao.delete(sectionName);
+    @Transactional
+    public void delete(Integer warehouseNo) {
+        warehouseDao.delete(warehouseNo);
     }
 
     @Transactional

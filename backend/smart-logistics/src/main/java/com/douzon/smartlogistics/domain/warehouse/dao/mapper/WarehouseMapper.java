@@ -15,10 +15,12 @@ public interface WarehouseMapper {
     List<Warehouse> warehouseList(@Param("warehouseNo") Integer warehouseNo,
         @Param("warehouseName") String warehouseName);
 
+    @Transactional
     void modify(@Param("warehouseNo") Integer sectionNo,
         @Param("warehouseModifyDto") WarehouseModifyDto warehouseModifyDto);
 
-    void delete(@Param("sectionName") String sectionName);
+    @Transactional
+    void delete(@Param("warehouseNo") Integer warehouseNo);
 
     @Transactional
     void insert(@Param("warehouseInsertDto") WarehouseInsertDto warehouseInsertDto);

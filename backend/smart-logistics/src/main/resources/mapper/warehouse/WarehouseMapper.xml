@@ -27,7 +27,7 @@
   <delete id="delete">
     DELETE
     FROM WAREHOUSE
-    WHERE SECTION_NAME = #{sectionName}
+    WHERE WAREHOUSE_NO = #{warehouseNo}
   </delete>
   <select id="warehouseList" resultType="com.douzon.smartlogistics.domain.entity.Warehouse">
     SELECT WAREHOUSE_NO,
