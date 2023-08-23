@@ -15,11 +15,11 @@ public class Warehouse {
     public final String receiveItemCode;
     public final String itemCode;
     public final double count;
-    public final Date registDate;
-    public final Date createDate;
+    public final String registDate;
+    public final String createDate;
     public final String createId;
     public final String createIp;
-    public final Date modifyDate;
+    public final String modifyDate;
     public final String modifyIp;
     public final String modifyId;
 
