@@ -1,49 +1,52 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
-        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
 <mapper namespace="com.douzon.smartlogistics.domain.warehouse.dao.mapper.WarehouseMapper">
-    <insert id="insertWarehouse">
-        INSERT INTO WAREHOUSE(SECTION_NO, RECEIVE_CODE, RECEIVE_ITEM_NO, ITEM_CODE, COUNT, REGIST_DATE, CREATE_IP, CREATE_ID)
-        VALUES
-            (#{warehouseSectionNo},#{receiveCode},#{receiveItemNo},#{itemCode},#{receiveCount},CURRENT_TIMESTAMP,#{createIp},#{createId});
-    </insert>
-    <update id="modifyWarehouse">
-        UPDATE WAREHOUSE
-        SET SECTION_NO = #{ReceiveItem.warehouseSectionNo},
-            COUNT = #{ReceiveItem.receiveCount},
-            REGIST_DATE = CURRENT_TIMESTAMP,
-            MODIFY_DATE = CURRENT_TIMESTAMP,
-            MODIFY_IP = #{ReceiveItem.modifyIp},
-            MODIFY_ID = #{ReceiveItem.modifyId}
-        WHERE RECEIVE_ITEM_NO = #{receiveItemNo}
-    </update>
-    <select id="searchInventoryList" resultType="com.douzon.smartlogistics.domain.entity.Warehouse">
-        select WAREHOUSE_NO,
-        SECTION_NO,
-        RECEIVE_CODE,
-        RECEIVE_ITEM_NO,
-        ITEM_CODE,
-        COUNT,
-        REGIST_DATE,
-        CREATE_DATE,
-        CREATE_ID,
-        CREATE_IP,
-        MODIFY_DATE,
-        MODIFY_IP,
-        MODIFY_ID
-        from WAREHOUSE
-        <where>
-            <if test = "warehouseSectionNo != null and warehouseSectionNo != ''">
-                AND SECTION_NO Like CONCAT('%',#{warehouseSectionNo},'%')
-            </if>
-            <if test = "receiveItemNo != null  and receiveItemNo != ''">
-                AND RECEIVE_ITEM_NO Like CONCAT('%',#{receiveItemNo},'%')
-            </if>
-            <if test = "itemCode != null and itemCode != ''">
-                AND ITEM_CODE Like CONCAT('%',#{itemCode},'%')
-            </if>
-        </where>
-    </select>
+  <insert id="insert">
+    INSERT INTO WAREHOUSE(WAREHOUSE_NAME, CREATE_IP, CREATE_ID)
+    VALUES (#{warehouseInsertDto.warehouseName}, #{warehouseInsertDto.createIp}, #{warehouseInsertDto.createId})
+  </insert>
+  <select id="checkExistWarehouse" resultType="boolean">
+    SELECT CASE
+             WHEN EXISTS(
+               SELECT 1
+               FROM WAREHOUSE
+               WHERE WAREHOUSE_NO = #{warehouseNo}
+               ) THEN true
+             ELSE false END
+  </select>
+  <update id="modify">
+    UPDATE WAREHOUSE
+    SET WAREHOUSE_NAME = #{warehouseModifyDto.warehouseName},
+        MODIFY_DATE    = CURRENT_TIMESTAMP,
+        MODIFY_IP      = #{warehouseModifyDto.modifyIp},
+        MODIFY_ID      = #{warehouseModifyDto.modifyId}
+    WHERE WAREHOUSE_NO = #{warehouseNo}
+  </update>
+  <delete id="delete">
+    DELETE
+    FROM WAREHOUSE
+    WHERE SECTION_NAME = #{sectionName}
+  </delete>
+  <select id="warehouseList" resultType="com.douzon.smartlogistics.domain.entity.Warehouse">
+    SELECT WAREHOUSE_NO,
+    WAREHOUSE_NAME,
+    CREATE_DATE,
+    CREATE_IP,
+    CREATE_ID,
+    MODIFY_DATE,
+    MODIFY_IP,
+    MODIFY_ID
+    FROM WAREHOUSE
+    <where>
+      <if test="warehouseNo != null">
+        AND WAREHOUSE_NO = #{warehouseNo}
+      </if>
+      <if test="warehouseName != null and warehouseName != ''">
+        AND WAREHOUSE_NAME LIKE CONCAT(CONCAT('%', #{warehouseName}, '%'))
+      </if>
+    </where>
+  </select>
 
 </mapper>
