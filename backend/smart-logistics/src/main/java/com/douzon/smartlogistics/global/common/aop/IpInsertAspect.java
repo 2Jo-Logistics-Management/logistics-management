@@ -19,17 +19,18 @@ import org.springframework.web.bind.annotation.SessionAttributes;
 import javax.servlet.http.HttpSession;
 import java.net.InetAddress;
 import java.net.UnknownHostException;
+import java.util.List;
 
 @Aspect
 @Component
 @Order(1)
 @SessionAttributes("session")
-public class IpInseartAspect {
+public class IpInsertAspect {
 
     private final HttpSession httpSession;
     private final MemberService memberService;
     @Autowired
-    public IpInseartAspect(MemberService memberService, HttpSession httpSession) {
+    public IpInsertAspect(MemberService memberService, HttpSession httpSession) {
         this.memberService = memberService;
         this.httpSession = httpSession;
     }
@@ -56,6 +57,16 @@ public class IpInseartAspect {
             itemInsertDto.setCreateIp(getIpAddress());
         } else if (arg instanceof POrderInsertDto) {
             POrderInsertDto pOrderInsertDto = (POrderInsertDto) arg;
+
+            if (pOrderInsertDto.getPOrderItems() != null) {
+                List<POrderItemInsertDto> pOrderItemInsertDto = pOrderInsertDto.getPOrderItems();
+
+                for (POrderItemInsertDto pOrderItem : pOrderItemInsertDto) {
+                    pOrderItem.setCreateId(getId());
+                    pOrderItem.setCreateIp(getIpAddress());
+                }
+            }
+
             pOrderInsertDto.setCreateId(getId());
             pOrderInsertDto.setCreateIp(getIpAddress());
         } else if (arg instanceof POrderItemInsertDto) {

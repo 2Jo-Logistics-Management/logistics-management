@@ -8,11 +8,13 @@ import javax.validation.constraints.Size;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import lombok.ToString;
 import org.springframework.lang.Nullable;
 
 @NoArgsConstructor
 @Getter
 @Setter
+@ToString
 public class POrderItemInsertDto {
 
     @Schema(title = "발주 물품 순서", description = "등록할 발주 물품 순서입니다.", example = "1")

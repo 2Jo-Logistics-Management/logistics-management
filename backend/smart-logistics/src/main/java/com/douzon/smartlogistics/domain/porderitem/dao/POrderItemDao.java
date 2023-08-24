@@ -33,9 +33,19 @@ public class POrderItemDao {
             throw new NoSuchElementException("해당 물품 데이터는 존재하지 않습니다.");
         }
 
-        if (checkExistPOrder(pOrderItemInsertDto.getPOrderCode())) {
+        if (!checkExistPOrder(pOrderItemInsertDto.getPOrderCode())) {
             throw new NoSuchElementException("해당 발주 데이터는 존재하지 않습니다.");
         }
+
+        if (checkPOrderCode(pOrderItemInsertDto.getPOrderCode())) {
+           String maxPkNum =  pOrderItemMapper.selectPkNumber(pOrderItemInsertDto.getPOrderCode());
+           pOrderItemInsertDto.setPOrderItemNo(Integer.valueOf(maxPkNum+1));
+        }
+
+        /*TODO
+           1. 발주 코드(pOrderCode)를 기반으로 발주품목이 있는지 조회
+        *  2. 발주품목이 있다면 해당 발주품목의 가장 마지막 PK를 조회해서 해당 PK 보다 +1 의 값을 더해 줌
+        */
 
         pOrderItemMapper.insert(pOrderItemInsertDto);
     }
@@ -124,5 +134,8 @@ public class POrderItemDao {
 
     private boolean checkExistPOrder(String pOrderCode) {
         return pOrderMapper.checkExistPOrder(pOrderCode);
+    }
+    private boolean checkPOrderCode(String pOrderCode){
+        return pOrderItemMapper.checkPOrderCode(pOrderCode);
     }
 }

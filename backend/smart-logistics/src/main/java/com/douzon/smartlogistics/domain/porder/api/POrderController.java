@@ -70,6 +70,7 @@ public class POrderController {
                                                            schema = @Schema(implementation = CommonResponse.class))))
     @PostMapping("/insert")
     public ResponseEntity<CommonResponse<String>> insert(@RequestBody @Valid @Parameter(description = "발주 등록을 위한 데이터") POrderInsertDto pOrderInsertDto) {
+        log.error((pOrderInsertDto.toString()));
         String generatedSeqCode = pOrderService.insert(pOrderInsertDto);
 
         return ResponseEntity.status(HttpStatus.CREATED)

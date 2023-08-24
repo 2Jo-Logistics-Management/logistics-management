@@ -6,7 +6,7 @@
   <!-- 발주 등록  -->
   <insert id="insert">
     INSERT INTO PORDER(porder_code, manager, porder_date, create_ip, create_id, account_no)
-    VALUES (#{pOrderCode}, #{manager}, CURRENT_TIMESTAMP, #{createIp}, #{createId}, #{accountNo})
+    VALUES (#{pOrderCode}, #{manager}, #{pOrderDate}, #{createIp}, #{createId}, #{accountNo})
   </insert>
 
   <!-- 발주 수정 -->
@@ -79,10 +79,10 @@
         AND ACCOUNT_NO = #{accountNo}
       </if>
       <if test="startDate != null and startDate != ''">
-        <![CDATA[ AND DATE(CREATE_DATE) >= #{startDate} ]]>
+        <![CDATA[ AND DATE(porder_date) >= #{startDate} ]]>
       </if>
       <if test="endDate != null and endDate != ''">
-        <![CDATA[ AND DATE(CREATE_DATE) <= #{endDate} ]]>
+        <![CDATA[ AND DATE(porder_date) <= #{endDate} ]]>
       </if>
       <if test="pOrderDate != null and pOrderDate != ''">
         <![CDATA[ AND DATE(porder_date) >= #{pOrderDate} ]]>
