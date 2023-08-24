@@ -7,9 +7,9 @@ import lombok.Setter;
 @NoArgsConstructor
 @Getter
 @Setter
-public class WarehouseModifyDto {
+public class WarehouseInsertDto {
 
     private String warehouseName;
-    private String modifyIp;
-    private String modifyId;
+    private String createIp;
+    private String createId;
 }
