@@ -40,7 +40,9 @@ public class MemberService {
         memberDao.modify(memberNo, member);
     }
 
-    public void delete(Integer memberNo) {
-        memberDao.delete(memberNo);
+    public void delete(List<Integer> memberNos) {
+        for (Integer memberNo : memberNos) {
+            memberDao.delete(memberNo);
+        }
     }
 }

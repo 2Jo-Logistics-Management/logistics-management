@@ -6,8 +6,10 @@ import com.douzon.smartlogistics.domain.member.dto.LoginDto;
 import com.douzon.smartlogistics.global.common.exception.auth.Auth;
 import com.douzon.smartlogistics.global.common.response.CommonResponse;
 import com.douzon.smartlogistics.global.common.response.ErrorResponse;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import io.swagger.annotations.Api;
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
@@ -130,10 +132,13 @@ public class MemberController {
     }
     @Auth
     @Operation(summary = "멤버 삭제",
-            description = "멤버 삭제에 알맞은 데이터를 받아 데이터베이스의 데이터를 삭제합니다.")
+            description = "멤버 삭제에 알맞은 데이터를 받아 데이터베이스의 데이터를 삭제합니다.",
+            responses = {@ApiResponse(responseCode = "200",
+                    content = @Content(mediaType = "application/json", schema =
+                    @Schema(implementation = CommonResponse.class)))})
     @DeleteMapping("/delete")
-    public ResponseEntity<CommonResponse<String>> delete(@RequestParam Integer memberNo) {
-        memberService.delete(memberNo);
+    public ResponseEntity<CommonResponse<String>> delete(@RequestBody List<Integer> memberNos) {
+        memberService.delete(memberNos);
 
         return ResponseEntity.status(HttpStatus.OK)
                 .contentType(MediaType.APPLICATION_JSON)
