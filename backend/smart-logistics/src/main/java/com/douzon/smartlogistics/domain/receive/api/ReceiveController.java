@@ -77,7 +77,6 @@ public class ReceiveController {
                             schema = @Schema(implementation = CommonResponse.class))))
     @PostMapping("/insert")
     public ResponseEntity<CommonResponse<String>> insertReceive(@RequestBody @Valid @Parameter(description = "입고 등록을 위한 데이터") ReceiveInsertDto receiveInsertDto) {
-        System.out.println("receiveInsertDto = " + receiveInsertDto);
         receiveService.insertReceive(receiveInsertDto);
 
         return ResponseEntity.status(HttpStatus.CREATED)
