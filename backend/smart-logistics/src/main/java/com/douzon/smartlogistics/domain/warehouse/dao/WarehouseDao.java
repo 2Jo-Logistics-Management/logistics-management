@@ -9,6 +9,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.ibatis.javassist.NotFoundException;
 import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import org.springframework.transaction.annotation.Transactional;
@@ -48,5 +49,15 @@ public class WarehouseDao {
 
     private boolean checkExistWarehouse(Integer warehouseNo) {
         return warehouseMapper.checkExistWarehouse(warehouseNo);
+    }
+
+    @Transactional
+    public void deleteReceiveWarehouse(String receiveCode){
+        warehouseMapper.deleteReceiveWarehouse(receiveCode);
+    }
+
+    @Transactional
+    public void deleteReceiveItemWarehouse(String receiveCode, Long receiveItemNo){
+        warehouseMapper.deleteReceiveItemWarehouse(receiveCode,receiveItemNo);
     }
 }

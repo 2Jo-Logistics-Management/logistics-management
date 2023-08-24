@@ -1,8 +1,7 @@
 package com.douzon.smartlogistics.domain.receive.dao;
 
-import com.douzon.smartlogistics.domain.receive.dto.CmpPOrderDto;
+import com.douzon.smartlogistics.domain.entity.Receive;
 import com.douzon.smartlogistics.domain.entity.ReceiveItem;
-import com.douzon.smartlogistics.domain.receive.dto.ReceiveListDto;
 import com.douzon.smartlogistics.domain.receive.dao.mapper.ReceiveMapper;
 import com.douzon.smartlogistics.domain.receive.dto.ReceiveInsertDto;
 import com.douzon.smartlogistics.domain.receive.dto.ReceiveModifyDto;
@@ -25,12 +24,8 @@ public class ReceiveDao {
     private final ReceiveItemMapper receiveItemMapper;
     private final WarehouseStockMapper warehouseStockMapper;
 
-    public List<ReceiveListDto> findReceive(String receiveCode, String manager, Integer itemCode, String itemName, Integer accountNo, String accountName, String startDate, String endDate) {
-        return receiveMapper.findReceive(receiveCode, manager, itemCode, itemName, accountNo, accountName, startDate, endDate);
-    }
-
-    public List<CmpPOrderDto> waitingReceive(String porderCode, Integer itemCode, String itemName, String manager, Integer accountNo, String accountName, String startDate, String endDate) {
-        return receiveMapper.waitingReceive(porderCode, itemCode, itemName, manager, accountNo, accountName, startDate, endDate);
+    public List<Receive> findReceive(String receiveCode, String manager, String createIp, String createId, String startDate, String endDate) {
+        return receiveMapper.findReceive(receiveCode, manager, createIp, createId, startDate, endDate);
     }
 
     @Transactional
@@ -72,4 +67,7 @@ public class ReceiveDao {
         receiveMapper.modifyReceive(retrieveReceiveCode, receiveModifyDto);
     }
 
+    public int findAvailableCount(String porderCode, Integer porderItemNo) {
+        return receiveMapper.findAvailableCount(porderCode,porderItemNo);
+    }
 }

@@ -25,12 +25,14 @@ public class POrderDao {
     private final POrderItemMapper pOrderItemMapper;
 
     public List<POrder> searchPOrder(String pOrderCode, String manager, State state, String createId, String createIp,
-        Integer accountNo, String startDate, String endDate, String pOrderDate) {
+        Integer accountNo, String startDate, String endDate, String pOrderDate, String type) {
 
-        List<POrder> pOrderList = pOrderMapper.searchPOrder(pOrderCode, manager, createId, createIp, accountNo, state,
+        if("receive".equals(type)) {
+            return pOrderMapper.exeptSearchCmpPOrder(pOrderCode, manager, accountNo, startDate, endDate);
+        }
+
+        return pOrderMapper.searchPOrder(pOrderCode, manager, createId, createIp, accountNo, state,
             startDate, endDate, pOrderDate);
-
-        return pOrderList;
     }
 
     @Transactional

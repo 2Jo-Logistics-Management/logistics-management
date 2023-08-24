@@ -20,10 +20,20 @@ public interface WarehouseMapper {
         @Param("warehouseModifyDto") WarehouseModifyDto warehouseModifyDto);
 
     @Transactional
-    void delete(@Param("warehouseNo") Integer warehouseNo);
-
-    @Transactional
     void insert(@Param("warehouseInsertDto") WarehouseInsertDto warehouseInsertDto);
 
     boolean checkExistWarehouse(Integer warehouseNo);
+    List<Warehouse> searchInventoryList(
+            @Param("warehouseSectionNo")Integer warehouseSectionNo,
+            @Param("receiveItemNo")Integer receiveItemNo,
+            @Param("itemCode")Integer itemCode);
+
+    @Transactional
+    void deleteReceiveWarehouse(String receiveCode);
+
+    @Transactional
+    void deleteReceiveItemWarehouse(String receiveCode, Long receiveItemNo);
+
+    @Transactional
+    void delete(Integer warehouseNo);
 }

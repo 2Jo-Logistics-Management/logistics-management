@@ -48,5 +48,30 @@
       </if>
     </where>
   </select>
-
+    <select id="searchInventoryList" resultType="com.douzon.smartlogistics.domain.entity.Warehouse">
+        select WAREHOUSE_STOCK_NO, WAREHOUSE_NO, RECEIVE_CODE, RECEIVE_ITEM_NO, ITEM_CODE, COUNT, REGIST_DATE, CREATE_DATE, CREATE_IP, CREATE_ID, MODIFY_DATE, MODIFY_IP, MODIFY_ID
+        from WAREHOUSE_STOCK
+        <where>
+            <if test = "warehouseSectionNo != null and warehouseSectionNo != ''">
+                AND SECTION_NO Like CONCAT('%',#{warehouseSectionNo},'%')
+            </if>
+            <if test = "receiveItemNo != null  and receiveItemNo != ''">
+                AND RECEIVE_ITEM_NO Like CONCAT('%',#{receiveItemNo},'%')
+            </if>
+            <if test = "itemCode != null and itemCode != ''">
+                AND ITEM_CODE Like CONCAT('%',#{itemCode},'%')
+            </if>
+        </where>
+    </select>
+    <delete id="deleteReceiveWarehouse">
+        DELETE
+        FROM WAREHOUSE_STOCK
+        WHERE RECEIVE_CODE = #{receiveCode};
+    </delete>
+    <delete id="deleteReceiveItemWarehouse">
+        DELETE
+        FROM WAREHOUSE_STOCK
+        WHERE RECEIVE_ITEM_NO=#{receiveItemNo}
+        AND RECEIVE_CODE=#{receiveCode}
+    </delete>
 </mapper>

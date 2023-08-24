@@ -104,6 +104,12 @@
 			<artifactId>micrometer-registry-prometheus</artifactId>
 		</dependency>
 		<!--	프로메테우스	-->
+		<!-- Paging -->
+		<dependency>
+			<groupId>com.github.pagehelper</groupId>
+			<artifactId>pagehelper-spring-boot-starter</artifactId>
+			<version>1.4.7</version>
+		</dependency>
 	</dependencies>
 
 	<build>

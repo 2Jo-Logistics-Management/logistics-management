@@ -2,7 +2,6 @@ package com.douzon.smartlogistics.domain.receive.dto;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
-import lombok.Setter;
 import lombok.ToString;
 import reactor.util.annotation.Nullable;
 
@@ -57,4 +56,7 @@ public class ReceiveListDto {
     @Size(max = 90)
     private String accountName;
     private String createDate;
+    private String createIp;
+    private String createId;
+
 }

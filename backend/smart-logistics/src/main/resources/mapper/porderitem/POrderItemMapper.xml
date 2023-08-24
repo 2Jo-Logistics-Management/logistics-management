@@ -88,6 +88,7 @@
            PORDER_COUNT,
            PORDER_PRICE,
            PORDER_ITEM_PRICE,
+           PORDER_STATE,
            RECEIVE_DEADLINE,
            CREATE_DATE,
            CREATE_IP,

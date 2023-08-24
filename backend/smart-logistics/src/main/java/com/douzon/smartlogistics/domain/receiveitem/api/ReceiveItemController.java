@@ -1,6 +1,8 @@
 package com.douzon.smartlogistics.domain.receiveitem.api;
 
+import com.douzon.smartlogistics.domain.entity.ReceiveItem;
 import com.douzon.smartlogistics.domain.receiveitem.application.ReceiveItemService;
+import com.douzon.smartlogistics.domain.receiveitem.dto.ReceiveItemDeleteDto;
 import com.douzon.smartlogistics.domain.receiveitem.dto.ReceiveItemInsertDto;
 import com.douzon.smartlogistics.domain.receiveitem.dto.ReceiveItemModifyDto;
 import com.douzon.smartlogistics.global.common.response.CommonResponse;
@@ -18,6 +20,9 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
 
 @Api(tags = "입고물품 관리 API 명세서")
 @Slf4j
@@ -27,6 +32,22 @@ import javax.validation.Valid;
 public class ReceiveItemController {
 
     private final ReceiveItemService receiveItemService;
+
+    @Operation(summary = "입고상품 조회",
+            description = "입고상품 등록에 알맞은 데이터를 받아 데이터베이스에 삽입합니다.",
+            responses = @ApiResponse(responseCode = "200",
+                    content = @Content(mediaType = "application/json",
+                            schema = @Schema(implementation = CommonResponse.class))))
+    @GetMapping("/list")
+    public ResponseEntity<CommonResponse<List<ReceiveItem>>> searchReceiveItem(
+            @RequestParam @Valid @Parameter(description = "입고코드") String receiveCode
+    ){
+        System.out.println("receiveCode = " + receiveCode);
+        List<ReceiveItem> receiveItemList = receiveItemService.searchReceiveItem(receiveCode);
+        return ResponseEntity.status(HttpStatus.OK)
+                .contentType(MediaType.APPLICATION_JSON)
+                .body(CommonResponse.successWith(receiveItemList));
+    }
 
     @Operation(summary = "입고물품 등록",
             description = "입고물품 등록에 알맞은 데이터를 받아 데이터베이스에 삽입합니다.",
@@ -46,8 +67,10 @@ public class ReceiveItemController {
             description = "입고물품 삭제에 알맞은 데이터를 받아 데이터베이스의 데이터를 삭제합니다.",
             responses = @ApiResponse(responseCode = "200"))
     @DeleteMapping("/delete")
-    public ResponseEntity<CommonResponse<String>> deleteReceiveItem(@RequestParam @Parameter(description = "입고물품번호") Long receiveItemNo) {
-        receiveItemService.deleteReceiveItem(receiveItemNo);
+    public ResponseEntity<CommonResponse<String>> deleteReceiveItem(
+            @RequestBody @Valid @Parameter(description = "  입고코드 및 순번") List<ReceiveItemDeleteDto> receiveDeleteItems
+    ) {
+        receiveItemService.deleteReceiveItem(receiveDeleteItems);
         return ResponseEntity.status(HttpStatus.OK)
                 .contentType(MediaType.APPLICATION_JSON)
                 .body(CommonResponse.successWithDefaultMessage());
@@ -60,10 +83,11 @@ public class ReceiveItemController {
                             schema = @Schema(implementation = CommonResponse.class))))
     @PatchMapping("/modify")
     public ResponseEntity<CommonResponse<String>> modifyReceiveItem(
+            @RequestParam @Parameter(description = "입고코드") String receiveCode,
             @RequestParam @Parameter(description = "입고물품번호") Long receiveItemNo,
             @RequestBody @Valid @Parameter(description = "입고물품 수정을 위한 데이터") ReceiveItemModifyDto receiveItemModifyDto
     ){
-        receiveItemService.modifyReceiveItem(receiveItemNo, receiveItemModifyDto);
+        receiveItemService.modifyReceiveItem(receiveCode,receiveItemNo, receiveItemModifyDto);
         return ResponseEntity.status(HttpStatus.OK)
                 .contentType(MediaType.APPLICATION_JSON)
                 .body(CommonResponse.successWithDefaultMessage());
