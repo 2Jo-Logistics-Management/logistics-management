@@ -39,7 +39,7 @@ public class POrderItemDao {
 
         if (checkPOrderCode(pOrderItemInsertDto.getPOrderCode())) {
            String maxPkNum =  pOrderItemMapper.selectPkNumber(pOrderItemInsertDto.getPOrderCode());
-           pOrderItemInsertDto.setPOrderItemNo(Integer.valueOf(maxPkNum+1));
+           pOrderItemInsertDto.setPOrderItemNo(Integer.valueOf(maxPkNum)+1);
         }
 
         /*TODO
