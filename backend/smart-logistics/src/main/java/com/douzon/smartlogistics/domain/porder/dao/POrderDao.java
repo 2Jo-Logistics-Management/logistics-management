@@ -5,7 +5,7 @@ import com.douzon.smartlogistics.domain.entity.constant.State;
 import com.douzon.smartlogistics.domain.porder.dao.mapper.POrderMapper;
 import com.douzon.smartlogistics.domain.porder.dto.POrderInsertDto;
 import com.douzon.smartlogistics.domain.porder.dto.POrderModifyDto;
-import com.douzon.smartlogistics.domain.porder.exception.NotWaitStateException;
+import com.douzon.smartlogistics.domain.porder.exception.UnModifiableStateException;
 import com.douzon.smartlogistics.domain.porderitem.dao.mapper.POrderItemMapper;
 import com.douzon.smartlogistics.domain.porderitem.dto.POrderItemInsertDto;
 import java.util.List;
@@ -25,12 +25,14 @@ public class POrderDao {
     private final POrderItemMapper pOrderItemMapper;
 
     public List<POrder> searchPOrder(String pOrderCode, String manager, State state, String createId, String createIp,
-        Integer accountNo, String startDate, String endDate, String pOrderDate) {
+        Integer accountNo, String startDate, String endDate, String pOrderDate, String type) {
 
-        List<POrder> pOrderList = pOrderMapper.searchPOrder(pOrderCode, manager, createId, createIp, accountNo, state,
+        if("receive".equals(type)) {
+            return pOrderMapper.exeptSearchCmpPOrder(pOrderCode, manager, accountNo, startDate, endDate);
+        }
+
+        return pOrderMapper.searchPOrder(pOrderCode, manager, createId, createIp, accountNo, state,
             startDate, endDate, pOrderDate);
-
-        return pOrderList;
     }
 
     @Transactional
@@ -55,6 +57,10 @@ public class POrderDao {
     public String modify(String pOrderCode, POrderModifyDto pOrderModifyDto) {
         POrder retrievePOrder = retrievePOrder(pOrderCode);
 
+        if (retrievePOrder.getState() != State.WAIT) {
+            throw new UnModifiableStateException();
+        }
+
         pOrderMapper.modify(retrievePOrder.getPOrderCode(), pOrderModifyDto);
 
         return pOrderCode;
@@ -70,7 +76,7 @@ public class POrderDao {
             return;
         }
 
-        throw new NotWaitStateException();
+        throw new UnModifiableStateException();
     }
 
     private POrder retrievePOrder(String pOrderCode) {

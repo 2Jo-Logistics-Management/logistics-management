@@ -1,7 +1,8 @@
 package com.douzon.smartlogistics.domain.receive.application;
 
+import com.douzon.smartlogistics.domain.entity.POrder;
+import com.douzon.smartlogistics.domain.entity.POrderItem;
 import com.douzon.smartlogistics.domain.entity.Receive;
-import com.douzon.smartlogistics.domain.receive.dto.CmpPOrderDto;
 import com.douzon.smartlogistics.domain.receive.dto.ReceiveListDto;
 import com.douzon.smartlogistics.domain.entity.constant.SeqCode;
 import com.douzon.smartlogistics.domain.receive.dao.ReceiveDao;
@@ -35,17 +36,6 @@ public class ReceiveService {
         return receiveDao.findReceive(receiveCode, manager, createIp, createId, startDate, endDate);
     }
 
-    public List<CmpPOrderDto> waitingReceive(String porderCode, Integer itemCode, String itemName, String manager, Integer accountNo, String accountName, String startDate, String endDate) {
-        if (startDate != null && !startDate.isEmpty()) {
-            startDate += " 00:00:00";
-        }
-
-        if (endDate != null && !endDate.isEmpty()) {
-            endDate += " 23:59:59";
-        }
-        return receiveDao.waitingReceive(porderCode, itemCode, itemName, manager, accountNo, accountName, startDate, endDate);
-    }
-
     @Transactional
     public void insertReceive(ReceiveInsertDto receiveInsertDto){
         receiveInsertDto.setReceiveCode(AutoSeqGenerator.generate(SeqCode.RV));
@@ -67,4 +57,7 @@ public class ReceiveService {
     }
 
 
+    public int findAvailableCount(String porderCode, Integer porderItemNo) {
+        return receiveDao.findAvailableCount(porderCode,porderItemNo);
+    }
 }

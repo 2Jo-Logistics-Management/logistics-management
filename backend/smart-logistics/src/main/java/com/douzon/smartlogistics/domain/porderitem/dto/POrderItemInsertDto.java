@@ -26,22 +26,18 @@ public class POrderItemInsertDto {
     private String pOrderCode;
 
     @Schema(title = "물품 코드", description = "등록할 물품 코드 입니다.", example = "4")
-    @NotBlank
     @Digits(integer = 10, fraction = 0)
     private Integer itemCode;
 
     @Schema(title = "발주 수량", description = "등록할 발주 수량 입니다.", example = "3.0")
-    @NotBlank
     @JsonProperty(value = "pOrderCount")
     private Double pOrderCount;
 
     @Schema(title = "발주 가격", description = "등록할 발주 가격 입니다.", example = "2000")
-    @NotBlank
     @JsonProperty(value = "pOrderPrice")
     private Integer pOrderPrice;
 
     @Schema(title = "발주 항목 가격", description = "등록할 발주 항목 가격 입니다.", example = "4000")
-    @NotBlank
     @JsonProperty(value = "pOrderItemPrice")
     private Long pOrderItemPrice;
 

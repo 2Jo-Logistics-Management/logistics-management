@@ -16,8 +16,24 @@
         MANAGER     = #{pOrderModifyDto.manager},
         MODIFY_IP   = #{pOrderModifyDto.modifyIp},
         MODIFY_ID   = #{pOrderModifyDto.modifyId},
-        STATE       = #{pOrderModifyDto.state},
         ACCOUNT_NO  = #{pOrderModifyDto.accountNo}
+    WHERE PORDER_CODE = #{pOrderCode}
+  </update>
+  <!-- 발주 완료 -->
+  <update id="modifyStateToCmp">
+    UPDATE PORDER
+    SET MODIFY_IP = #{pOrderModifyDto.modifyIp},
+        MODIFY_ID = #{pOrderModifyDto.modifyId},
+        STATE     = 'CMP'
+    WHERE PORDER_CODE = #{pOrderCode}
+  </update>
+
+  <!-- 발주 진행 -->
+  <update id="modifyStateToIng">
+    UPDATE PORDER
+    SET MODIFY_IP = #{pOrderModifyDto.modifyIp},
+        MODIFY_ID = #{pOrderModifyDto.modifyId},
+        STATE     = 'ING'
     WHERE PORDER_CODE = #{pOrderCode}
   </update>
 
@@ -86,5 +102,40 @@
            account_no
     FROM PORDER
     WHERE PORDER_CODE = #{pOrderCode}
+  </select>
+  <select id="checkExistPOrder" resultType="boolean">
+    SELECT CASE
+             WHEN EXISTS(
+               SELECT 1
+               FROM PORDER
+               WHERE PORDER_CODE = #{pOrderCode}
+               ) THEN true
+             ELSE false END
+  </select>
+  <select id="exeptSearchCmpPOrder" resultType="com.douzon.smartlogistics.domain.entity.POrder">
+    SELECT PORDER_CODE, PORDER_DATE, MANAGER, ACCOUNT_NO, STATE, CREATE_DATE, CREATE_IP, CREATE_ID, MODIFY_DATE, MODIFY_IP, MODIFY_ID
+    FROM PORDER
+    <where>
+      (STATE = 'WAIT' OR STATE = 'ING')
+      <if test="pOrderCode != null and pOrderCode != ''">
+        AND PORDER_CODE LIKE CONCAT(CONCAT('%', #{pOrderCode}), '%')
+      </if>
+      <if test="manager != null and manager != ''">
+        AND MANAGER LIKE CONCAT(CONCAT('%', #{manager}), '%')
+      </if>
+      <if test="accountNo != null and accountNo != ''">
+        AND ACCOUNT_NO LIKE CONCAT(CONCAT('%', #{accountNo}), '%')
+      </if>
+      <if test="startDate != null and startDate != ''">
+        <![CDATA[
+                    AND PORDER_DATE >= #{startDate}
+                ]]>
+      </if>
+      <if test="endDate != null and endDate != ''">
+        <![CDATA[
+                    AND PORDER_DATE <= #{endDate}
+                ]]>
+      </if>
+    </where>
   </select>
 </mapper>

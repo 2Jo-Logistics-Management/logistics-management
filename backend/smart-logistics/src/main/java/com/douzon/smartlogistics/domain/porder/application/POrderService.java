@@ -20,10 +20,10 @@ public class POrderService {
 
     private final POrderDao pOrderDao;
     public List<POrder> searchPOrder(String pOrderCode, String manager, State state, String createId, String createIp,
-        Integer accountNo, String startDate, String endDate, String pOrderDate) {
+        Integer accountNo, String startDate, String endDate, String pOrderDate, String type) {
 
         return pOrderDao.searchPOrder(pOrderCode,manager, state, createId, createIp, accountNo, startDate, endDate,
-            pOrderDate);
+            pOrderDate, type);
     }
 
     @Transactional

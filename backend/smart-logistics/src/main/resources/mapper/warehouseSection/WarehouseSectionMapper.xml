@@ -18,9 +18,8 @@
             WHERE SECTION_NAME = #{sectionName}
     </delete>
     <select id="warehouseSectionList" resultType="com.douzon.smartlogistics.domain.entity.WarehouseSection">
-        select SECTION_NO,
-               SECTION_NAME
-                from WAREHOUSE_SECTION;
+        select WAREHOUSE_NO,WAREHOUSE_NAME
+                from WAREHOUSE;
     </select>
 
 </mapper>

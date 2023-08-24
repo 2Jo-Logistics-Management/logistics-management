@@ -52,11 +52,12 @@ public class POrderController {
         @RequestParam(required = false, defaultValue = "") @Parameter(description = "생성IP") String createIp,
         @RequestParam(required = false, defaultValue = "") @Parameter(description = "조회 시작날짜") String startDate,
         @RequestParam(required = false, defaultValue = "") @Parameter(description = "조회 마감날짜") String endDate,
-        @RequestParam(required = false, defaultValue = "") @Parameter(description = "발주 날짜") String pOrderDate
+        @RequestParam(required = false, defaultValue = "") @Parameter(description = "발주 날짜") String pOrderDate,
+        @RequestParam(required = false, defaultValue = "") @Parameter(description = "요청페이지")  String type
     ) {
 
         List<POrder> pOrderList = pOrderService.searchPOrder(pOrderCode, manager, state, createId, createIp, accountNo,
-            startDate, endDate, pOrderDate);
+            startDate, endDate, pOrderDate, type);
 
         return ResponseEntity.status(HttpStatus.OK)
                              .contentType(MediaType.APPLICATION_JSON)

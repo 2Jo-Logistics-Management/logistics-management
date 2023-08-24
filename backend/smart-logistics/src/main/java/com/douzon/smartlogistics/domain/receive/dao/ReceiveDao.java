@@ -1,7 +1,8 @@
 package com.douzon.smartlogistics.domain.receive.dao;
 
+import com.douzon.smartlogistics.domain.entity.POrder;
+import com.douzon.smartlogistics.domain.entity.POrderItem;
 import com.douzon.smartlogistics.domain.entity.Receive;
-import com.douzon.smartlogistics.domain.receive.dto.CmpPOrderDto;
 import com.douzon.smartlogistics.domain.entity.ReceiveItem;
 import com.douzon.smartlogistics.domain.receive.dao.mapper.ReceiveMapper;
 import com.douzon.smartlogistics.domain.receive.dto.ReceiveInsertDto;
@@ -9,6 +10,7 @@ import com.douzon.smartlogistics.domain.receive.dto.ReceiveModifyDto;
 import com.douzon.smartlogistics.domain.receiveitem.dao.mapper.ReceiveItemMapper;
 import com.douzon.smartlogistics.domain.receiveitem.dto.ReceiveItemInsertDto;
 import com.douzon.smartlogistics.domain.warehouse.dao.mapper.WarehouseMapper;
+import io.swagger.models.auth.In;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Repository;
@@ -27,9 +29,6 @@ public class ReceiveDao {
 
     public List<Receive> findReceive(String receiveCode, String manager, String createIp, String createId, String startDate, String endDate) {
         return receiveMapper.findReceive(receiveCode, manager, createIp, createId, startDate, endDate);
-    }
-    public List<CmpPOrderDto> waitingReceive(String porderCode, Integer itemCode, String itemName, String manager, Integer accountNo, String accountName, String startDate, String endDate) {
-        return receiveMapper.waitingReceive(porderCode, itemCode, itemName, manager, accountNo, accountName, startDate, endDate);
     }
 
     @Transactional
@@ -71,4 +70,7 @@ public class ReceiveDao {
         receiveMapper.modifyReceive(retrieveReceiveCode, receiveModifyDto);
     }
 
+    public int findAvailableCount(String porderCode, Integer porderItemNo) {
+        return receiveMapper.findAvailableCount(porderCode,porderItemNo);
+    }
 }
