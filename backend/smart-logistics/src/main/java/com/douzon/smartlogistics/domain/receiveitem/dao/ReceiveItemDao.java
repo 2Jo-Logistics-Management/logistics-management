@@ -3,7 +3,7 @@ package com.douzon.smartlogistics.domain.receiveitem.dao;
 import com.douzon.smartlogistics.domain.receiveitem.dao.mapper.ReceiveItemMapper;
 import com.douzon.smartlogistics.domain.receiveitem.dto.ReceiveItemInsertDto;
 import com.douzon.smartlogistics.domain.receiveitem.dto.ReceiveItemModifyDto;
-import com.douzon.smartlogistics.domain.warehousestock.dao.mapper.WarehouseMapper;
+import com.douzon.smartlogistics.domain.warehousestock.dao.mapper.WarehouseStockMapper;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Repository;
@@ -17,7 +17,7 @@ import java.util.NoSuchElementException;
 public class ReceiveItemDao {
 
     private final ReceiveItemMapper receiveItemMapper;
-    private final WarehouseMapper warehouseMapper;
+    private final WarehouseStockMapper warehouseStockMapper;
 
     @Transactional
     public void deleteReceiveItem(Long receiveItemNo) {
@@ -28,7 +28,7 @@ public class ReceiveItemDao {
     public void modifyReceiveItem(Long receiveItemNo, ReceiveItemModifyDto receiveItemModifyDto) {
         Long retrieveReceiveItemNo = retrieveReceiveItem(receiveItemNo);
         receiveItemMapper.modifyReceiveItem(retrieveReceiveItemNo,receiveItemModifyDto);
-        warehouseMapper.modifyWarehouse(retrieveReceiveItemNo, receiveItemModifyDto);
+        warehouseStockMapper.modifyWarehouseStock(retrieveReceiveItemNo, receiveItemModifyDto);
     }
     //TODO: 전역 예외처리 필요
     private Long retrieveReceiveItem(Long receiveItemNo) {

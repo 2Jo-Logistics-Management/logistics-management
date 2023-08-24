@@ -8,7 +8,7 @@ import com.douzon.smartlogistics.domain.receive.dto.ReceiveInsertDto;
 import com.douzon.smartlogistics.domain.receive.dto.ReceiveModifyDto;
 import com.douzon.smartlogistics.domain.receiveitem.dao.mapper.ReceiveItemMapper;
 import com.douzon.smartlogistics.domain.receiveitem.dto.ReceiveItemInsertDto;
-import com.douzon.smartlogistics.domain.warehousestock.dao.mapper.WarehouseMapper;
+import com.douzon.smartlogistics.domain.warehousestock.dao.mapper.WarehouseStockMapper;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Repository;
@@ -23,7 +23,7 @@ public class ReceiveDao {
 
     private final ReceiveMapper receiveMapper;
     private final ReceiveItemMapper receiveItemMapper;
-    private final WarehouseMapper warehouseMapper;
+    private final WarehouseStockMapper warehouseStockMapper;
 
     public List<ReceiveListDto> findReceive(String receiveCode, String manager, Integer itemCode, String itemName, Integer accountNo, String accountName, String startDate, String endDate) {
         return receiveMapper.findReceive(receiveCode, manager, itemCode, itemName, accountNo, accountName, startDate, endDate);
@@ -49,7 +49,7 @@ public class ReceiveDao {
                     receiveItem.getAccountNo(),
                     receiveItem.getWarehouseSectionNo()
             );
-            warehouseMapper.insertWarehouse(rvItem);
+            warehouseStockMapper.insertWarehouseStock(rvItem);
         }
     }
 
