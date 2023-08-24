@@ -43,7 +43,7 @@ public class WarehouseController {
                                          content = @Content(mediaType = "application/json", schema =
                                          @Schema(implementation = CommonResponse.class)))})
     @GetMapping("/list")
-    public ResponseEntity<CommonResponse<List<Warehouse>>> warehouseList(
+    public ResponseEntity<CommonResponse<List<Warehouse>>> searchWarehouseList(
         @RequestParam(required = false, defaultValue = "") @Parameter(description = "창고번호") Integer warehouseNo,
         @RequestParam(required = false, defaultValue = "") @Parameter(description = "창고이름") String warehouseName
     ) {
