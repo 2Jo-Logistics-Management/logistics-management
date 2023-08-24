@@ -6,38 +6,66 @@
 
   <!--  발주 품목 등록 -->
   <insert id="insert" parameterType="com.douzon.smartlogistics.domain.porderitem.dto.POrderItemInsertDto">
-    INSERT INTO PORDER_ITEM(PORDER_CODE, MANAGER, ITEM_CODE, PORDER_COUNT, PORDER_PRICE, PORDER_ITEM_PRICE,
-                            RECEIVE_DEADLINE, CREATE_IP, CREATE_ID)
-    VALUES ( #{pOrderItem.pOrderCode}, #{pOrderItem.manager}, #{pOrderItem.itemCode}, #{pOrderItem.pOrderCount},
-             #{pOrderItem.pOrderPrice},
-             #{pOrderItem.pOrderItemPrice},
-             #{pOrderItem.receiveDeadline}, #{pOrderItem.createIp}, #{pOrderItem.createId} );
+    INSERT INTO PORDER_ITEM(PORDER_ITEM_NO,
+                            PORDER_CODE,
+                            ITEM_CODE,
+                            PORDER_COUNT,
+                            PORDER_PRICE,
+                            PORDER_ITEM_PRICE,
+                            RECEIVE_DEADLINE,
+                            CREATE_IP,
+                            CREATE_ID)
+    VALUES (#{pOrderItem.pOrderItemNo},
+            #{pOrderItem.pOrderCode},
+            #{pOrderItem.itemCode},
+            #{pOrderItem.pOrderCount},
+            #{pOrderItem.pOrderPrice},
+            #{pOrderItem.pOrderItemPrice},
+            #{pOrderItem.receiveDeadline},
+            #{pOrderItem.createIp},
+            #{pOrderItem.createId});
   </insert>
+  <!-- 발주 품목 수정 (상태x) -->
   <update id="modify">
     UPDATE PORDER_ITEM
-    SET MANAGER = #{pOrderItemModifyDto.manager},
-        ITEM_CODE = #{pOrderItemModifyDto.itemCode},
-        PORDER_COUNT = #{pOrderItemModifyDto.pOrderCount},
-        PORDER_PRICE = #{pOrderItemModifyDto.pOrderPrice},
+    SET ITEM_CODE         = #{pOrderItemModifyDto.itemCode},
+        PORDER_COUNT      = #{pOrderItemModifyDto.pOrderCount},
+        PORDER_PRICE      = #{pOrderItemModifyDto.pOrderPrice},
         PORDER_ITEM_PRICE = #{pOrderItemModifyDto.pOrderItemPrice},
-        RECEIVE_DEADLINE = #{pOrderItemModifyDto.receiveDeadline},
-        MODIFY_DATE = CURRENT_TIMESTAMP,
-        MODIFY_IP = #{pOrderItemModifyDto.modifyIp},
-        MODIFY_ID = #{pOrderItemModifyDto.modifyId}
-    WHERE PORDER_ITEM_NO = #{pOrderCode}
+        RECEIVE_DEADLINE  = #{pOrderItemModifyDto.receiveDeadline},
+        MODIFY_DATE       = CURRENT_TIMESTAMP,
+        MODIFY_IP         = #{pOrderItemModifyDto.modifyIp},
+        MODIFY_ID         = #{pOrderItemModifyDto.modifyId}
+    WHERE PORDER_ITEM_NO = #{pOrderItemNo}
+      AND PORDER_CODE = #{pOrderItemModifyDto.pOrderCode}
+
   </update>
+  <!-- 발주 품목 수정 (상태x) -->
+  <!-- 발주 품목 수정 (상태O) -->
+  <update id="modifyState">
+    UPDATE PORDER_ITEM
+    SET PORDER_STATE = #{pOrderItemStateModifyDto.pOrderState},
+        MODIFY_DATE  = CURRENT_TIMESTAMP,
+        MODIFY_IP    = #{pOrderItemStateModifyDto.modifyIp},
+        MODIFY_ID    = #{pOrderItemStateModifyDto.modifyId}
+    WHERE PORDER_ITEM_NO = #{pOrderItemNo}
+      AND PORDER_CODE = #{pOrderItemStateModifyDto.pOrderCode}
+  </update>
+  <!-- 발주 품목 수정 (상태O) -->
   <delete id="delete">
-    DELETE FROM PORDER_ITEM
+    DELETE
+    FROM PORDER_ITEM
     WHERE PORDER_CODE = #{pOrderCode}
   </delete>
   <delete id="deletePOrderItem">
-    DELETE FROM PORDER_ITEM
+    DELETE
+    FROM PORDER_ITEM
     WHERE PORDER_ITEM_NO = #{pOrderItemNo}
+    AND PORDER_CODE = #{pOrderCode}
   </delete>
   <select id="retrieve" resultType="com.douzon.smartlogistics.domain.entity.POrderItem">
     SELECT PORDER_ITEM_NO,
            PORDER_CODE,
-           MANAGER,
            ITEM_CODE,
            PORDER_COUNT,
            PORDER_PRICE,
@@ -50,16 +78,17 @@
            MODIFY_IP,
            MODIFY_ID
     FROM PORDER_ITEM
-    WHERE PORDER_ITEM_NO = #{pOrderItemNo};
+    WHERE PORDER_ITEM_NO = #{pOrderItemNo}
+      AND PORDER_CODE = #{pOrderCode};
   </select>
   <select id="searchPOrderItemList" resultType="com.douzon.smartlogistics.domain.entity.POrderItem">
     SELECT PORDER_ITEM_NO,
            PORDER_CODE,
-           MANAGER,
            ITEM_CODE,
            PORDER_COUNT,
            PORDER_PRICE,
            PORDER_ITEM_PRICE,
+           PORDER_STATE,
            RECEIVE_DEADLINE,
            CREATE_DATE,
            CREATE_IP,

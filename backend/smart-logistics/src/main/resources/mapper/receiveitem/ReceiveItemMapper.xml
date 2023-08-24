@@ -27,14 +27,24 @@
             MODIFY_ID = #{ReceiveItem.modifyId}
         WHERE RECEIVE_ITEM_NO = #{receiveItemNo}
     </update>
+    <!-- 입고품목 삭제 -->
     <delete id="deleteReceiveItem">
         DELETE
         FROM RECEIVE_ITEM
-        WHERE PORDER_ITEM_NO=#{receiveItemNo};
+        WHERE RECEIVE_ITEM_NO=#{receiveItemNo}
+        AND RECEIVE_CODE=#{receiveCode}
     </delete>
+    <!-- 입고코드, 입고순번 기준으로 입고품목 유무조회 -->
     <select id="retrieveReceiveItem" resultType="com.douzon.smartlogistics.domain.entity.ReceiveItem">
-        SELECT RECEIVE_ITEM_NO, RECEIVE_CODE, PORDER_CODE, PORDER_ITEM_NO, ITEM_CODE, MANAGER, RECEIVE_COUNT, ACCOUNT_NO, WAREHOUSE_SECTION_NO, CREATE_DATE, CREATE_IP, CREATE_ID, MODIFY_DATE, MODIFY_IP, MODIFY_ID
+        SELECT RECEIVE_ITEM_NO, RECEIVE_CODE, PORDER_CODE, PORDER_ITEM_NO, ITEM_CODE, RECEIVE_COUNT, ACCOUNT_NO, WAREHOUSE_SECTION_NO, CREATE_DATE, CREATE_IP, CREATE_ID, MODIFY_DATE, MODIFY_IP, MODIFY_ID
         FROM RECEIVE_ITEM
-        WHERE RECEIVE_ITEM_NO=#{receiveItemNo};
+        WHERE RECEIVE_ITEM_NO=#{receiveItemNo}
+        AND RECEIVE_CODE=#{receiveCode}
+    </select>
+    <!-- 입고코드 기준 입고품목 찾기 -->
+    <select id="searchReceiveItem" resultType="com.douzon.smartlogistics.domain.entity.ReceiveItem">
+        SELECT RECEIVE_ITEM_NO, RECEIVE_CODE, PORDER_CODE, PORDER_ITEM_NO, ITEM_CODE, RECEIVE_COUNT, ACCOUNT_NO, WAREHOUSE_SECTION_NO, CREATE_DATE, CREATE_IP, CREATE_ID, MODIFY_DATE, MODIFY_IP, MODIFY_ID
+        FROM RECEIVE_ITEM
+        WHERE RECEIVE_CODE=#{receiveCode};
     </select>
 </mapper>

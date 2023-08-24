@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="UTF-8"?>
+  <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.douzon.smartlogistics.domain.warehousestock.dao.mapper.WarehouseStockMapper">
+<insert id="insertWarehouseStock">
+  INSERT INTO WAREHOUSE_STOCK(SECTION_NO, RECEIVE_CODE, RECEIVE_ITEM_NO, ITEM_CODE, COUNT, REGIST_DATE,
+                              CREATE_IP,
+                              CREATE_ID)
+  VALUES
+    (#{warehouseSectionNo},#{receiveCode},#{receiveItemNo},#{itemCode},#{receiveCount},CURRENT_TIMESTAMP,#{createIp},#{createId});
+</insert>
+<update id="modifyWarehouseStock">
+  UPDATE WAREHOUSE
+  SET SECTION_NO = #{ReceiveItem.warehouseSectionNo},
+      COUNT = #{ReceiveItem.receiveCount},
+      REGIST_DATE = CURRENT_TIMESTAMP,
+      MODIFY_DATE = CURRENT_TIMESTAMP,
+      MODIFY_IP = #{ReceiveItem.modifyIp},
+      MODIFY_ID = #{ReceiveItem.modifyId}
+  WHERE RECEIVE_ITEM_NO = #{receiveItemNo}
+</update>
+<!-- 창고 재고번호로 창고재고 조회-->
+<!-- 창고 번호로 창고재고 조회-->
+<!-- 창고 이름으로 창고재고 조회 - 창고 테이블에 조인이 필요-->
+<!-- 입고 코드와 입고 순번으로 창고재고 조회 - 입고품목 테이블에 조인이 필요-->
+<!-- 품목 코드로 창고재고 조회-->
+<!-- 품목 이름으로 창고재고 조회 - 품목 테이블에 조인이 필요-->
+<!-- 창고적재일시로 창고재고 조회-->
+<select id="searchWarehouseStockList" resultType="com.douzon.smartlogistics.domain.warehousestock.dto.WarehouseStockResponseDto">
+  SELECT WS.WAREHOUSE_STOCK_NO,
+  WS.WAREHOUSE_NO,
+  WS.RECEIVE_CODE,
+  WS.RECEIVE_ITEM_NO,
+  WS.ITEM_CODE,
+  WS.COUNT,
+  WS.REGIST_DATE,
+  WS.CREATE_DATE,
+  WS.CREATE_IP,
+  WS.CREATE_ID,
+  WS.MODIFY_DATE,
+  WS.MODIFY_IP,
+  WS.MODIFY_ID,
+  I.ITEM_NAME
+  FROM WAREHOUSE_STOCK WS
+  LEFT JOIN ITEM I ON WS.ITEM_CODE = I.ITEM_CODE
+  <where>
+    <if test="warehouseStockNo != null">
+      AND WS.WAREHOUSE_STOCK_NO = #{warehouseStockNo}
+    </if>
+    <if test="warehouseNo != null">
+      AND WS.WAREHOUSE_NO = #{warehouseNo}
+    </if>
+    <if test="receiveCode != null and receiveCode != ''">
+      AND WS.RECEIVE_CODE LIKE CONCAT('%', #{receiveCode}, '%')
+    </if>
+    <if test="receiveItemNo != null">
+      AND WS.RECEIVE_ITEM_NO = #{receiveItemNo}
+    </if>
+    <if test="itemCode != null">
+      AND WS.ITEM_CODE = #{itemCode}
+    </if>
+    <if test="itemName != null and itemName != ''">
+      AND (I.ITEM_NAME IS NULL OR I.ITEM_NAME LIKE CONCAT('%', #{itemName}, '%'))
+    </if>
+    <if test="startDate != null and startDate != ''">
+      <![CDATA[ AND (WS.REGIST_DATE) >= #{startDate} ]]>
+    </if>
+    <if test="endDate != null and endDate != ''">
+      <![CDATA[ AND (WS.REGIST_DATE) <= #{endDate} ]]>
+    </if>
+  </where>
+</select>
+</mapper>

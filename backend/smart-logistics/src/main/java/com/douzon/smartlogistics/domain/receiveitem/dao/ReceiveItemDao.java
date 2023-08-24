@@ -1,14 +1,16 @@
 package com.douzon.smartlogistics.domain.receiveitem.dao;
 
+import com.douzon.smartlogistics.domain.entity.ReceiveItem;
 import com.douzon.smartlogistics.domain.receiveitem.dao.mapper.ReceiveItemMapper;
 import com.douzon.smartlogistics.domain.receiveitem.dto.ReceiveItemInsertDto;
 import com.douzon.smartlogistics.domain.receiveitem.dto.ReceiveItemModifyDto;
-import com.douzon.smartlogistics.domain.warehouse.dao.mapper.WarehouseMapper;
+import com.douzon.smartlogistics.domain.warehousestock.dao.mapper.WarehouseStockMapper;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
 import java.util.NoSuchElementException;
 
 @Slf4j
@@ -17,25 +19,30 @@ import java.util.NoSuchElementException;
 public class ReceiveItemDao {
 
     private final ReceiveItemMapper receiveItemMapper;
-    private final WarehouseMapper warehouseMapper;
+    private final WarehouseStockMapper warehouseStockMapper;
+
+
+    public List<ReceiveItem> searchReceiveItem(String receiveCode) {
+        return receiveItemMapper.searchReceiveItem(receiveCode);
+    }
 
     @Transactional
-    public void deleteReceiveItem(Long receiveItemNo) {
-        retrieveReceiveItem(receiveItemNo);
-        receiveItemMapper.deleteReceiveItem(receiveItemNo);
-    }
-    @Transactional
-    public void modifyReceiveItem(Long receiveItemNo, ReceiveItemModifyDto receiveItemModifyDto) {
-        Long retrieveReceiveItemNo = retrieveReceiveItem(receiveItemNo);
+    public void modifyReceiveItem(String receiveCode, Long receiveItemNo, ReceiveItemModifyDto receiveItemModifyDto) {
+        Long retrieveReceiveItemNo = retrieveReceiveItem(receiveCode, receiveItemNo);
         receiveItemMapper.modifyReceiveItem(retrieveReceiveItemNo,receiveItemModifyDto);
-        warehouseMapper.modifyWarehouse(retrieveReceiveItemNo, receiveItemModifyDto);
+        warehouseStockMapper.modifyWarehouseStock(retrieveReceiveItemNo, receiveItemModifyDto);
     }
-    //TODO: 전역 예외처리 필요
-    private Long retrieveReceiveItem(Long receiveItemNo) {
-        return receiveItemMapper.retrieveReceiveItem(receiveItemNo).orElseThrow(() -> {
+    public void deleteReceiveItem(String receiveCode, Long receiveItemNo) {
+        retrieveReceiveItem(receiveCode, receiveItemNo);
+        receiveItemMapper.deleteReceiveItem(receiveCode, receiveItemNo);
+    }
+
+    private Long retrieveReceiveItem(String receiveCode, Long receiveItemNo) {
+        return receiveItemMapper.retrieveReceiveItem(receiveCode, receiveItemNo).orElseThrow(() -> {
             throw new NoSuchElementException("해당 입고물품은 존재하지 않습니다.");
         }).getReceiveItemNo();
     }
+
     @Transactional
     public void insertReceiveItem(ReceiveItemInsertDto receiveItemInsertDto) {
         receiveItemMapper.insertReceiveItem(receiveItemInsertDto);

@@ -1,14 +1,13 @@
 package com.douzon.smartlogistics.domain.receive.dao;
 
-import com.douzon.smartlogistics.domain.entity.CmpPOrder;
+import com.douzon.smartlogistics.domain.entity.Receive;
 import com.douzon.smartlogistics.domain.entity.ReceiveItem;
-import com.douzon.smartlogistics.domain.entity.ReceiveList;
 import com.douzon.smartlogistics.domain.receive.dao.mapper.ReceiveMapper;
 import com.douzon.smartlogistics.domain.receive.dto.ReceiveInsertDto;
 import com.douzon.smartlogistics.domain.receive.dto.ReceiveModifyDto;
 import com.douzon.smartlogistics.domain.receiveitem.dao.mapper.ReceiveItemMapper;
 import com.douzon.smartlogistics.domain.receiveitem.dto.ReceiveItemInsertDto;
-import com.douzon.smartlogistics.domain.warehouse.dao.mapper.WarehouseMapper;
+import com.douzon.smartlogistics.domain.warehousestock.dao.mapper.WarehouseStockMapper;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Repository;
@@ -23,14 +22,10 @@ public class ReceiveDao {
 
     private final ReceiveMapper receiveMapper;
     private final ReceiveItemMapper receiveItemMapper;
-    private final WarehouseMapper warehouseMapper;
+    private final WarehouseStockMapper warehouseStockMapper;
 
-    public List<ReceiveList> findReceive(String receiveCode, String manager, Integer itemCode, String itemName, Integer accountNo, String accountName, String startDate, String endDate) {
-        return receiveMapper.findReceive(receiveCode, manager, itemCode, itemName, accountNo, accountName, startDate, endDate);
-    }
-
-    public List<CmpPOrder> waitingReceive(String porderCode, Integer itemCode, String itemName, String manager, Integer accountNo, String accountName, String startDate, String endDate) {
-        return receiveMapper.waitingReceive(porderCode, itemCode, itemName, manager, accountNo, accountName, startDate, endDate);
+    public List<Receive> findReceive(String receiveCode, String manager, String createIp, String createId, String startDate, String endDate) {
+        return receiveMapper.findReceive(receiveCode, manager, createIp, createId, startDate, endDate);
     }
 
     @Transactional
@@ -49,7 +44,7 @@ public class ReceiveDao {
                     receiveItem.getAccountNo(),
                     receiveItem.getWarehouseSectionNo()
             );
-            warehouseMapper.insertWarehouse(rvItem);
+            warehouseStockMapper.insertWarehouseStock(rvItem);
         }
     }
 
@@ -70,5 +65,9 @@ public class ReceiveDao {
     public void modifyReceive(String receiveCode, ReceiveModifyDto receiveModifyDto) {
         String retrieveReceiveCode= retrieveReceive(receiveCode);
         receiveMapper.modifyReceive(retrieveReceiveCode, receiveModifyDto);
+    }
+
+    public int findAvailableCount(String porderCode, Integer porderItemNo) {
+        return receiveMapper.findAvailableCount(porderCode,porderItemNo);
     }
 }

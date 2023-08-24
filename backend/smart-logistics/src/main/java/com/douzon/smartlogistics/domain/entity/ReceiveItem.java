@@ -1,16 +1,17 @@
 package com.douzon.smartlogistics.domain.entity;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
+import lombok.ToString;
 
 @RequiredArgsConstructor
 @Getter
+@ToString
 public class ReceiveItem {
     private final Long receiveItemNo;
     private final String receiveCode;
     private final String porderCode;
     private final Long porderItemNo;
     private final Integer itemCode;
-    private final String manager;
     private final Double receiveCount;
     private final Integer accountNo;
     private final Integer warehouseSectionNo;

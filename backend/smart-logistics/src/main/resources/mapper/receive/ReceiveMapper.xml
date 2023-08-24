@@ -7,11 +7,6 @@
         INSERT INTO RECEIVE(RECEIVE_CODE, RECEIVE_DATE, CREATE_IP, CREATE_ID)
         VALUES (#{receiveCode}, CURRENT_TIMESTAMP ,#{createIp},#{createId})
     </insert>
-    <insert id="insertWarehouse" parameterType="java.util.Map">
-        INSERT INTO WAREHOUSE(SECTION_NO, RECEIVE_CODE, RECEIVE_ITEM_NO, ITEM_CODE, COUNT, CREATE_IP, CREATE_ID)
-        VALUES
-            (#{WAREHOUSE_SECTION_NO},#{RECEIVE_CODE},#{RECEIVE_ITEM_NO},#{ITEM_CODE},#{RECEIVE_COUNT},#{CREATE_IP},#{CREATE_ID});
-    </insert>
     <update id="modifyReceive">
         UPDATE RECEIVE
         SET RECEIVE_DATE = CURRENT_TIMESTAMP,
@@ -25,101 +20,52 @@
         FROM RECEIVE
         WHERE RECEIVE_CODE = #{receiveCode};
     </delete>
-    <select id="findReceive" resultType="com.douzon.smartlogistics.domain.entity.ReceiveList">
-        SELECT RECEIVE_ITEM.RECEIVE_ITEM_NO, RECEIVE.RECEIVE_CODE, RECEIVE_ITEM.MANAGER,
-            ITEM.ITEM_CODE, ITEM.ITEM_NAME, RECEIVE_ITEM.RECEIVE_COUNT, ITEM.UNIT,
-            ACCOUNT.ACCOUNT_NO, ACCOUNT.ACCOUNT_NAME, RECEIVE.CREATE_DATE
+    <select id="findReceive" resultType="com.douzon.smartlogistics.domain.entity.Receive">
+        SELECT
+            RECEIVE_CODE, RECEIVE_DATE , MANAGER,
+            CREATE_DATE, CREATE_IP, CREATE_ID,
+            MODIFY_DATE, MODIFY_IP, MODIFY_ID
         FROM RECEIVE
-        JOIN RECEIVE_ITEM ON RECEIVE.RECEIVE_CODE = RECEIVE_ITEM.RECEIVE_CODE
-        JOIN ACCOUNT ON RECEIVE_ITEM.ACCOUNT_NO = ACCOUNT.ACCOUNT_NO
-        JOIN ITEM ON RECEIVE_ITEM.ITEM_CODE = ITEM.ITEM_CODE
         <where>
             <if test="receiveCode != null and receiveCode != ''">
-                AND RECEIVE.RECEIVE_CODE LIKE CONCAT(CONCAT('%', #{receiveCode}), '%')
+                AND RECEIVE_CODE LIKE CONCAT(CONCAT('%', #{receiveCode}), '%')
             </if>
             <if test="manager != null and manager != ''">
-                AND RECEIVE_ITEM.MANAGER LIKE CONCAT(CONCAT('%', #{manager}), '%')
+                AND MANAGER LIKE CONCAT(CONCAT('%', #{manager}), '%')
             </if>
-            <if test="itemCode != null and itemCode != 0">
-                AND ITEM.ITEM_CODE LIKE CONCAT(CONCAT('%', #{itemCode}), '%')
+            <if test="createId != null and createId != ''">
+                AND CREATE_ID LIKE CONCAT('%', #{createId}, '%')
             </if>
-            <if test="itemName != null and itemName != ''">
-                AND ITEM.ITEM_NAME LIKE CONCAT(CONCAT('%', #{itemName}), '%')
-            </if>
-            <if test="accountNo != null and accountNo != 0">
-                AND ACCOUNT.ACCOUNT_NO LIKE CONCAT(CONCAT('%', #{accountNo}), '%')
-            </if>
-            <if test="accountName != null and accountName != ''">
-                AND ACCOUNT.ACCOUNT_NAME LIKE CONCAT(CONCAT('%', #{accountName}), '%')
+            <if test="createIp != null and createIp != ''">
+                AND CREATE_IP LIKE CONCAT('%', #{createIp}, '%')
             </if>
             <if test="startDate != null and startDate != ''">
                 <![CDATA[
-                    AND RECEIVE.CREATE_DATE >= #{startDate}
+                    AND CREATE_DATE >= #{startDate}
                 ]]>
             </if>
             <if test="endDate != null and endDate != ''">
                 <![CDATA[
-                    AND RECEIVE.CREATE_DATE <= #{endDate}
+                    AND CREATE_DATE <= #{endDate}
                 ]]>
             </if>
         </where>
-        ORDER BY RECEIVE.CREATE_DATE DESC
-    </select>
-    <select id="waitingReceive" resultType="com.douzon.smartlogistics.domain.entity.CmpPOrder">
-        SELECT PORDER_ITEM.PORDER_ITEM_NO, PORDER.PORDER_CODE, PORDER.STATE, PORDER_ITEM.MANAGER,
-            ITEM.ITEM_CODE, ITEM.ITEM_NAME, PORDER_ITEM.PORDER_COUNT,
-            SUM(RECEIVE_ITEM.RECEIVE_COUNT) AS TOTAL_RECEIVE_COUNT, ITEM.UNIT,
-            ACCOUNT.ACCOUNT_NO, ACCOUNT.ACCOUNT_NAME, PORDER.CREATE_DATE
-        FROM PORDER
-        LEFT JOIN RECEIVE_ITEM ON RECEIVE_ITEM.PORDER_CODE = PORDER.PORDER_CODE
-        JOIN PORDER_ITEM ON PORDER.PORDER_CODE = PORDER_ITEM.PORDER_CODE
-        JOIN ACCOUNT ON PORDER.ACCOUNT_NO = ACCOUNT.ACCOUNT_NO
-        JOIN ITEM ON PORDER_ITEM.ITEM_CODE = ITEM.ITEM_CODE
-        <where>
-            (PORDER.PORDER_CODE IS NOT NULL AND (RECEIVE_ITEM.PORDER_CODE IS NULL OR RECEIVE_ITEM.PORDER_CODE IS NOT NULL))
-            AND PORDER.STATE = 'CMP'
-            <![CDATA[
-                AND !(PORDER_ITEM.PORDER_COUNT <= RECEIVE_ITEM.RECEIVE_COUNT)
-            ]]>
-            <if test="porderCode != null and porderCode != ''">
-                AND PORDER.PORDER_CODE LIKE CONCAT(CONCAT('%', #{porderCode}), '%')
-            </if>
-            <if test="itemCode != null and itemCode != 0">
-                AND ITEM.ITEM_CODE LIKE CONCAT(CONCAT('%', #{itemCode}), '%')
-            </if>
-            <if test="itemName != null and itemName != ''">
-                AND ITEM.ITEM_NAME LIKE CONCAT(CONCAT('%', #{itemName}), '%')
-            </if>
-            <if test="manager != null and manager != ''">
-                AND PORDER_ITEM.MANAGER LIKE CONCAT(CONCAT('%', #{manager}), '%')
-            </if>
-            <if test="accountNo != null and accountNo != 0">
-                AND ACCOUNT.ACCOUNT_NO LIKE CONCAT(CONCAT('%', #{accountNo}), '%')
-            </if>
-            <if test="accountName != null and accountName != ''">
-                AND ACCOUNT.ACCOUNT_NAME LIKE CONCAT(CONCAT('%', #{accountName}), '%')
-            </if>
-            <if test="startDate != null and startDate != ''">
-                <![CDATA[
-                    AND PORDER.CREATE_DATE >= #{startDate}
-                ]]>
-            </if>
-            <if test="endDate != null and endDate != ''">
-                <![CDATA[
-                    AND PORDER.CREATE_DATE <= #{endDate}
-                ]]>
-            </if>
-        </where>
-        GROUP BY PORDER_ITEM.PORDER_ITEM_NO, PORDER.PORDER_CODE,
-                PORDER.STATE, PORDER_ITEM.MANAGER, ITEM.ITEM_CODE,
-                ITEM.ITEM_NAME, PORDER_ITEM.PORDER_COUNT, ITEM.UNIT,
-                ACCOUNT.ACCOUNT_NO, ACCOUNT.ACCOUNT_NAME, PORDER.CREATE_DATE
-        HAVING PORDER_ITEM.PORDER_COUNT > COALESCE(SUM(RECEIVE_ITEM.RECEIVE_COUNT), 0)
-        ORDER BY PORDER.CREATE_DATE DESC;
+        ORDER BY RECEIVE_DATE DESC
     </select>
     <select id="retrieve" resultType="com.douzon.smartlogistics.domain.entity.Receive">
-        SELECT RECEIVE_CODE, RECEIVE_DATE, CREATE_DATE, CREATE_IP, CREATE_ID, MODIFY_DATE, MODIFY_IP, MODIFY_ID
+        SELECT RECEIVE_CODE, RECEIVE_DATE, MANAGER, CREATE_DATE, CREATE_IP, CREATE_ID, MODIFY_DATE, MODIFY_IP, MODIFY_ID
         FROM RECEIVE
         WHERE RECEIVE_CODE = #{receiveCode};
+    </select>
+    <select id="findAvailableCount" resultType="java.lang.Integer">
+        SELECT (PORDER_ITEM.PORDER_COUNT - IFNULL(RECEIVE_ITEM.RECEIVE_COUNT, 0)) ,
+               PORDER_ITEM.PORDER_COUNT,
+               IFNULL(RECEIVE_ITEM.RECEIVE_COUNT, 0)
+        FROM PORDER_ITEM
+        LEFT JOIN RECEIVE_ITEM
+        ON PORDER_ITEM.PORDER_CODE = RECEIVE_ITEM.PORDER_CODE
+        AND PORDER_ITEM.PORDER_ITEM_NO = RECEIVE_ITEM.PORDER_ITEM_NO
+        WHERE PORDER_ITEM.PORDER_CODE = #{porderCode}
+        AND PORDER_ITEM.PORDER_ITEM_NO = #{porderItemNo}
     </select>
 </mapper>

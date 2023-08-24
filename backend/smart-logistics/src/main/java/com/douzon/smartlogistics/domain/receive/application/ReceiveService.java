@@ -1,11 +1,14 @@
 package com.douzon.smartlogistics.domain.receive.application;
 
-import com.douzon.smartlogistics.domain.entity.CmpPOrder;
-import com.douzon.smartlogistics.domain.entity.ReceiveList;
+import com.douzon.smartlogistics.domain.entity.POrder;
+import com.douzon.smartlogistics.domain.entity.POrderItem;
+import com.douzon.smartlogistics.domain.entity.Receive;
+import com.douzon.smartlogistics.domain.receive.dto.ReceiveListDto;
 import com.douzon.smartlogistics.domain.entity.constant.SeqCode;
 import com.douzon.smartlogistics.domain.receive.dao.ReceiveDao;
 import com.douzon.smartlogistics.domain.receive.dto.ReceiveInsertDto;
 import com.douzon.smartlogistics.domain.receive.dto.ReceiveModifyDto;
+import com.douzon.smartlogistics.domain.warehouse.dao.WarehouseDao;
 import com.douzon.smartlogistics.global.common.util.AutoSeqGenerator;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -19,8 +22,9 @@ import java.util.List;
 @RequiredArgsConstructor
 public class ReceiveService {
     private final ReceiveDao receiveDao;
+    private final WarehouseDao warehouseDao;
 
-    public List<ReceiveList> findReceive(String receiveCode, String manager, Integer itemCode, String itemName, Integer accountNo, String accountName, String startDate, String endDate) {
+    public List<Receive> findReceive(String receiveCode, String manager, String createIp, String createId, String startDate, String endDate) {
         if (startDate != null && !startDate.isEmpty()) {
             startDate += " 00:00:00";
         }
@@ -29,18 +33,7 @@ public class ReceiveService {
             endDate += " 23:59:59";
         }
 
-        return receiveDao.findReceive(receiveCode, manager, itemCode, itemName, accountNo, accountName, startDate, endDate);
-    }
-
-    public List<CmpPOrder> waitingReceive(String porderCode, Integer itemCode, String itemName, String manager, Integer accountNo, String accountName, String startDate, String endDate) {
-        if (startDate != null && !startDate.isEmpty()) {
-            startDate += " 00:00:00";
-        }
-
-        if (endDate != null && !endDate.isEmpty()) {
-            endDate += " 23:59:59";
-        }
-        return receiveDao.waitingReceive(porderCode, itemCode, itemName, manager, accountNo, accountName, startDate, endDate);
+        return receiveDao.findReceive(receiveCode, manager, createIp, createId, startDate, endDate);
     }
 
     @Transactional
@@ -51,8 +44,11 @@ public class ReceiveService {
     }
 
     @Transactional
-    public void deleteReceive(String receiveCode) {
-        receiveDao.deleteReceive(receiveCode);
+    public void deleteReceive(List<String> receiveCodes) {
+        for (String receiveCode: receiveCodes) {
+            receiveDao.deleteReceive(receiveCode);
+            warehouseDao.deleteReceiveWarehouse(receiveCode);
+        }
     }
 
     @Transactional
@@ -60,4 +56,8 @@ public class ReceiveService {
         receiveDao.modifyReceive(receiveCode, receiveModifyDto);
     }
 
+
+    public int findAvailableCount(String porderCode, Integer porderItemNo) {
+        return receiveDao.findAvailableCount(porderCode,porderItemNo);
+    }
 }
