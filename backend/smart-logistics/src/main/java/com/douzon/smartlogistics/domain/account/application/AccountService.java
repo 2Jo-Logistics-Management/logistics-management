@@ -25,7 +25,9 @@ public class AccountService {
         accountDao.modify(accountNo, accountModifyDto);
     }
 
-    public void delete(Integer accountNo) {
-        accountDao.delete(accountNo);
+    public void delete(List<Integer> accountNos) {
+        for (Integer accountNo : accountNos) {
+            accountDao.delete(accountNo);
+        }
     }
 }

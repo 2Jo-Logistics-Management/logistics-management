@@ -76,10 +76,14 @@ public class AccountController {
     }
     
     @Operation(summary = "거래처 삭제",
-            description = "거래처 삭제에 알맞은 데이터를 받아 데이터베이스의 데이터를 삭제합니다.")
+            description = "거래처 삭제에 알맞은 데이터를 받아 데이터베이스의 데이터를 삭제합니다.",
+            responses = {@ApiResponse(responseCode = "200",
+            content = @Content(mediaType = "application/json", schema =
+            @Schema(implementation = CommonResponse.class)))})
+
     @DeleteMapping("/delete")
-    public ResponseEntity<CommonResponse<String>> delete(@RequestParam Integer accountNo) {
-        accountService.delete(accountNo);
+    public ResponseEntity<CommonResponse<String>> delete(@RequestBody List<Integer> accountNos) {
+        accountService.delete(accountNos);
 
         return ResponseEntity.status(HttpStatus.OK)
                 .contentType(MediaType.APPLICATION_JSON)
