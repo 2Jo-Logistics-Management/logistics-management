@@ -52,10 +52,10 @@ public class POrderItemDao {
 
     @Transactional
     public void modify(Integer pOrderItemNo, POrderItemModifyDto pOrderItemModifyDto) {
-        if (retrievePOrderItem(pOrderItemNo, pOrderItemModifyDto.getPOrderCode()).getPOrderState() != State.WAIT) {
+        POrderItem retrievePOrderItem = retrievePOrderItem(pOrderItemNo, pOrderItemModifyDto.getPOrderCode());
+        if (retrievePOrderItem.getPOrderState() != State.WAIT) {
             throw new UnModifiableStateException();
         }
-
         pOrderItemMapper.modify(pOrderItemNo, pOrderItemModifyDto);
     }
 

@@ -14,6 +14,7 @@ import lombok.Setter;
 public class POrderItemModifyDto {
 
     @Schema(title = "발주코드", description = "수정할 발주물품의 발주코드입니다.", example = "")
+    @JsonProperty(value = "pOrderCode")
     private String pOrderCode;
 
     @Schema(title = "품목코드", description = "수정할 발주물품의 품목코드 입니다.", example = "1")
