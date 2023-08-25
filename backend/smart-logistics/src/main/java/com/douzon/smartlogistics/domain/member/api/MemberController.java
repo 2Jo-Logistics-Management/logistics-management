@@ -39,6 +39,22 @@ public class MemberController {
     private final MemberService memberService;
     private final HttpServletRequest request;
 
+    @Operation(summary = "아이디 중복 체크",
+            description = "멤버 등록 시 아이디 중복을 체크합니다.",
+            responses = {@ApiResponse(responseCode = "200",
+                    content = @Content(mediaType = "application/json", schema =
+                    @Schema(implementation = CommonResponse.class)))})
+    @GetMapping("/checkId/{id}")
+    public ResponseEntity<CommonResponse<Boolean>> checkIdDuplication(
+            @PathVariable(value = "id") String memberId) {
+
+        boolean isDuplicate = memberService.checkId(memberId);
+
+        return ResponseEntity.status(HttpStatus.OK)
+                .contentType(MediaType.APPLICATION_JSON)
+                .body(CommonResponse.successWith(isDuplicate));
+    }
+
     @Operation(summary = "로그인",
             description = "로그인 요청을 처리하고 데이터 베이스를 조회해 결과를 반환합니다.",
             responses = {@ApiResponse(responseCode = "200",

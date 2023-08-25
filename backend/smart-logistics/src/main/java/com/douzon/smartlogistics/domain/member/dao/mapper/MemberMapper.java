@@ -25,4 +25,6 @@ public interface MemberMapper {
     void delete(Long retrieveMemberCode);
 
     Optional<Member> retrieve(Integer memberNo);
+
+    Object checkId(String memberId);
 }

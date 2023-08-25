@@ -45,4 +45,8 @@ public class MemberService {
             memberDao.delete(memberNo);
         }
     }
+
+    public boolean checkId(String memberId) {
+        return memberDao.checkId(memberId);
+    }
 }
