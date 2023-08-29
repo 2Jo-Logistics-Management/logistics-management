@@ -20,8 +20,8 @@ public class POrderInsertDto {
     @Schema(title = "발주 코드", description = "등록할 발주 코드 입니다.")
     @Nullable
     private String pOrderCode;
-    @Schema(title = "발주 날짜", description = "등록할 발주 날짜 입니다.")
-    @Nullable
+    @Schema(title = "발주 날짜", description = "등록할 발주 날짜입니다")
+    @JsonProperty(value = "pOrderDate")
     private String pOrderDate;
     @Schema(title = "담당자", description = "등록할 담당자 입니다.", example = "admin")
     private String manager;

@@ -6,6 +6,7 @@ import com.douzon.smartlogistics.domain.entity.constant.State;
 import com.douzon.smartlogistics.domain.porder.dao.POrderDao;
 import com.douzon.smartlogistics.domain.porder.dto.POrderInsertDto;
 import com.douzon.smartlogistics.domain.porder.dto.POrderModifyDto;
+import com.douzon.smartlogistics.domain.porderitem.dto.POrderItemInsertDto;
 import com.douzon.smartlogistics.global.common.util.AutoSeqGenerator;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
@@ -31,6 +32,13 @@ public class POrderService {
         String generatedSeqCode = AutoSeqGenerator.generate(SeqCode.PO);
 
         pOrderInsertDto.setPOrderCode(generatedSeqCode);
+
+        List<POrderItemInsertDto> pOrderItems = pOrderInsertDto.getPOrderItems();
+
+        for (POrderItemInsertDto pOrderItem : pOrderItems) {
+            pOrderItem.setPOrderCode(generatedSeqCode);
+        }
+
         pOrderDao.insert(pOrderInsertDto);
 
         return generatedSeqCode;

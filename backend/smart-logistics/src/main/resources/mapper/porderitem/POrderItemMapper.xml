@@ -70,13 +70,15 @@
            PORDER_COUNT,
            PORDER_PRICE,
            PORDER_ITEM_PRICE,
+           PORDER_STATE,
            RECEIVE_DEADLINE,
            CREATE_DATE,
            CREATE_IP,
            CREATE_ID,
            MODIFY_DATE,
            MODIFY_IP,
-           MODIFY_ID
+           MODIFY_ID,
+           PORDER_STATE
     FROM PORDER_ITEM
     WHERE PORDER_ITEM_NO = #{pOrderItemNo}
       AND PORDER_CODE = #{pOrderCode};
@@ -95,8 +97,21 @@
            CREATE_ID,
            MODIFY_DATE,
            MODIFY_IP,
-           MODIFY_ID
+           MODIFY_ID,
+           PORDER_STATE
     FROM PORDER_ITEM
     WHERE PORDER_CODE = #{pOrderCode};
   </select>
+    <select id="checkPOrderCode" resultType="java.lang.Boolean">
+        SELECT CASE
+                   WHEN EXISTS(
+                       SELECT 1
+                       FROM PORDER_ITEM
+                       WHERE PORDER_CODE = #{pOrderCode}
+                   ) THEN true
+                   ELSE false END
+    </select>
+    <select id="selectPkNumber" resultType="java.lang.String">
+        SELECT MAX(PORDER_ITEM_NO) FROM PORDER_ITEM WHERE PORDER_CODE = #{pOrderCode};
+    </select>
 </mapper>

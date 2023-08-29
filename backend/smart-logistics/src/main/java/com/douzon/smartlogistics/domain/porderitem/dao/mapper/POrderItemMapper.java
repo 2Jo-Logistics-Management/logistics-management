@@ -13,6 +13,8 @@ import org.springframework.transaction.annotation.Transactional;
 @Mapper
 public interface POrderItemMapper {
 
+    boolean checkPOrderCode(String pOrderCode);
+    String selectPkNumber(String pOrderCode);
     @Transactional
     void insert(@Param("pOrderItem") POrderItemInsertDto pOrderItem);
 

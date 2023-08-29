@@ -49,6 +49,7 @@ public class POrderDao {
             pOrderItem.setPOrderItemNo(pOrderItemNo.incrementAndGet());
             pOrderItem.setPOrderCode(pOrderInsertDto.getPOrderCode());
 
+            log.error("pOrderItemNo:{}", pOrderItemNo);
             pOrderItemMapper.insert(pOrderItem);
         }
     }
