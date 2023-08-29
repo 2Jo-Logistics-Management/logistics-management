@@ -77,7 +77,8 @@
            CREATE_ID,
            MODIFY_DATE,
            MODIFY_IP,
-           MODIFY_ID
+           MODIFY_ID,
+           PORDER_STATE
     FROM PORDER_ITEM
     WHERE PORDER_ITEM_NO = #{pOrderItemNo}
       AND PORDER_CODE = #{pOrderCode};
@@ -95,7 +96,8 @@
            CREATE_ID,
            MODIFY_DATE,
            MODIFY_IP,
-           MODIFY_ID
+           MODIFY_ID,
+           PORDER_STATE
     FROM PORDER_ITEM
     WHERE PORDER_CODE = #{pOrderCode};
   </select>
