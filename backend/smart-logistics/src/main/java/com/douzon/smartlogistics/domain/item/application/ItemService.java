@@ -32,7 +32,7 @@ public class ItemService {
     }
 
     @Transactional
-    public void delete(Integer itemCode) {
-        itemDao.delete(itemCode);
+    public void delete(List<Integer> itemCodes) {
+        itemDao.delete(itemCodes);
     }
 }

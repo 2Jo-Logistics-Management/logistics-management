@@ -92,8 +92,8 @@ public class ItemController {
                description = "물품 삭제에 알맞은 데이터를 받아 데이터베이스의 데이터를 삭제합니다.")
     @DeleteMapping("/delete")
     public ResponseEntity<CommonResponse<String>> delete(
-        @RequestParam @Parameter(description = "삭제할 물품의 코드") Integer itemCode) {
-        itemService.delete(itemCode);
+        @RequestBody @Parameter(description = "삭제할 물품의 코드") List<Integer> itemCodes) {
+        itemService.delete(itemCodes);
 
         return ResponseEntity.status(HttpStatus.OK)
                              .contentType(MediaType.APPLICATION_JSON)
