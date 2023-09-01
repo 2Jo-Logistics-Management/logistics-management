@@ -21,6 +21,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -75,9 +76,9 @@ public class ItemController {
                responses = @ApiResponse(responseCode = "200",
                                         content = @Content(mediaType = "application/json",
                                                            schema = @Schema(implementation = CommonResponse.class))))
-    @PatchMapping("/modify")
+    @PatchMapping("/modify/{itemCode}")
     public ResponseEntity<CommonResponse<String>> modify(
-        @RequestParam @Parameter(description = "수정할 물품의 코드") Integer itemCode,
+        @PathVariable @Parameter(description = "수정할 물품의 코드") Integer itemCode,
         @RequestBody @Valid @Parameter(description = "물품 수정을 위한 데이터") ItemModifyDto itemModifyDto) {
 
         itemService.modify(itemCode, itemModifyDto);
