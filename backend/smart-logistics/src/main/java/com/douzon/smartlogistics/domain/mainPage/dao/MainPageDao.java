@@ -18,4 +18,12 @@ public class MainPageDao {
     public List<MainPage> warehouseRankList() {
         return mainPageMapper.warehouseRankList();
     }
+
+    public List<MainPage> totalReceivesOrdersList(int year) {
+        return mainPageMapper.totalReceivesOrdersList(year);
+    }
+
+    public List<MainPage> stateValueList() {
+        return mainPageMapper.stateValueList();
+    }
 }

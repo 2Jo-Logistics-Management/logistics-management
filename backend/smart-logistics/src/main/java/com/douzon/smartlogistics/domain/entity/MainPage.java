@@ -11,4 +11,13 @@ import lombok.Setter;
 public class MainPage {
     private String warehouseName;
     private int totalCount;
+
+    private String yearMonth;
+    private int totalOrders;
+    private int totalReceives;
+
+    private int waitCount;
+    private int ingCount;
+    private int cmpCount;
+
 }

@@ -15,4 +15,12 @@ public class MainPageService {
     public List<MainPage> warehouseRankList() {
         return mainPageDao.warehouseRankList();
     }
+
+    public List<MainPage> totalReceivesOrdersList(int year) {
+        return mainPageDao.totalReceivesOrdersList(year);
+    }
+
+    public List<MainPage> stateValueList() {
+        return mainPageDao.stateValueList();
+    }
 }

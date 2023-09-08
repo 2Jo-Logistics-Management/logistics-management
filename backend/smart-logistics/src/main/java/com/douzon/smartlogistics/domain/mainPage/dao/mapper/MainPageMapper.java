@@ -9,4 +9,8 @@ import java.util.List;
 public interface MainPageMapper {
 
     List<MainPage> warehouseRankList();
+
+    List<MainPage> totalReceivesOrdersList(int year);
+
+    List<MainPage> stateValueList();
 }
