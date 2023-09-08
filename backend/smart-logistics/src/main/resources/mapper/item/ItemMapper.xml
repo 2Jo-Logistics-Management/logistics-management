@@ -25,24 +25,25 @@
 
   <!-- 물품 삭제 -->
   <delete id="delete">
-    DELETE FROM item
+    DELETE
+    FROM item
     WHERE item_code = #{itemCode}
   </delete>
 
   <!-- 물품 리스트 조회  -->
   <select id="searchItemList" resultType="com.douzon.smartlogistics.domain.entity.Item">
     SELECT
-        ITEM_CODE,
-        ITEM_NAME,
-        SPEC,
-        UNIT,
-        ITEM_PRICE,
-        CREATE_DATE,
-        CREATE_IP,
-        CREATE_ID,
-        MODIFY_DATE,
-        MODIFY_IP,
-        MODIFY_ID
+    ITEM_CODE,
+    ITEM_NAME,
+    SPEC,
+    UNIT,
+    ITEM_PRICE,
+    CREATE_DATE,
+    CREATE_IP,
+    CREATE_ID,
+    MODIFY_DATE,
+    MODIFY_IP,
+    MODIFY_ID
     FROM item
     <where>
       <!-- 검색 조건이 있는 경우에만 해당 조건을 추가 -->
@@ -66,27 +67,31 @@
 
   <!-- 물품 단건 조회 -->
   <select id="retrieve" resultType="com.douzon.smartlogistics.domain.entity.Item">
-    SELECT
-      ITEM_CODE,
-      ITEM_NAME,
-      SPEC,
-      UNIT,
-      ITEM_PRICE,
-      CREATE_DATE,
-      CREATE_IP,
-      CREATE_ID,
-      MODIFY_DATE,
-      MODIFY_IP,
-      MODIFY_ID
+    SELECT ITEM_CODE,
+           ITEM_NAME,
+           SPEC,
+           UNIT,
+           ITEM_PRICE,
+           CREATE_DATE,
+           CREATE_IP,
+           CREATE_ID,
+           MODIFY_DATE,
+           MODIFY_IP,
+           MODIFY_ID
     FROM ITEM
     WHERE ITEM_CODE = #{itemCode}
   </select>
   <!-- 물품 단건 존재여부 -->
   <select id="checkExistItem" resultType="boolean">
-    SELECT CASE WHEN EXISTS (
-      SELECT 1
-      FROM ITEM
-      WHERE ITEM_CODE = #{itemCode}
-      ) THEN true ELSE false END
+    SELECT CASE
+             WHEN EXISTS(
+               SELECT 1
+               FROM ITEM
+               WHERE ITEM_CODE = #{itemCode}
+               ) THEN true
+             ELSE false END
+  </select>
+  <select id="findLastPk" resultType="java.lang.Integer">
+    SELECT LAST_INSERT_ID();
   </select>
 </mapper>

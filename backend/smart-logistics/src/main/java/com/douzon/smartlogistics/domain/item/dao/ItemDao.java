@@ -25,8 +25,9 @@ public class ItemDao {
     }
 
     @Transactional
-    public void insert(ItemInsertDto itemInsertDto) {
+    public Integer insert(ItemInsertDto itemInsertDto) {
         itemMapper.insert(itemInsertDto);
+        return itemMapper.findLastPk();
     }
 
     @Transactional
@@ -38,10 +39,11 @@ public class ItemDao {
 
 
     @Transactional
-    public void delete(Integer itemCode) {
-        Integer retrieveItemCode = retrieveItem(itemCode);
-
-        itemMapper.delete(retrieveItemCode);
+    public void delete(List<Integer> itemCodes) {
+        for (Integer itemCode : itemCodes) {
+            Integer retrieveItemCode = retrieveItem(itemCode);
+            itemMapper.delete(retrieveItemCode);
+        }
     }
 
     private Integer retrieveItem(Integer itemCode) {

@@ -31,4 +31,6 @@ public interface ItemMapper {
     void delete(@Param("itemCode") Integer itemCode);
 
     boolean checkExistItem(Integer itemCode);
+
+    Integer findLastPk();
 }
