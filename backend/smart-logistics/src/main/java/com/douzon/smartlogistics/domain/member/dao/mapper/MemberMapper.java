@@ -16,7 +16,9 @@ public interface MemberMapper {
     boolean saveIpAddress(HashMap<String, Object> paramsMap);
 
     List<Member> searchMemberList(Integer memberNo, String memberId, String createDate);
+
     Member searchMember(Long memberNo);
+
     void insert(Member member);
 
     void modify(@Param("memberNo") Integer memberNo,

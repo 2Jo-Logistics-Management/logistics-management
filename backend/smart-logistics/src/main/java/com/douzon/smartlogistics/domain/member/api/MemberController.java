@@ -37,7 +37,6 @@ import java.util.List;
 public class MemberController {
 
     private final MemberService memberService;
-    private final HttpServletRequest request;
 
     @Operation(summary = "아이디 중복 체크",
             description = "멤버 등록 시 아이디 중복을 체크합니다.",
@@ -61,7 +60,7 @@ public class MemberController {
                     content = @Content(mediaType = "application/json", schema =
                     @Schema(implementation = CommonResponse.class)))})
     @PostMapping("/login")
-    public ResponseEntity<CommonResponse<Member>> login(@RequestBody LoginDto logintDto, HttpSession session) throws UnknownHostException {
+    public ResponseEntity<CommonResponse<Void>> login(@RequestBody LoginDto logintDto, HttpSession session) throws UnknownHostException {
 
         Member member = memberService.memberLogin(logintDto);
         if(member != null) {
@@ -75,9 +74,9 @@ public class MemberController {
                 memberService.saveIpAddress(paramsMap);
                 session.setAttribute("session",member.getMemberNo());
 
-                return ResponseEntity.ok()
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .body(CommonResponse.successWith(member));
+                return ResponseEntity.status(HttpStatus.FOUND)
+                        .header("Location","/api/member/session")
+                        .build();
             } catch (UnknownHostException e) {
                 e.printStackTrace();
             }
@@ -102,6 +101,7 @@ public class MemberController {
     }
 
 
+    @Auth
     @Operation(summary = "멤버 리스트 조회",
             description = "멤버 리스트 조회 요청을 처리하고 데이터 베이스를 조회해 리스트로 결과를 반환합니다.",
             responses = {@ApiResponse(responseCode = "200",
@@ -161,6 +161,26 @@ public class MemberController {
                 .body(CommonResponse.successWithDefaultMessage());
     }
 
+    @GetMapping("/session")
+    public ResponseEntity<CommonResponse<Member>> getMemberToSession(HttpSession session) throws UnknownHostException {
+
+        Object memberNo = session.getAttribute("session");
+        if(memberNo != null) {
+           try {
+               return ResponseEntity.status(HttpStatus.OK)
+                       .contentType(MediaType.APPLICATION_JSON)
+                       .body(CommonResponse.successWith(memberService.searchMember((Long)memberNo)));
+           } catch (Exception e) {
+               return ResponseEntity.ok()
+                       .contentType(MediaType.APPLICATION_JSON)
+                       .body(CommonResponse.error(new ErrorResponse(e.getMessage())));
+           }
+        } else {
+            return ResponseEntity.ok()
+                    .contentType(MediaType.APPLICATION_JSON)
+                    .body(CommonResponse.error(new ErrorResponse("세션이 존재하지 않습니다.")));
+        }
+    }
 }
 
 
