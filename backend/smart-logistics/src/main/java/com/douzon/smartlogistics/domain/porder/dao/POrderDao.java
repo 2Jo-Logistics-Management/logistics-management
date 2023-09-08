@@ -49,7 +49,6 @@ public class POrderDao {
             pOrderItem.setPOrderItemNo(pOrderItemNo.incrementAndGet());
             pOrderItem.setPOrderCode(pOrderInsertDto.getPOrderCode());
 
-            log.error("pOrderItemNo:{}", pOrderItemNo);
             pOrderItemMapper.insert(pOrderItem);
         }
     }
@@ -84,5 +83,9 @@ public class POrderDao {
         return pOrderMapper.retrieve(pOrderCode).orElseThrow(() -> {
             throw new NoSuchElementException("해당 발주 내역은 존재하지 않습니다.");
         });
+    }
+
+    public List<POrder> searchRecentPK(){
+        return pOrderMapper.searchPOrderPK();
     }
 }

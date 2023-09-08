@@ -71,7 +71,7 @@ public class POrderController {
                                                            schema = @Schema(implementation = CommonResponse.class))))
     @PostMapping("/insert")
     public ResponseEntity<CommonResponse<String>> insert(@RequestBody @Valid @Parameter(description = "발주 등록을 위한 데이터") POrderInsertDto pOrderInsertDto) {
-        log.error((pOrderInsertDto.toString()));
+
         String generatedSeqCode = pOrderService.insert(pOrderInsertDto);
 
         return ResponseEntity.status(HttpStatus.CREATED)
@@ -106,5 +106,18 @@ public class POrderController {
         return ResponseEntity.status(HttpStatus.CREATED)
                              .contentType(MediaType.APPLICATION_JSON)
                              .body(CommonResponse.successWithDefaultMessage());
+    }
+
+    @Operation(summary = "발주 pk번호 찾기",
+            description = "발주 pk번호를 가져와 포커싱처리를 합니다.",
+            responses = @ApiResponse(responseCode = "200"))
+    @GetMapping("/searchRecentPK")
+    public ResponseEntity<CommonResponse<List<POrder>>> searchRecentPK() {
+
+       List<POrder> searchRecentPK = pOrderService.searchRecentPK();
+
+        return ResponseEntity.status(HttpStatus.CREATED)
+                .contentType(MediaType.APPLICATION_JSON)
+                .body(CommonResponse.successWith(searchRecentPK));
     }
 }

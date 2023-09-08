@@ -47,6 +47,9 @@
         AND WAREHOUSE_NAME LIKE CONCAT(CONCAT('%', #{warehouseName}, '%'))
       </if>
     </where>
+    ORDER BY
+      SUBSTRING(WAREHOUSE_NAME, 1, 1),
+      CAST(SUBSTRING(WAREHOUSE_NAME, 3) AS UNSIGNED);
   </select>
     <select id="searchInventoryList" resultType="com.douzon.smartlogistics.domain.entity.Warehouse">
         select WAREHOUSE_STOCK_NO, WAREHOUSE_NO, RECEIVE_CODE, RECEIVE_ITEM_NO, ITEM_CODE, COUNT, REGIST_DATE, CREATE_DATE, CREATE_IP, CREATE_ID, MODIFY_DATE, MODIFY_IP, MODIFY_ID

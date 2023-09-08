@@ -38,6 +38,7 @@ public class WarehouseStockController {
     public ResponseEntity<CommonResponse<List<WarehouseStockResponseDto>>> searchWarehouseStockList(
         @RequestParam(required = false) @Parameter(description = "창고재고번호") Long warehouseStockNo,
         @RequestParam(required = false) @Parameter(description = "창고번호") Integer warehouseNo,
+        @RequestParam(required = false) @Parameter(description = "창고이름") String warehouseName,
         @RequestParam(required = false, defaultValue = "") @Parameter(description = "입고코드") String receiveCode,
         @RequestParam(required = false) @Parameter(description = "입고순번") Integer receiveItemNo,
         @RequestParam(required = false) @Parameter(description = "물품번호") Integer itemCode,
@@ -45,10 +46,8 @@ public class WarehouseStockController {
         @RequestParam(required = false, defaultValue = "") @Parameter(description = "시작일") String startDate,
         @RequestParam(required = false, defaultValue = "") @Parameter(description = "마감일") String endDate
     ) {
-
         List<WarehouseStockResponseDto> warehouseStockList = warehouseStockService.searchWarehouseStockList(warehouseStockNo,
-            warehouseNo, receiveCode, receiveItemNo, itemCode, itemName, startDate, endDate);
-
+            warehouseNo, receiveCode, receiveItemNo, itemCode, itemName, startDate, endDate, warehouseName);
         return ResponseEntity.status(HttpStatus.OK)
                              .contentType(MediaType.APPLICATION_JSON)
                              .body(CommonResponse.successWith(warehouseStockList));

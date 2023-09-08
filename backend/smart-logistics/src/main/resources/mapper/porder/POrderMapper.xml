@@ -138,4 +138,21 @@
       </if>
     </where>
   </select>
+  <select id="searchPOrderPK" resultType="com.douzon.smartlogistics.domain.entity.POrder">
+    SELECT
+      porder_code,
+      porder_date,
+      manager,
+      account_no,
+      state,
+      create_date,
+      create_ip,
+      create_id,
+      modify_date,
+      modify_ip,
+      modify_id
+    FROM PORDER
+    ORDER BY PORDER_CODE DESC
+    LIMIT 1;
+  </select>
 </mapper>

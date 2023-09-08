@@ -52,4 +52,8 @@ public class POrderService {
     public void delete(String pOrderCode) {
         pOrderDao.delete(pOrderCode);
     }
+
+    public List<POrder> searchRecentPK(){
+        return pOrderDao.searchRecentPK();
+    }
 }
