@@ -28,5 +28,6 @@ public interface WarehouseStockMapper {
         @Param("itemCode") Integer itemCode,
         @Param("itemName") String itemName,
         @Param("startDate") String startDate,
-        @Param("endDate") String endDate);
+        @Param("endDate") String endDate,
+        @Param("warehouseName") String warehouseName);
 }

@@ -23,4 +23,5 @@ public class WarehouseStockResponseDto {
     public String modifyIp;
     public String modifyId;
     public String itemName;
+    public String warehouseName;
 }

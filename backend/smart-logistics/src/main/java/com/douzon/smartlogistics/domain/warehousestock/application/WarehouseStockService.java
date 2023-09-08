@@ -13,10 +13,10 @@ public class WarehouseStockService {
 
     private final WarehouseStockDao warehouseStockDao;
     public List<WarehouseStockResponseDto> searchWarehouseStockList(Long warehouseStockNo, Integer warehouseNo,
-        String receiveCode, Integer receiveItemNo, Integer itemCode, String itemName, String startDate,
-        String endDate) {
+                                                                    String receiveCode, Integer receiveItemNo, Integer itemCode, String itemName, String startDate,
+                                                                    String endDate, String warehouseName) {
 
         return warehouseStockDao.searchWarehouseStockList(warehouseStockNo, warehouseNo, receiveCode, receiveItemNo,
-            itemCode, itemName, startDate, endDate);
+            itemCode, itemName, startDate, endDate, warehouseName);
     }
 }

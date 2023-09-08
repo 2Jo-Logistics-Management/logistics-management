@@ -7,6 +7,7 @@ import com.douzon.smartlogistics.domain.porder.dto.POrderInsertDto;
 import com.douzon.smartlogistics.domain.porderitem.dto.POrderItemInsertDto;
 import com.douzon.smartlogistics.domain.receive.dto.ReceiveInsertDto;
 import com.douzon.smartlogistics.domain.receiveitem.dto.ReceiveItemInsertDto;
+import com.douzon.smartlogistics.domain.warehouse.dto.WarehouseInsertDto;
 import org.aspectj.lang.JoinPoint;
 import org.aspectj.lang.annotation.Aspect;
 import org.aspectj.lang.annotation.Before;
@@ -81,6 +82,10 @@ public class IpInsertAspect {
             ReceiveItemInsertDto receiveItemInsertDto = (ReceiveItemInsertDto) arg;
             receiveItemInsertDto.setCreateId(getId());
             receiveItemInsertDto.setCreateIp(getIpAddress());
+        } else if (arg instanceof WarehouseInsertDto){
+            WarehouseInsertDto warehouseInsertDto = (WarehouseInsertDto) arg;
+            warehouseInsertDto.setCreateId(getId());
+            warehouseInsertDto.setCreateIp(getIpAddress());
         }
     }
 
