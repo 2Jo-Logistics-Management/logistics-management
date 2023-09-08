@@ -51,4 +51,8 @@ public class MemberDao {
             throw new NoSuchElementException("해당 멤버는 존재하지 않습니다.");
         }).getMemberNo();
     }
+
+    public boolean checkId(String memberId) {
+        return memberMapper.checkId(memberId) != null;
+    }
 }

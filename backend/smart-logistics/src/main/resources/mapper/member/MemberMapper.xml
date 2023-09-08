@@ -22,6 +22,11 @@
         AND password = #{password}
     </select>
 
+    <!--아이디 중복체크-->
+    <select id="checkId" resultType="java.lang.Boolean" parameterType="java.lang.String">
+        SELECT member_id FROM member WHERE member_id = #{memberId}
+    </select>
+
     <!--로그인시 자동 ip주소 할당-->
     <update id="saveIpAddress" parameterType="java.util.HashMap">
         UPDATE
