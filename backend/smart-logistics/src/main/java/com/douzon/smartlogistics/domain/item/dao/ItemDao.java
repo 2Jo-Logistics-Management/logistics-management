@@ -25,8 +25,9 @@ public class ItemDao {
     }
 
     @Transactional
-    public void insert(ItemInsertDto itemInsertDto) {
+    public Integer insert(ItemInsertDto itemInsertDto) {
         itemMapper.insert(itemInsertDto);
+        return itemMapper.findLastPk();
     }
 
     @Transactional

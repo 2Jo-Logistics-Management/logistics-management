@@ -5,6 +5,11 @@ import com.douzon.smartlogistics.domain.item.application.ItemService;
 import com.douzon.smartlogistics.domain.item.dto.ItemInsertDto;
 import com.douzon.smartlogistics.domain.item.dto.ItemModifyDto;
 import com.douzon.smartlogistics.global.common.response.CommonResponse;
+import com.fasterxml.jackson.annotation.JsonAlias;
+import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonKey;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonValue;
 import io.swagger.annotations.Api;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
@@ -15,11 +20,13 @@ import java.util.List;
 import javax.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.ibatis.annotations.Param;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -92,7 +99,8 @@ public class ItemController {
                description = "물품 삭제에 알맞은 데이터를 받아 데이터베이스의 데이터를 삭제합니다.")
     @DeleteMapping("/delete")
     public ResponseEntity<CommonResponse<String>> delete(
-        @RequestBody @Parameter(description = "삭제할 물품의 코드") List<Integer> itemCodes) {
+        @RequestParam @Parameter(description = "삭제할 물품의 코드") List<Integer> itemCodes) {
+
         itemService.delete(itemCodes);
 
         return ResponseEntity.status(HttpStatus.OK)
