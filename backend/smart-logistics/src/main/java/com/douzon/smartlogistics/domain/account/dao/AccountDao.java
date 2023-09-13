@@ -16,8 +16,8 @@ import java.util.NoSuchElementException;
 @Slf4j
 public class AccountDao {
     private final AccountMapper accountMapper;
-    public List<Account> searchAccountList(Integer accountNo, String accountName, String createDate, String createId) {
-        return accountMapper.searchAccountList(accountNo, accountName, createDate, createId);
+    public List<Account> searchAccountList(Integer accountCode, String accountName, String createDate, String createId) {
+        return accountMapper.searchAccountList(accountCode, accountName, createDate, createId);
     }
 
     public void insert(AccountInsertDto accountInsertDto) {
@@ -38,5 +38,9 @@ public class AccountDao {
         return accountMapper.retrieve(accountNo).orElseThrow(() -> {
             throw new NoSuchElementException("해당 거래처는 존재하지 않습니다.");
         }).getAccountNo();
+    }
+
+    public boolean checkAccountCode(String accountCode) {
+        return accountMapper.checkAccountCode(accountCode) != null;
     }
 }

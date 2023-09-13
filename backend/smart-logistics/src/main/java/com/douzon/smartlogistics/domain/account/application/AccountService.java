@@ -13,8 +13,8 @@ import java.util.List;
 @RequiredArgsConstructor
 public class AccountService {
     private final AccountDao accountDao;
-    public List<Account> searchAccoutList(Integer accountNo, String accountName, String createDate, String createId) {
-        return accountDao.searchAccountList(accountNo, accountName, createDate, createId);
+    public List<Account> searchAccoutList(Integer accountCode, String accountName, String createDate, String createId) {
+        return accountDao.searchAccountList(accountCode, accountName, createDate, createId);
     }
 
     public void insert(AccountInsertDto accountInsertDto) {
@@ -29,5 +29,9 @@ public class AccountService {
         for (Integer accountNo : accountNos) {
             accountDao.delete(accountNo);
         }
+    }
+
+    public boolean checkAccountCode(String accountCode) {
+        return accountDao.checkAccountCode(accountCode);
     }
 }
