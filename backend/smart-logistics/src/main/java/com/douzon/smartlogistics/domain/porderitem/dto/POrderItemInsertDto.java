@@ -22,7 +22,6 @@ public class POrderItemInsertDto {
     private Integer pOrderItemNo;
 
     @Schema(title = "발주 코드", description = "등록할 발주 코드 입니다.", example = "PO20230726145745750")
-    @NotBlank
     @Size(max = 20)
     @JsonProperty(value = "pOrderCode")
     private String pOrderCode;

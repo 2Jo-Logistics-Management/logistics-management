@@ -15,15 +15,19 @@ import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import java.util.List;
 import javax.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+
+
 @Api(tags = "발주물품 관리 API 명세서")
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/api/porder-item")
+@Slf4j
 public class POrderItemController {
 
     private final POrderItemService pOrderItemService;
@@ -50,7 +54,6 @@ public class POrderItemController {
                                         content = @Content(mediaType = "application/json",
                                                            schema = @Schema(implementation = CommonResponse.class))))
 
-
     @PatchMapping("/modify")
     public ResponseEntity<CommonResponse<Integer>> modify(
         @RequestParam @Parameter(description = "발주물품 번호") Integer pOrderItemNo,
@@ -62,7 +65,6 @@ public class POrderItemController {
                              .contentType(MediaType.APPLICATION_JSON)
                              .body(CommonResponse.successWith(pOrderItemNo));
     }
-
     @Operation(summary = "발주물품 상태 수정",
                description = "발주물품 상태를 알맞은 데이터를 받아 데이터베이스를 수정합니다.",
                responses = @ApiResponse(responseCode = "200",
@@ -71,7 +73,6 @@ public class POrderItemController {
     @PatchMapping("/modify/{pOrderItemNo}")
     public ResponseEntity<CommonResponse<Integer>> modifyState(@PathVariable Integer pOrderItemNo,
         @RequestBody @Valid @Parameter(description = "발주물품 상태 수정을 위한 데이터") POrderItemStateModifyDto pOrderItemStateModifyDto) {
-
         Integer modifiedPOrderItemNo = pOrderItemService.modifyState(pOrderItemNo, pOrderItemStateModifyDto);
 
         return ResponseEntity.status(HttpStatus.OK)
@@ -98,9 +99,10 @@ public class POrderItemController {
     @Operation(summary = "발주물품 삭제",
                description = "발주물품 삭제에 알맞은 데이터를 받아 데이터베이스의 데이터를 삭제합니다.",
                responses = @ApiResponse(responseCode = "200"))
+
     @DeleteMapping("/delete")
     public ResponseEntity<CommonResponse<String>> delete(
-        @RequestParam @Parameter(description = "발주물품번호") Integer pOrderItemNo,
+        @RequestParam @Parameter(description = "발주물품번호") List<Integer> pOrderItemNo,
         @RequestParam @Parameter(description = "발주코드") String pOrderCode) {
 
         pOrderItemService.delete(pOrderItemNo, pOrderCode);

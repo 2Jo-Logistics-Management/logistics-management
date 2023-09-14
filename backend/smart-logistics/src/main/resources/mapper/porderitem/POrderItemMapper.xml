@@ -51,16 +51,22 @@
     WHERE PORDER_ITEM_NO = #{pOrderItemNo}
       AND PORDER_CODE = #{pOrderItemStateModifyDto.pOrderCode}
   </update>
-  <!-- 발주 품목 수정 (상태O) -->
+
   <delete id="delete">
-    DELETE
-    FROM PORDER_ITEM
-    WHERE PORDER_CODE = #{pOrderCode}
+      DELETE
+      FROM PORDER_ITEM
+      WHERE PORDER_CODE IN
+      <foreach item="item" index="index" collection="list" open="(" separator="," close=")">
+          #{item}
+      </foreach>
   </delete>
   <delete id="deletePOrderItem">
     DELETE
     FROM PORDER_ITEM
-    WHERE PORDER_ITEM_NO = #{pOrderItemNo}
+    WHERE PORDER_ITEM_NO IN
+      <foreach item="item" index="index" collection="noIngStatePOrdersItem" open="(" separator="," close=")">
+          #{item}
+      </foreach>
     AND PORDER_CODE = #{pOrderCode}
   </delete>
   <select id="retrieve" resultType="com.douzon.smartlogistics.domain.entity.POrderItem">
@@ -113,5 +119,14 @@
     </select>
     <select id="selectPkNumber" resultType="java.lang.String">
         SELECT MAX(PORDER_ITEM_NO) FROM PORDER_ITEM WHERE PORDER_CODE = #{pOrderCode};
+    </select>
+    <select id="checkPOrderItems" resultType="com.douzon.smartlogistics.domain.entity.POrderItem">
+            SELECT *
+            FROM PORDER_ITEM
+            WHERE PORDER_ITEM_NO IN
+            <foreach item="item" index="index" collection="pOrderItemNo" open="(" separator="," close=")">
+                #{item}
+            </foreach>
+            AND PORDER_CODE = #{pOrderCode}
     </select>
 </mapper>

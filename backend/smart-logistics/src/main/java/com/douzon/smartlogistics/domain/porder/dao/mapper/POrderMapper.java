@@ -28,7 +28,7 @@ public interface POrderMapper {
                 @Param("pOrderModifyDto") POrderModifyDto pOrderModifyDto);
 
     @Transactional
-    void delete(String retrievePOrderCode);
+    void delete(List<String> pOrderCode);
 
     boolean checkExistPOrder(String pOrderCode);
 
@@ -48,4 +48,10 @@ public interface POrderMapper {
 
 
     List<POrder> searchPOrderPK();
+
+    List<POrder> checkPOrder (List<String> porderCode);;
+
+
+
+
 }

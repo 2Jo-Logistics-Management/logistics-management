@@ -41,8 +41,28 @@
   <delete id="delete">
     DELETE
     FROM PORDER
-    WHERE PORDER_CODE = #{pOrderCode}
+    WHERE PORDER_CODE IN
+    <foreach item="item" index="index" collection="list" open="(" separator="," close=")">
+      #{item}
+    </foreach>
   </delete>
+  <select id="checkPOrder" resultType="com.douzon.smartlogistics.domain.entity.POrder">
+    SELECT porder_code,
+           porder_date,
+           create_date,
+           create_ip,
+           create_id,
+           modify_date,
+           modify_ip,
+           modify_id,
+           state,
+           account_no
+    FROM PORDER
+    WHERE PORDER_CODE IN
+    <foreach item="item" index="index" collection="list" open="(" separator="," close=")">
+      #{item}
+    </foreach>
+  </select>
 
   <!-- 발주 조회 -->
   <select id="searchPOrder" resultType="com.douzon.smartlogistics.domain.entity.POrder">
@@ -79,13 +99,13 @@
         AND ACCOUNT_NO = #{accountNo}
       </if>
       <if test="startDate != null and startDate != ''">
-        <![CDATA[ AND DATE(porder_date) >= #{startDate} ]]>
+        <![CDATA[ AND DATE(PORDER_DATE) >= #{startDate} ]]>
       </if>
       <if test="endDate != null and endDate != ''">
-        <![CDATA[ AND DATE(porder_date) <= #{endDate} ]]>
+        <![CDATA[ AND DATE(PORDER_DATE) <= #{endDate} ]]>
       </if>
       <if test="pOrderDate != null and pOrderDate != ''">
-        <![CDATA[ AND DATE(porder_date) >= #{pOrderDate} ]]>
+        <![CDATA[ AND DATE(PORDER_DATE) >= #{pOrderDate} ]]>
       </if>
     </where>
   </select>
