@@ -11,8 +11,12 @@ import com.douzon.smartlogistics.domain.porderitem.dao.mapper.POrderItemMapper;
 import com.douzon.smartlogistics.domain.porderitem.dto.POrderItemInsertDto;
 import com.douzon.smartlogistics.domain.porderitem.dto.POrderItemModifyDto;
 import com.douzon.smartlogistics.domain.porderitem.dto.POrderItemStateModifyDto;
+
 import java.util.List;
 import java.util.NoSuchElementException;
+import java.util.stream.Collectors;
+
+import io.swagger.models.auth.In;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Repository;
@@ -38,8 +42,8 @@ public class POrderItemDao {
         }
 
         if (checkPOrderCode(pOrderItemInsertDto.getPOrderCode())) {
-           String maxPkNum =  pOrderItemMapper.selectPkNumber(pOrderItemInsertDto.getPOrderCode());
-           pOrderItemInsertDto.setPOrderItemNo(Integer.valueOf(maxPkNum)+1);
+            String maxPkNum = pOrderItemMapper.selectPkNumber(pOrderItemInsertDto.getPOrderCode());
+            pOrderItemInsertDto.setPOrderItemNo(Integer.valueOf(maxPkNum) + 1);
         }
 
         /*TODO
@@ -66,12 +70,21 @@ public class POrderItemDao {
     }
 
     @Transactional
-    public void delete(Integer pOrderItemNo, String pOrderCode) {
-        if (retrievePOrderItem(pOrderItemNo, pOrderCode).getPOrderState() != State.ING) {
-            pOrderItemMapper.deletePOrderItem(pOrderItemNo, pOrderCode);
+    public void delete(List<Integer> pOrderItemNo, String pOrderCode) {
+        List<POrderItem> checkPOrderItems = getPOrderItems(pOrderItemNo, pOrderCode);
+        if (checkPOrderItems.isEmpty()) {
+            throw new NoSuchElementException("해당 발주 물품 내역이 존재하지 않습니다");
         }
+        List<Integer> noIngStatePOrdersItems = checkPOrderItems.stream()
+                .filter(i -> i.getPOrderState() != State.ING)
+                .map(POrderItem::getPOrderItemNo)
+                .collect(Collectors.toList());
 
-        throw new InvalidStateException();
+        if (noIngStatePOrdersItems.isEmpty()) {
+            throw new InvalidStateException();
+        }
+        pOrderItemMapper.deletePOrderItem(noIngStatePOrdersItems, pOrderCode);
+
     }
 
     @Transactional
@@ -93,9 +106,9 @@ public class POrderItemDao {
         int totalPOrderItems = pOrderItems.size();
 
         long countCmpNum = pOrderItems.stream()
-                                      .map(POrderItem::getPOrderState)
-                                      .takeWhile(state -> state == State.CMP)
-                                      .count();
+                .map(POrderItem::getPOrderState)
+                .takeWhile(state -> state == State.CMP)
+                .count();
 
         if (totalPOrderItems == countCmpNum) {
             pOrderMapper.modifyStateToCmp(modifiedPOrderItem.getPOrderCode(), pOrderItemStateModifyDto);
@@ -112,19 +125,24 @@ public class POrderItemDao {
         return retrievePOrderItem;
     }
 
+    private List<POrderItem> getPOrderItems(List<Integer> pOrderItemNo, String pOrderCode) {
+        return pOrderItemMapper.checkPOrderItems(pOrderItemNo, pOrderCode);
+
+    }
+
     private POrderItem retrievePOrderItem(Integer pOrderItemNo, String pOrderCode) {
         return pOrderItemMapper.retrieve(pOrderItemNo, pOrderCode).orElseThrow(
-            () -> {
-                throw new NoSuchElementException("해당 발주 물품 데이터는 존재하지 않습니다.");
-            }
+                () -> {
+                    throw new NoSuchElementException("해당 발주 물품 데이터는 존재하지 않습니다.");
+                }
         );
     }
 
     private POrder retrievePOrder(String pOrderCode) {
         return pOrderMapper.retrieve(pOrderCode).orElseThrow(
-            () -> {
-                throw new NoSuchElementException("해당 발주 데이터는 존재하지 않습니다.");
-            }
+                () -> {
+                    throw new NoSuchElementException("해당 발주 데이터는 존재하지 않습니다.");
+                }
         );
     }
 
@@ -135,7 +153,8 @@ public class POrderItemDao {
     private boolean checkExistPOrder(String pOrderCode) {
         return pOrderMapper.checkExistPOrder(pOrderCode);
     }
-    private boolean checkPOrderCode(String pOrderCode){
+
+    private boolean checkPOrderCode(String pOrderCode) {
         return pOrderItemMapper.checkPOrderCode(pOrderCode);
     }
 }

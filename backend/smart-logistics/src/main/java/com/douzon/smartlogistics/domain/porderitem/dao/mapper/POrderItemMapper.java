@@ -19,7 +19,7 @@ public interface POrderItemMapper {
     void insert(@Param("pOrderItem") POrderItemInsertDto pOrderItem);
 
     @Transactional
-    void delete(String retrievePOrderCode);
+    void delete(List<String> pOrderCode);
 
     @Transactional
     void modify(@Param("pOrderItemNo") Integer pOrderItemNo,
@@ -31,10 +31,14 @@ public interface POrderItemMapper {
     List<POrderItem> searchPOrderItemList(@Param("pOrderCode") String pOrderCode);
 
     @Transactional
-    void deletePOrderItem(@Param("pOrderItemNo") Integer pOrderItemNo,
+    void deletePOrderItem(@Param("noIngStatePOrdersItem") List<Integer> noIngStatePOrdersItems,
         @Param("pOrderCode") String pOrderCode);
 
     @Transactional
     void modifyState(@Param("pOrderItemNo") Integer pOrderItemNo,
         @Param("pOrderItemStateModifyDto") POrderItemStateModifyDto pOrderItemStateModifyDto);
+
+    List<POrderItem> checkPOrderItems(@Param("pOrderItemNo") List<Integer> pOrderItemNo,
+                                      @Param("pOrderCode") String pOrderCode);
+
 }

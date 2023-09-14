@@ -33,7 +33,7 @@ public class POrderItemService {
     }
 
     @Transactional
-    public void delete(Integer pOrderItemNo, String pOrderCode) {
+    public void delete(List<Integer> pOrderItemNo, String pOrderCode) {
         pOrderItemDao.delete(pOrderItemNo, pOrderCode);
     }
 
