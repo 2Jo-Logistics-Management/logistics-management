@@ -4,7 +4,7 @@ import com.douzon.smartlogistics.global.common.exception.auth.AuthException;
 import com.douzon.smartlogistics.global.common.response.CommonResponse;
 import com.douzon.smartlogistics.global.common.response.ErrorResponse;
 import com.douzon.smartlogistics.global.common.response.ValidationBindingResultErrorResponse;
-
+import java.net.UnknownHostException;
 import java.nio.charset.StandardCharsets;
 import java.util.Objects;
 import lombok.extern.slf4j.Slf4j;
@@ -81,14 +81,13 @@ public class GlobalControllerAdvice {
     }
 
     @ResponseStatus(HttpStatus.UNAUTHORIZED)
-    @ExceptionHandler(AuthException.class)
-    public ResponseEntity<String> authException(AuthException e) {
-        HttpHeaders headers = new HttpHeaders();
-        headers.setContentType(new MediaType(MediaType.TEXT_PLAIN, StandardCharsets.UTF_8));
+    @ExceptionHandler({AuthException.class, UnknownHostException.class})
+    public ResponseEntity<CommonResponse<String>> authException(AuthException e) {
+        log.error("Auth Exception: {}", e.getMessage());
 
         return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
-                .headers(headers)
-                .body("인증오류: " + e.getLocalizedMessage());
+                             .contentType(MediaType.APPLICATION_JSON)
+                             .body(CommonResponse.error(new ErrorResponse(e.getMessage())));
     }
 
     /**

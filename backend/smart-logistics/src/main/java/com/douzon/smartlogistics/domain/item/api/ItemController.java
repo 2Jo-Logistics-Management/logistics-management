@@ -69,13 +69,13 @@ public class ItemController {
                responses = @ApiResponse(responseCode = "201", content = @Content(mediaType = "application/json",
                                                                                  schema = @Schema(implementation = CommonResponse.class))))
     @PostMapping("/insert")
-    public ResponseEntity<CommonResponse<String>> insert(
+    public ResponseEntity<CommonResponse<Integer>> insert(
         @RequestBody @Valid @Parameter(name = "itemInsertDto", description = "물품 등록을 위한 데이터", required = true) ItemInsertDto itemInsertDto) {
-        itemService.insert(itemInsertDto);
+        Integer insertedItemCode = itemService.insert(itemInsertDto);
 
         return ResponseEntity.status(HttpStatus.CREATED)
                              .contentType(MediaType.APPLICATION_JSON)
-                             .body(CommonResponse.successWithDefaultMessage());
+                             .body(CommonResponse.successWith(insertedItemCode));
     }
 
     @Operation(summary = "물품 수정",
