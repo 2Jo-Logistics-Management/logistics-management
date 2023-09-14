@@ -40,16 +40,17 @@ public class MemberDao {
         memberMapper.modify(memberNo, member);
     }
 
-    public void delete(Integer memberNo) {
-        Long retrieveMemberCode = retrieveMember(memberNo);
-
-        memberMapper.delete(retrieveMemberCode);
+    public void delete(List<Integer> memberNos) {
+        retrieveItem(memberNos);
+        memberMapper.delete(memberNos);
     }
 
-    private Long retrieveMember(Integer memberNo) {
-        return memberMapper.retrieve(memberNo).orElseThrow(() -> {
-            throw new NoSuchElementException("해당 멤버는 존재하지 않습니다.");
-        }).getMemberNo();
+    private void retrieveItem(List<Integer> memberNos) {
+        for (Integer item:memberNos) {
+            memberMapper.retrieve(item).orElseThrow((() -> {
+                throw new NoSuchElementException("해당 멤버는 존재하지 않습니다.");
+            }));
+        }
     }
 
     public boolean checkId(String memberId) {

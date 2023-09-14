@@ -3,14 +3,20 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
 <mapper namespace="com.douzon.smartlogistics.domain.account.dao.mapper.AccountMapper">
+
+    <!--거래처코드 중복체크-->
+    <select id="checkAccountCode" resultType="java.lang.Boolean" parameterType="java.lang.String">
+        SELECT account_code FROM account WHERE account_code = #{accountCode}
+    </select>
+
     <select id="searchAccountList" resultType="com.douzon.smartlogistics.domain.entity.Account">
         SELECT
             *
         FROM
             ACCOUNT
         <where>
-            <if test="accountNo != null">
-                AND ACCOUNT_NO LIKE concat(CONCAT('%', #{accountNo}), '%')
+            <if test="accountCode != null">
+                AND ACCOUNT_CODE LIKE concat(CONCAT('%', #{accountCode}), '%')
             </if>
             <if test="accountName != null">
                 AND ACCOUNT_NAME LIKE concat(CONCAT('%', #{accountName}), '%')
@@ -21,18 +27,21 @@
             <if test="createId != null and createId != ''">
                 AND create_id LIKE CONCAT('%', #{createId}, '%')
             </if>
+
+
         </where>
     </select>
 
     <insert id="insert">
-        INSERT INTO account (ACCOUNT_NAME, REPRESENTATIVE, CONTACT_NUMBER, BUSINESS_NUMBER, CREATE_IP, CREATE_ID)
+        INSERT INTO account (ACCOUNT_CODE, ACCOUNT_NAME, REPRESENTATIVE, CONTACT_NUMBER, BUSINESS_NUMBER, CREATE_IP, CREATE_ID)
 
-        VALUES (#{accountName}, #{representative}, #{contactNumber}, #{businessNumber}, #{createIp}, #{createId})
+        VALUES (#{accountCode}, #{accountName}, #{representative}, #{contactNumber}, #{businessNumber}, #{createIp}, #{createId})
     </insert>
 
     <update id="modify" parameterType="com.douzon.smartlogistics.domain.account.dto.AccountModifyDto">
     UPDATE  account
     <set>
+        <if test="accountModifyDto.accountCode != null">ACCOUNT_CODE = #{accountModifyDto.accountCode},</if>
         <if test="accountModifyDto.accountName != null">ACCOUNT_NAME = #{accountModifyDto.accountName},</if>
         <if test="accountModifyDto.representative != null">REPRESENTATIVE = #{accountModifyDto.representative},</if>
         <if test="accountModifyDto.contactNumber != null">CONTACT_NUMBER = #{accountModifyDto.contactNumber},</if>
@@ -44,24 +53,17 @@
     WHERE ACCOUNT_NO = #{accountNo}
     </update>
 
-    <delete id="delete" parameterType="Long">
+    <delete id="delete" parameterType="java.util.ArrayList">
         DELETE FROM account
-        WHERE ACCOUNT_NO = #{account_no}
+        WHERE ACCOUNT_NO IN
+        <foreach item="item" index="index" collection="accountNos" open="(" separator="," close=")">
+            #{item}
+        </foreach>
     </delete>
 
-    <select id="retrieve" resultType="com.douzon.smartlogistics.domain.entity.Account">
+    <select id="retrieve" resultType="Long">
         SELECT
-            ACCOUNT_NO,
-            ACCOUNT_NAME,
-            REPRESENTATIVE,
-            CONTACT_NUMBER,
-            BUSINESS_NUMBER,
-            CREATE_DATE,
-            CREATE_IP,
-            CREATE_ID,
-            MODIFY_DATE,
-            MODIFY_IP,
-            MODIFY_ID
+            ACCOUNT_NO
         FROM account
         WHERE ACCOUNT_NO = #{account_no}
     </select>

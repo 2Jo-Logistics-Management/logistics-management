@@ -24,7 +24,7 @@ public interface MemberMapper {
     void modify(@Param("memberNo") Integer memberNo,
                 @Param("member") Member member);
 
-    void delete(Long retrieveMemberCode);
+    void delete(List<Integer> memberNos);
 
     Optional<Member> retrieve(Integer memberNo);
 

@@ -14,7 +14,7 @@ import java.util.Optional;
 @Mapper
 public interface AccountMapper {
     List<Account> searchAccountList(
-            @Param("accountNo") Integer accountNo,
+            @Param("accountCode") Integer accountCode,
             @Param("accountName") String accountName,
             @Param("createDate") String createDate,
             @Param("createId") String createId);
@@ -24,7 +24,9 @@ public interface AccountMapper {
     void modify(@Param("accountNo") Integer accountNo,
                 @Param("accountModifyDto") AccountModifyDto accountModifyDto);
 
-    void delete(Long retrieveItemCode);
+    void delete(List<Integer> accountNos);
 
     Optional<Account> retrieve(Integer accountNo);
+
+    Object checkAccountCode(String accountCode);
 }

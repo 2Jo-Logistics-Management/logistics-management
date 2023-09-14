@@ -6,12 +6,16 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
 @NoArgsConstructor
 @Getter
 @Setter
 public class AccountModifyDto {
+    @Schema(title = "거래처코드", description = "수정할 거래처코드 입니다.", example = "테스트 수정 거래처코드")
+    @NotNull(message = "Value must not be null")
+    private Long accountCode;
     @Schema(title = "거래처 이름", description = "수정할 거래처의 이름 입니다.", example = "테스트 수정 거래처")
     @NotBlank
     @Size(max = 20)

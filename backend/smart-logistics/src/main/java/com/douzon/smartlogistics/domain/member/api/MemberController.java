@@ -118,6 +118,30 @@ public class MemberController {
                 .contentType(MediaType.APPLICATION_JSON)
                 .body(CommonResponse.successWith(memberList));
     }
+
+    @Auth
+    @Operation(summary = "멤버 상세 정보 조회",
+            description = "멤버의 상세 정보를 조회합니다.",
+            responses = {@ApiResponse(responseCode = "200",
+                    content = @Content(mediaType = "application/json", schema =
+                    @Schema(implementation = CommonResponse.class)))})
+    @GetMapping("/detail/{memberNo}")
+    public ResponseEntity<CommonResponse<Member>> getMemberDetail(
+            @PathVariable(value = "memberNo") Long memberNo) {
+        Member memberDetail = memberService.searchMember(memberNo); // 상세 정보 조회 서비스 메서드 호출
+        if (memberDetail != null) {
+            return ResponseEntity.status(HttpStatus.OK)
+                    .contentType(MediaType.APPLICATION_JSON)
+                    .body(CommonResponse.successWith(memberDetail));
+        } else {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND)
+                    .contentType(MediaType.APPLICATION_JSON)
+                    .body(CommonResponse.error(new ErrorResponse("멤버를 찾을 수 없습니다.")));
+        }
+    }
+
+
+
     @Auth
     @Operation(summary = "멤버 등록",
             description = "멤버 등록에 알맞은 데이터를 받아 데이터베이스에 삽입합니다.",

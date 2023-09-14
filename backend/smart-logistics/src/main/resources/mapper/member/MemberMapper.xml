@@ -95,18 +95,15 @@
 
     <delete id="delete" parameterType="Long">
         DELETE FROM member
-        WHERE member_no = #{member_no}
+        WHERE member_no IN
+        <foreach item="item" index="index" collection="memberNos" open="(" separator="," close=")">
+            #{item}
+        </foreach>
     </delete>
 
-    <select id="retrieve" resultType="com.douzon.smartlogistics.domain.entity.Member">
+    <select id="retrieve" resultType="Long">
         SELECT
-            member_no,
-            member_name,
-            member_id,
-            password,
-            member_role,
-            create_date,
-            ipaddress
+            member_no
         FROM member
         WHERE member_no = #{member_no}
     </select>

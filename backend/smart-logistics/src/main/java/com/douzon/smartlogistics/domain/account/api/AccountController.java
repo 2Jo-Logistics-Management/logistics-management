@@ -29,6 +29,22 @@ public class AccountController {
 
     private final AccountService accountService;
 
+    @Operation(summary = "거래처코드 중복 체크",
+            description = "멤버 등록 시 아이디 중복을 체크합니다.",
+            responses = {@ApiResponse(responseCode = "200",
+                    content = @Content(mediaType = "application/json", schema =
+                    @Schema(implementation = CommonResponse.class)))})
+    @GetMapping("/checkAccountCode/{accountCode}")
+    public ResponseEntity<CommonResponse<Boolean>> checkIdDuplication(
+            @PathVariable(value = "accountCode") String accountCode) {
+
+        boolean isDuplicate = accountService.checkAccountCode(accountCode);
+
+        return ResponseEntity.status(HttpStatus.OK)
+                .contentType(MediaType.APPLICATION_JSON)
+                .body(CommonResponse.successWith(isDuplicate));
+    }
+
     @Operation(summary = "거래처 리스트 조회",
             description = "거래처 리스트 조회 요청을 처리하고 데이터 베이스를 조회해 리스트로 결과를 반환합니다.",
             responses = {@ApiResponse(responseCode = "200",
@@ -36,12 +52,12 @@ public class AccountController {
                     @Schema(implementation = CommonResponse.class)))})
     @GetMapping("/list")
     public ResponseEntity<CommonResponse<List<Account>>> searchAccountList(
-        @RequestParam(required = false) Integer accountNo,
+        @RequestParam(required = false) Integer accountCode,
         @RequestParam(required = false, defaultValue = "") String accountName,
         @RequestParam(required = false, defaultValue = "") String createDate,
         @RequestParam(required = false, defaultValue = "") String createId) {
 
-        List<Account> accoutList = accountService.searchAccoutList(accountNo, accountName, createDate, createId );
+        List<Account> accoutList = accountService.searchAccoutList(accountCode, accountName, createDate, createId );
         return ResponseEntity.status(HttpStatus.OK)
                 .contentType(MediaType.APPLICATION_JSON)
                 .body(CommonResponse.successWith(accoutList));
