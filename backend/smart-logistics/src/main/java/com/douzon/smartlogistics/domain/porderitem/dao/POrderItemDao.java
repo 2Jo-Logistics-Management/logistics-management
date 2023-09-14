@@ -51,7 +51,6 @@ public class POrderItemDao {
 
     public List<POrderItem> searchPOrderItemList(String pOrderCode) {
         POrder retrievePOrder = retrievePOrder(pOrderCode);
-
         return pOrderItemMapper.searchPOrderItemList(retrievePOrder.getPOrderCode());
     }
 
@@ -124,5 +123,14 @@ public class POrderItemDao {
 
     private boolean checkExistPOrder(String pOrderCode) {
         return pOrderMapper.checkExistPOrder(pOrderCode);
+    }
+
+    public int searchPOrderItemRemainder(String porderCode, Integer porderItemNo) {
+        return pOrderItemMapper.searchPOrderItemRemainder(porderCode,porderItemNo);
+    }
+
+    public List<POrderItem> exceptSearchCmpPorderItemList(String pOrderCode) {
+        POrder retrievePOrder = retrievePOrder(pOrderCode);
+        return pOrderItemMapper.exceptSearchCmpPorderItemList(retrievePOrder.getPOrderCode());
     }
 }

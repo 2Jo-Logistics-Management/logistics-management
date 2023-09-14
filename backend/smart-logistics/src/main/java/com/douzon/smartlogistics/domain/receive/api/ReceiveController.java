@@ -1,10 +1,6 @@
 package com.douzon.smartlogistics.domain.receive.api;
 
-import com.douzon.smartlogistics.domain.entity.POrder;
-import com.douzon.smartlogistics.domain.entity.POrderItem;
 import com.douzon.smartlogistics.domain.entity.Receive;
-import com.douzon.smartlogistics.domain.receive.dto.ReceiveListDto;
-//import com.douzon.smartlogistics.domain.receive.dto.CmpPOrderDto;
 import com.douzon.smartlogistics.domain.receive.application.ReceiveService;
 import com.douzon.smartlogistics.domain.receive.dto.ReceiveInsertDto;
 import com.douzon.smartlogistics.domain.receive.dto.ReceiveModifyDto;
@@ -58,14 +54,11 @@ public class ReceiveController {
             @RequestParam(defaultValue = "1") @Parameter(description = "페이지 번호") int pageNum,
             @RequestParam(defaultValue = "50") @Parameter(description = "페이지 크기") int pageSize
     ) {
-        log.info("ReceiveControllerListIN");
         PageHelper.startPage(pageNum, pageSize);
-
         List<Receive> receiveList = receiveService.findReceive(
                 receiveCode, manager, createIp, createId, startDate, endDate);
         PageInfo<Receive> pageInfo = new PageInfo<>(receiveList);
 
-        log.info("ReceiveControllerListOUT");
         return ResponseEntity.status(HttpStatus.OK)
                 .contentType(MediaType.APPLICATION_JSON)
                 .body(CommonResponse.successWith(receiveList));
@@ -77,11 +70,10 @@ public class ReceiveController {
                             schema = @Schema(implementation = CommonResponse.class))))
     @PostMapping("/insert")
     public ResponseEntity<CommonResponse<String>> insertReceive(@RequestBody @Valid @Parameter(description = "입고 등록을 위한 데이터") ReceiveInsertDto receiveInsertDto) {
-        receiveService.insertReceive(receiveInsertDto);
-
+        String receiveCode = receiveService.insertReceive(receiveInsertDto);
         return ResponseEntity.status(HttpStatus.CREATED)
                 .contentType(MediaType.APPLICATION_JSON)
-                .body(CommonResponse.successWithDefaultMessage());
+                .body(CommonResponse.successWith(receiveCode));
     }
 
     @Operation(summary = "입고 삭제",
@@ -103,24 +95,12 @@ public class ReceiveController {
                             schema = @Schema(implementation = CommonResponse.class))))
     @PatchMapping("/modify")
     public ResponseEntity<CommonResponse<String>> modifyReceive(
-            @RequestParam @Parameter(description = "수정할 입고의 코드") String receiveCode,
-            @RequestBody @Valid @Parameter(description = "입고 수정을 위한 데이터") ReceiveModifyDto receiveModifyDto) {
-
-        receiveService.modifyReceive(receiveCode, receiveModifyDto);
-
-        return ResponseEntity.status(HttpStatus.OK)
-                .contentType(MediaType.APPLICATION_JSON)
-                .body(CommonResponse.successWithDefaultMessage());
-    }
-
-    @GetMapping("/availableCount")
-    public ResponseEntity<CommonResponse<Integer>> findAvailableCount(
-            @RequestParam @Valid @Parameter(description = "기준 발주번호") String porderCode,
-            @RequestParam @Valid @Parameter(description = "기준 발주순번") Integer porderItemNo
+            @RequestBody @Valid @Parameter(description = "입고 수정을 위한 데이터") ReceiveModifyDto receiveModifyDto
     ){
-        int availableCount = receiveService.findAvailableCount(porderCode,porderItemNo);;
+        String receiveCode = receiveService.modifyReceive(receiveModifyDto);
+
         return ResponseEntity.status(HttpStatus.OK)
                 .contentType(MediaType.APPLICATION_JSON)
-                .body(CommonResponse.successWith(availableCount));
+                .body(CommonResponse.successWith(receiveCode));
     }
 }

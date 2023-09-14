@@ -35,4 +35,22 @@ public interface POrderItemMapper {
     @Transactional
     void modifyState(@Param("pOrderItemNo") Integer pOrderItemNo,
         @Param("pOrderItemStateModifyDto") POrderItemStateModifyDto pOrderItemStateModifyDto);
+
+    int searchPOrderItemRemainder(
+            @Param("porderCode") String porderCode,
+            @Param("porderItemNo") Integer porderItemNo
+    );
+
+    Double pOrderItemCount(
+            @Param("porderCode") String porderCode,
+            @Param("porderItemNo") Integer porderItemNo
+    );
+
+    Integer searchPOrderItemStateCount(
+            @Param("porderCode") String porderCode
+    );
+
+    List<POrderItem> exceptSearchCmpPorderItemList(
+            @Param("pOrderCode") String pOrderCode
+    );
 }

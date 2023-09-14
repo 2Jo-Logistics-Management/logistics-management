@@ -40,7 +40,7 @@ public interface POrderMapper {
     void modifyStateToIng(@Param("pOrderCode") String pOrderCode,
                           @Param("pOrderItemStateModifyDto") POrderItemStateModifyDto pOrderItemStateModifyDto);
 
-    List<POrder> exeptSearchCmpPOrder(@Param("pOrderCode") String pOrderCode,
+    List<POrder> exceptSearchCmpPOrder(@Param("pOrderCode") String pOrderCode,
                                       @Param("manager") String manager,
                                       @Param("accountNo") Integer accountNo,
                                       @Param("startDate") String startDate,

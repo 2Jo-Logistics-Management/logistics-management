@@ -28,7 +28,10 @@ public class POrderItemService {
         pOrderItemDao.modify(pOrderItemNo, pOrderItemModifyDto);
     }
 
-    public List<POrderItem> searchPOrderItemList(String pOrderCode) {
+    public List<POrderItem> searchPOrderItemList(String pOrderCode, String type) {
+        if("receive".equals(type)) {
+            return pOrderItemDao.exceptSearchCmpPorderItemList(pOrderCode);
+        }
         return pOrderItemDao.searchPOrderItemList(pOrderCode);
     }
 
@@ -44,5 +47,10 @@ public class POrderItemService {
         }
 
         return pOrderItemDao.modifyStateToCmp(pOrderItemNo, pOrderItemStateModifyDto);
+    }
+
+
+    public int searchPOrderItemRemainder(String porderCode, Integer porderItemNo) {
+        return pOrderItemDao.searchPOrderItemRemainder(porderCode,porderItemNo);
     }
 }

@@ -22,8 +22,8 @@
   <!-- 발주 완료 -->
   <update id="modifyStateToCmp">
     UPDATE PORDER
-    SET MODIFY_IP = #{pOrderModifyDto.modifyIp},
-        MODIFY_ID = #{pOrderModifyDto.modifyId},
+    SET MODIFY_IP = #{pOrderItemStateModifyDto.modifyIp},
+        MODIFY_ID = #{pOrderItemStateModifyDto.modifyId},
         STATE     = 'CMP'
     WHERE PORDER_CODE = #{pOrderCode}
   </update>
@@ -31,8 +31,8 @@
   <!-- 발주 진행 -->
   <update id="modifyStateToIng">
     UPDATE PORDER
-    SET MODIFY_IP = #{pOrderModifyDto.modifyIp},
-        MODIFY_ID = #{pOrderModifyDto.modifyId},
+    SET MODIFY_IP = #{pOrderItemStateModifyDto.modifyIp},
+        MODIFY_ID = #{pOrderItemStateModifyDto.modifyId},
         STATE     = 'ING'
     WHERE PORDER_CODE = #{pOrderCode}
   </update>
@@ -112,7 +112,7 @@
                ) THEN true
              ELSE false END
   </select>
-  <select id="exeptSearchCmpPOrder" resultType="com.douzon.smartlogistics.domain.entity.POrder">
+  <select id="exceptSearchCmpPOrder" resultType="com.douzon.smartlogistics.domain.entity.POrder">
     SELECT PORDER_CODE, PORDER_DATE, MANAGER, ACCOUNT_NO, STATE, CREATE_DATE, CREATE_IP, CREATE_ID, MODIFY_DATE, MODIFY_IP, MODIFY_ID
     FROM PORDER
     <where>
@@ -138,4 +138,31 @@
       </if>
     </where>
   </select>
+
+  <select id="searchWarehouseStockList" resultType="com.douzon.smartlogistics.domain.warehousestock.dto.WarehouseStockResponseDto">
+    SELECT WS.WAREHOUSE_STOCK_NO,
+    WS.WAREHOUSE_NO,
+    WS.RECEIVE_CODE,
+    WS.RECEIVE_ITEM_NO,
+    WS.ITEM_CODE,
+    WS.COUNT,
+    WS.REGIST_DATE,
+    WS.CREATE_DATE,
+    WS.CREATE_IP,
+    WS.CREATE_ID,
+    WS.MODIFY_DATE,
+    WS.MODIFY_IP,
+    WS.MODIFY_ID,
+    I.ITEM_NAME,
+    W.WAREHOUSE_NAME
+    FROM WAREHOUSE_STOCK WS
+    INNER JOIN ITEM I ON WS.ITEM_CODE = I.ITEM_CODE
+    INNER JOIN WAREHOUSE W ON WS.WAREHOUSE_NO = W.WAREHOUSE_NO
+    <where>
+      <if test="itemName != null and itemName != ''">
+        AND I.ITEM_NAME LIKE CONCAT(CONCAT('%', #{itemName}), '%')
+      </if>
+    </where>
+  </select>
+
 </mapper>

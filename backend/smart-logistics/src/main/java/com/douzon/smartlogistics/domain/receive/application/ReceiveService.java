@@ -1,9 +1,5 @@
 package com.douzon.smartlogistics.domain.receive.application;
-
-import com.douzon.smartlogistics.domain.entity.POrder;
-import com.douzon.smartlogistics.domain.entity.POrderItem;
 import com.douzon.smartlogistics.domain.entity.Receive;
-import com.douzon.smartlogistics.domain.receive.dto.ReceiveListDto;
 import com.douzon.smartlogistics.domain.entity.constant.SeqCode;
 import com.douzon.smartlogistics.domain.receive.dao.ReceiveDao;
 import com.douzon.smartlogistics.domain.receive.dto.ReceiveInsertDto;
@@ -37,10 +33,10 @@ public class ReceiveService {
     }
 
     @Transactional
-    public void insertReceive(ReceiveInsertDto receiveInsertDto){
+    public String insertReceive(ReceiveInsertDto receiveInsertDto){
         receiveInsertDto.setReceiveCode(AutoSeqGenerator.generate(SeqCode.RV));
         receiveDao.insertReceive(receiveInsertDto);
-
+        return receiveInsertDto.getReceiveCode();
     }
 
     @Transactional
@@ -52,12 +48,8 @@ public class ReceiveService {
     }
 
     @Transactional
-    public void modifyReceive(String receiveCode, ReceiveModifyDto receiveModifyDto) {
-        receiveDao.modifyReceive(receiveCode, receiveModifyDto);
-    }
-
-
-    public int findAvailableCount(String porderCode, Integer porderItemNo) {
-        return receiveDao.findAvailableCount(porderCode,porderItemNo);
+    public String modifyReceive(ReceiveModifyDto receiveModifyDto) {
+        receiveDao.modifyReceive(receiveModifyDto);
+        return receiveModifyDto.getReceiveCode();
     }
 }

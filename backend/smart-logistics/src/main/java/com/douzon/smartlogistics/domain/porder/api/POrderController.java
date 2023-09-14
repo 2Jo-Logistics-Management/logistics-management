@@ -55,7 +55,6 @@ public class POrderController {
         @RequestParam(required = false, defaultValue = "") @Parameter(description = "발주 날짜") String pOrderDate,
         @RequestParam(required = false, defaultValue = "") @Parameter(description = "요청페이지")  String type
     ) {
-
         List<POrder> pOrderList = pOrderService.searchPOrder(pOrderCode, manager, state, createId, createIp, accountNo,
             startDate, endDate, pOrderDate, type);
 

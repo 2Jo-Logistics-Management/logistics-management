@@ -28,7 +28,7 @@ public class POrderDao {
         Integer accountNo, String startDate, String endDate, String pOrderDate, String type) {
 
         if("receive".equals(type)) {
-            return pOrderMapper.exeptSearchCmpPOrder(pOrderCode, manager, accountNo, startDate, endDate);
+            return pOrderMapper.exceptSearchCmpPOrder(pOrderCode, manager, accountNo, startDate, endDate);
         }
 
         return pOrderMapper.searchPOrder(pOrderCode, manager, createId, createIp, accountNo, state,
