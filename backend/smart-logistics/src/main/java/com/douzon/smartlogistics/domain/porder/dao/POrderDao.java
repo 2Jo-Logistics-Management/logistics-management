@@ -8,9 +8,13 @@ import com.douzon.smartlogistics.domain.porder.dto.POrderModifyDto;
 import com.douzon.smartlogistics.domain.porder.exception.UnModifiableStateException;
 import com.douzon.smartlogistics.domain.porderitem.dao.mapper.POrderItemMapper;
 import com.douzon.smartlogistics.domain.porderitem.dto.POrderItemInsertDto;
+
+import java.util.Collections;
 import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.concurrent.atomic.AtomicInteger;
+import java.util.stream.Collectors;
+
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Repository;
@@ -25,14 +29,14 @@ public class POrderDao {
     private final POrderItemMapper pOrderItemMapper;
 
     public List<POrder> searchPOrder(String pOrderCode, String manager, State state, String createId, String createIp,
-        Integer accountNo, String startDate, String endDate, String pOrderDate, String type) {
+                                     Integer accountNo, String startDate, String endDate, String pOrderDate, String type) {
 
-        if("receive".equals(type)) {
+        if ("receive".equals(type)) {
             return pOrderMapper.exeptSearchCmpPOrder(pOrderCode, manager, accountNo, startDate, endDate);
         }
 
         return pOrderMapper.searchPOrder(pOrderCode, manager, createId, createIp, accountNo, state,
-            startDate, endDate, pOrderDate);
+                startDate, endDate, pOrderDate);
     }
 
     @Transactional
@@ -67,17 +71,30 @@ public class POrderDao {
     }
 
     @Transactional
-    public void delete(String pOrderCode) {
-        POrder retrievePOrder = retrievePOrder(pOrderCode);
+    public void delete(List<String> pOrderCodes) {
+        List<POrder> retrievePOrders = getPOrders(pOrderCodes);
 
-        if (retrievePOrder.getState() == State.WAIT) {
-            pOrderItemMapper.delete(retrievePOrder.getPOrderCode());
-            pOrderMapper.delete(retrievePOrder.getPOrderCode());
-            return;
+        if (retrievePOrders.isEmpty()) {
+            throw new NoSuchElementException("해당 발주 내역은 존재하지 않습니다.");
         }
 
-        throw new UnModifiableStateException();
+        List<String> waitStatePOrders = retrievePOrders.stream()
+                .filter(i -> i.getState() == State.WAIT)
+                .map(POrder::getPOrderCode)
+                .collect(Collectors.toList());
+
+        if (waitStatePOrders.isEmpty()) {
+            throw new UnModifiableStateException();
+        }
+
+        pOrderItemMapper.delete(waitStatePOrders);
+        pOrderMapper.delete(waitStatePOrders);
     }
+
+    private List<POrder> getPOrders(List<String> porderCode) {
+        return pOrderMapper.checkPOrder(porderCode);
+    }
+
 
     private POrder retrievePOrder(String pOrderCode) {
         return pOrderMapper.retrieve(pOrderCode).orElseThrow(() -> {
@@ -85,7 +102,7 @@ public class POrderDao {
         });
     }
 
-    public List<POrder> searchRecentPK(){
+    public List<POrder> searchRecentPK() {
         return pOrderMapper.searchPOrderPK();
     }
 }

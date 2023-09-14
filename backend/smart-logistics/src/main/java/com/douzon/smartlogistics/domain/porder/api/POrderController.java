@@ -99,9 +99,8 @@ public class POrderController {
                description = "발주 삭제에 알맞은 데이터를 받아 데이터베이스의 데이터를 삭제합니다.",
                responses = @ApiResponse(responseCode = "200"))
     @DeleteMapping("/delete")
-    public ResponseEntity<CommonResponse<String>> delete(@RequestParam @Parameter(description = "삭제할 발주의 코드") String pOrderCode) {
-
-        pOrderService.delete(pOrderCode);
+    public ResponseEntity<CommonResponse<String>> delete(@RequestParam(name = "pOrderCodes") @Parameter(description = "삭제할 발주의 코드") List<String> pOrderCodes) {
+        pOrderService.delete(pOrderCodes);
 
         return ResponseEntity.status(HttpStatus.CREATED)
                              .contentType(MediaType.APPLICATION_JSON)
