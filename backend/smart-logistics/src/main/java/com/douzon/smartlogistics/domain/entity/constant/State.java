@@ -1,11 +1,14 @@
 package com.douzon.smartlogistics.domain.entity.constant;
 
+import com.fasterxml.jackson.annotation.JsonValue;
+
 public enum State {
 
-    WAIT("WAIT"),
-    ING("ING"),
-    CMP("CMP");
+    WAIT("준비"),
+    ING("진행 중"),
+    CMP("완료");
 
+    @JsonValue
     private final String code;
 
     State(String code) {
