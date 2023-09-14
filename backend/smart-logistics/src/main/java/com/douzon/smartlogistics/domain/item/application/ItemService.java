@@ -22,8 +22,8 @@ public class ItemService {
     }
 
     @Transactional
-    public void insert(ItemInsertDto itemInsertDto) {
-        itemDao.insert(itemInsertDto);
+    public Integer insert(ItemInsertDto itemInsertDto) {
+        return itemDao.insert(itemInsertDto);
     }
 
     @Transactional
