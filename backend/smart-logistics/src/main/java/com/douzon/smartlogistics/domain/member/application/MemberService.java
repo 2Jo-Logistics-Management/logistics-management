@@ -41,9 +41,7 @@ public class MemberService {
     }
 
     public void delete(List<Integer> memberNos) {
-        for (Integer memberNo : memberNos) {
-            memberDao.delete(memberNo);
-        }
+            memberDao.delete(memberNos);
     }
 
     public boolean checkId(String memberId) {
