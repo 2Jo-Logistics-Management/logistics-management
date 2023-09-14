@@ -53,20 +53,20 @@
   </update>
 
   <delete id="delete">
-      DELETE
-      FROM PORDER_ITEM
-      WHERE PORDER_CODE IN
-      <foreach item="item" index="index" collection="list" open="(" separator="," close=")">
-          #{item}
-      </foreach>
+    DELETE
+    FROM PORDER_ITEM
+    WHERE PORDER_CODE IN
+    <foreach item="item" index="index" collection="list" open="(" separator="," close=")">
+      #{item}
+    </foreach>
   </delete>
   <delete id="deletePOrderItem">
     DELETE
     FROM PORDER_ITEM
     WHERE PORDER_ITEM_NO IN
-      <foreach item="item" index="index" collection="noIngStatePOrdersItem" open="(" separator="," close=")">
-          #{item}
-      </foreach>
+    <foreach item="item" index="index" collection="noIngStatePOrdersItem" open="(" separator="," close=")">
+      #{item}
+    </foreach>
     AND PORDER_CODE = #{pOrderCode}
   </delete>
   <select id="retrieve" resultType="com.douzon.smartlogistics.domain.entity.POrderItem">
@@ -108,25 +108,61 @@
     FROM PORDER_ITEM
     WHERE PORDER_CODE = #{pOrderCode};
   </select>
-    <select id="checkPOrderCode" resultType="java.lang.Boolean">
-        SELECT CASE
-                   WHEN EXISTS(
-                       SELECT 1
-                       FROM PORDER_ITEM
-                       WHERE PORDER_CODE = #{pOrderCode}
-                   ) THEN true
-                   ELSE false END
-    </select>
-    <select id="selectPkNumber" resultType="java.lang.String">
-        SELECT MAX(PORDER_ITEM_NO) FROM PORDER_ITEM WHERE PORDER_CODE = #{pOrderCode};
-    </select>
-    <select id="checkPOrderItems" resultType="com.douzon.smartlogistics.domain.entity.POrderItem">
-            SELECT *
-            FROM PORDER_ITEM
-            WHERE PORDER_ITEM_NO IN
-            <foreach item="item" index="index" collection="pOrderItemNo" open="(" separator="," close=")">
-                #{item}
-            </foreach>
-            AND PORDER_CODE = #{pOrderCode}
-    </select>
+  <select id="checkPOrderCode" resultType="java.lang.Boolean">
+    SELECT CASE
+             WHEN EXISTS(
+               SELECT 1
+               FROM PORDER_ITEM
+               WHERE PORDER_CODE = #{pOrderCode}
+               ) THEN true
+             ELSE false END
+  </select>
+  <select id="selectPkNumber" resultType="java.lang.String">
+    SELECT MAX(PORDER_ITEM_NO)
+    FROM PORDER_ITEM
+    WHERE PORDER_CODE = #{pOrderCode};
+  </select>
+  <select id="checkPOrderItems" resultType="com.douzon.smartlogistics.domain.entity.POrderItem">
+    SELECT *
+    FROM PORDER_ITEM
+    WHERE PORDER_ITEM_NO IN
+    <foreach item="item" index="index" collection="pOrderItemNo" open="(" separator="," close=")">
+      #{item}
+    </foreach>
+    AND PORDER_CODE = #{pOrderCode}
+  </select>
+  <select id="searchPOrderItemRemainder" resultType="java.lang.Integer">
+    SELECT PORDER_ITEM.PORDER_COUNT - IFNULL(SUM(RECEIVE_ITEM.RECEIVE_COUNT), 0)
+    FROM PORDER_ITEM
+           LEFT JOIN RECEIVE_ITEM
+                     ON PORDER_ITEM.PORDER_CODE = RECEIVE_ITEM.PORDER_CODE
+                       AND PORDER_ITEM.PORDER_ITEM_NO = RECEIVE_ITEM.PORDER_ITEM_NO
+    WHERE PORDER_ITEM.PORDER_CODE = #{porderCode}
+      AND PORDER_ITEM.PORDER_ITEM_NO = #{porderItemNo}
+  </select>
+  <select id="pOrderItemCount" resultType="java.lang.Double">
+    SELECT PORDER_COUNT
+    FROM PORDER_ITEM
+    WHERE PORDER_CODE = #{porderCode}
+      AND PORDER_ITEM_NO = #{porderItemNo}
+  </select>
+  <select id="searchPOrderItemStateCount" resultType="java.lang.Integer">
+    SELECT COUNT(PORDER_STATE)
+    FROM PORDER_ITEM
+    WHERE PORDER_CODE = #{porderCode}
+      AND (PORDER_STATE = 'WAIT' OR PORDER_STATE = 'ING');
+  </select>
+  <select id="exceptSearchCmpPorderItemList" resultType="com.douzon.smartlogistics.domain.entity.POrderItem">
+    SELECT PORDER_ITEM_NO,
+           PORDER_CODE,
+           ITEM_CODE,
+           PORDER_COUNT,
+           PORDER_PRICE,
+           PORDER_ITEM_PRICE,
+           PORDER_STATE,
+           RECEIVE_DEADLINE
+    FROM PORDER_ITEM
+    WHERE PORDER_CODE = #{pOrderCode}
+      AND (PORDER_STATE = 'WAIT' OR PORDER_STATE = 'ING')
+  </select>
 </mapper>

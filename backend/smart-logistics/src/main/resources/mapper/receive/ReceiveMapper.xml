@@ -4,16 +4,22 @@
 
 <mapper namespace="com.douzon.smartlogistics.domain.receive.dao.mapper.ReceiveMapper">
     <insert id="insertReceive">
-        INSERT INTO RECEIVE(RECEIVE_CODE, RECEIVE_DATE, CREATE_IP, CREATE_ID)
-        VALUES (#{receiveCode}, CURRENT_TIMESTAMP ,#{createIp},#{createId})
+        INSERT INTO RECEIVE(RECEIVE_CODE, RECEIVE_DATE, MANAGER, CREATE_IP, CREATE_ID)
+        VALUES (#{receiveCode}, #{receiveDate}, #{manager}, #{createIp},#{createId})
     </insert>
     <update id="modifyReceive">
         UPDATE RECEIVE
-        SET RECEIVE_DATE = CURRENT_TIMESTAMP,
+        SET
+        <if test="receiveModifyDto.manager != ''">
+            MANAGER = #{receiveModifyDto.manager},
+        </if>
+        <if test="receiveModifyDto.receiveDate != ''">
+            RECEIVE_DATE = #{receiveModifyDto.receiveDate},
+        </if>
             MODIFY_DATE = CURRENT_TIMESTAMP,
             MODIFY_IP = #{receiveModifyDto.modifyIp},
             MODIFY_ID = #{receiveModifyDto.modifyId}
-        WHERE RECEIVE_CODE = #{receiveCode}
+        WHERE RECEIVE_CODE = #{receiveModifyDto.receiveCode}
     </update>
     <delete id="deleteReceive">
         DELETE
@@ -41,12 +47,12 @@
             </if>
             <if test="startDate != null and startDate != ''">
                 <![CDATA[
-                    AND CREATE_DATE >= #{startDate}
+                    AND RECEIVE_DATE >= #{startDate}
                 ]]>
             </if>
             <if test="endDate != null and endDate != ''">
                 <![CDATA[
-                    AND CREATE_DATE <= #{endDate}
+                    AND RECEIVE_DATE <= #{endDate}
                 ]]>
             </if>
         </where>
@@ -57,15 +63,5 @@
         FROM RECEIVE
         WHERE RECEIVE_CODE = #{receiveCode};
     </select>
-    <select id="findAvailableCount" resultType="java.lang.Integer">
-        SELECT (PORDER_ITEM.PORDER_COUNT - IFNULL(RECEIVE_ITEM.RECEIVE_COUNT, 0)) ,
-               PORDER_ITEM.PORDER_COUNT,
-               IFNULL(RECEIVE_ITEM.RECEIVE_COUNT, 0)
-        FROM PORDER_ITEM
-        LEFT JOIN RECEIVE_ITEM
-        ON PORDER_ITEM.PORDER_CODE = RECEIVE_ITEM.PORDER_CODE
-        AND PORDER_ITEM.PORDER_ITEM_NO = RECEIVE_ITEM.PORDER_ITEM_NO
-        WHERE PORDER_ITEM.PORDER_CODE = #{porderCode}
-        AND PORDER_ITEM.PORDER_ITEM_NO = #{porderItemNo}
-    </select>
 </mapper>
+

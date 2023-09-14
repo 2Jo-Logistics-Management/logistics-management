@@ -1,10 +1,5 @@
 package com.douzon.smartlogistics.domain.receive.dao.mapper;
-
-//import com.douzon.smartlogistics.domain.receive.dto.CmpPOrderDto;
-import com.douzon.smartlogistics.domain.entity.POrder;
-import com.douzon.smartlogistics.domain.entity.POrderItem;
 import com.douzon.smartlogistics.domain.entity.Receive;
-import com.douzon.smartlogistics.domain.receive.dto.ReceiveListDto;
 import com.douzon.smartlogistics.domain.receive.dto.ReceiveInsertDto;
 import com.douzon.smartlogistics.domain.receive.dto.ReceiveModifyDto;
 import com.douzon.smartlogistics.global.common.aop.annotation.TimeTrace;
@@ -37,11 +32,6 @@ public interface ReceiveMapper {
 
     @Transactional
     void modifyReceive(
-            @Param("receiveCode") String retrieveReceiveCode,
             @Param("receiveModifyDto") ReceiveModifyDto receiveModifyDto);
 
-    int findAvailableCount(
-            @Param("porderCode") String porderCode,
-            @Param("porderItemNo") Integer porderItemNo
-    );
 }

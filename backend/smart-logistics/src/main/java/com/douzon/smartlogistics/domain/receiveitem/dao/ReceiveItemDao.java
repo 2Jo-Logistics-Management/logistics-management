@@ -1,8 +1,7 @@
 package com.douzon.smartlogistics.domain.receiveitem.dao;
-
-import com.douzon.smartlogistics.domain.entity.ReceiveItem;
 import com.douzon.smartlogistics.domain.receiveitem.dao.mapper.ReceiveItemMapper;
 import com.douzon.smartlogistics.domain.receiveitem.dto.ReceiveItemInsertDto;
+import com.douzon.smartlogistics.domain.receiveitem.dto.ReceiveItemListDto;
 import com.douzon.smartlogistics.domain.receiveitem.dto.ReceiveItemModifyDto;
 import com.douzon.smartlogistics.domain.warehousestock.dao.mapper.WarehouseStockMapper;
 import lombok.RequiredArgsConstructor;
@@ -22,15 +21,14 @@ public class ReceiveItemDao {
     private final WarehouseStockMapper warehouseStockMapper;
 
 
-    public List<ReceiveItem> searchReceiveItem(String receiveCode) {
+    public List<ReceiveItemListDto> searchReceiveItem(String receiveCode) {
         return receiveItemMapper.searchReceiveItem(receiveCode);
     }
 
     @Transactional
-    public void modifyReceiveItem(String receiveCode, Long receiveItemNo, ReceiveItemModifyDto receiveItemModifyDto) {
-        Long retrieveReceiveItemNo = retrieveReceiveItem(receiveCode, receiveItemNo);
-        receiveItemMapper.modifyReceiveItem(retrieveReceiveItemNo,receiveItemModifyDto);
-        warehouseStockMapper.modifyWarehouseStock(retrieveReceiveItemNo, receiveItemModifyDto);
+    public void modifyReceiveItem(ReceiveItemModifyDto receiveItemModifyDto) {
+        receiveItemMapper.modifyReceiveItem(receiveItemModifyDto);
+        warehouseStockMapper.modifyWarehouseStock(receiveItemModifyDto);
     }
     public void deleteReceiveItem(String receiveCode, Long receiveItemNo) {
         retrieveReceiveItem(receiveCode, receiveItemNo);

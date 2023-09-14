@@ -19,6 +19,11 @@ public class ReceiveItemInsertDto {
     @JsonProperty(value = "receiveCode")
     private String receiveCode;
 
+    @Schema(title = "입고 순번", description = "등록할 입고 순번 입니다.", example = "1")
+    @NotBlank
+    @Size(max = 10)
+    private Integer receiveItemNo;
+
     @Schema(title = "발주 코드", description = "등록할 발주 코드 입니다.", example = "PO20230726145745750")
     @NotBlank
     @Size(max = 20)
@@ -33,11 +38,6 @@ public class ReceiveItemInsertDto {
     @Digits(integer = 10, fraction = 0)
     private Integer itemCode;
 
-    @Schema(title = "담당자", description = "등록할 담당자 입니다.", example = "테스트 담당자")
-    @NotBlank
-    @Size(max = 15)
-    private String manager;
-
     @Schema(title = "입고 수량", description = "등록할 입고 수량 입니다.", example = "3.0")
     @NotBlank
     @JsonProperty(value = "receiveCount")
@@ -50,8 +50,8 @@ public class ReceiveItemInsertDto {
 
     @Schema(title = "창고 분류 번호", description = "적재할 창고의 분류 번호입니다..", example = "5")
     @Digits(integer = 4, fraction = 0)
-    @JsonProperty(value = "warehouseSectionNo")
-    private Integer warehouseSectionNo;
+    @JsonProperty(value = "warehouseNo")
+    private Integer warehouseNo;
 
     private String createIp;
     private String createId;

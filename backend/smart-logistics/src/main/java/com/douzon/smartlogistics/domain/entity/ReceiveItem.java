@@ -14,7 +14,7 @@ public class ReceiveItem {
     private final Integer itemCode;
     private final Double receiveCount;
     private final Integer accountNo;
-    private final Integer warehouseSectionNo;
+    private final Integer warehouseNo;
     private final String createDate;
     private final String createIp;
     private final String createId;

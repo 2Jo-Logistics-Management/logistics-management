@@ -87,9 +87,10 @@ public class POrderItemController {
                                          ))})
     @GetMapping("/list")
     public ResponseEntity<CommonResponse<List<POrderItem>>> searchPOrderItemList(
-        @RequestParam @Parameter(description = "발주코드") String pOrderCode) {
+        @RequestParam @Parameter(description = "발주코드") String pOrderCode,
+        @RequestParam(required = false, defaultValue = "") @Parameter(description = "요청페이지")  String type) {
 
-        List<POrderItem> pOrderItems = pOrderItemService.searchPOrderItemList(pOrderCode);
+        List<POrderItem> pOrderItems = pOrderItemService.searchPOrderItemList(pOrderCode, type);
 
         return ResponseEntity.status(HttpStatus.OK)
                              .contentType(MediaType.APPLICATION_JSON)
@@ -110,5 +111,20 @@ public class POrderItemController {
         return ResponseEntity.status(HttpStatus.OK)
                              .contentType(MediaType.APPLICATION_JSON)
                              .body(CommonResponse.successWithDefaultMessage());
+    }
+
+    @Operation(summary = "발주 물품 잔량 조회",
+            description = "발주 물품 중 선택된 데이터의 잔량을 조회해 반환합니다.",
+            responses = {@ApiResponse(responseCode = "200",
+                    content = @Content(mediaType = "application/json", schema = @Schema(implementation = CommonResponse.class)))})
+    @GetMapping("/list/remainder")
+    public ResponseEntity<CommonResponse<Integer>> searchPOrderRemainder(
+            @RequestParam @Valid @Parameter(description = "기준 발주번호") String porderCode,
+            @RequestParam @Valid @Parameter(description = "기준 발주순번") Integer porderItemNo
+    ){
+        int availableCount = pOrderItemService.searchPOrderItemRemainder(porderCode,porderItemNo);;
+        return ResponseEntity.status(HttpStatus.OK)
+                .contentType(MediaType.APPLICATION_JSON)
+                .body(CommonResponse.successWith(availableCount));
     }
 }

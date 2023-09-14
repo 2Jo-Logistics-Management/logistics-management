@@ -4,21 +4,27 @@
 
 <mapper namespace="com.douzon.smartlogistics.domain.warehousestock.dao.mapper.WarehouseStockMapper">
 <insert id="insertWarehouseStock">
-  INSERT INTO WAREHOUSE_STOCK(SECTION_NO, RECEIVE_CODE, RECEIVE_ITEM_NO, ITEM_CODE, COUNT, REGIST_DATE,
+  INSERT INTO WAREHOUSE_STOCK(WAREHOUSE_NO, RECEIVE_CODE, RECEIVE_ITEM_NO, ITEM_CODE, COUNT, REGIST_DATE,
                               CREATE_IP,
                               CREATE_ID)
   VALUES
-    (#{warehouseSectionNo},#{receiveCode},#{receiveItemNo},#{itemCode},#{receiveCount},CURRENT_TIMESTAMP,#{createIp},#{createId});
+    (#{receiveItem.warehouseNo},#{receiveItem.receiveCode},#{receiveItem.receiveItemNo},#{receiveItem.itemCode},
+     #{receiveItem.receiveCount},#{receiveDate},#{receiveItem.createIp},#{receiveItem.createId});
 </insert>
 <update id="modifyWarehouseStock">
-  UPDATE WAREHOUSE
-  SET SECTION_NO = #{ReceiveItem.warehouseSectionNo},
+  UPDATE WAREHOUSE_STOCK
+  SET
+  <if test="ReceiveItem.warehouseNo != '' and ReceiveItem.warehouseNo != null">
+        WAREHOUSE_NO = #{ReceiveItem.warehouseNo},
+  </if>
+  <if test="ReceiveItem.receiveCount != '' and ReceiveItem.receiveCount != null">
       COUNT = #{ReceiveItem.receiveCount},
-      REGIST_DATE = CURRENT_TIMESTAMP,
+  </if>
       MODIFY_DATE = CURRENT_TIMESTAMP,
       MODIFY_IP = #{ReceiveItem.modifyIp},
       MODIFY_ID = #{ReceiveItem.modifyId}
-  WHERE RECEIVE_ITEM_NO = #{receiveItemNo}
+  WHERE RECEIVE_CODE = #{ReceiveItem.receiveCode}
+    AND RECEIVE_ITEM_NO = #{ReceiveItem.receiveItemNo}
 </update>
 <!-- 창고 재고번호로 창고재고 조회-->
 <!-- 창고 번호로 창고재고 조회-->

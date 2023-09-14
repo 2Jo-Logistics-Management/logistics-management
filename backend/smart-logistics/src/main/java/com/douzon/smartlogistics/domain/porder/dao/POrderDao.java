@@ -31,8 +31,8 @@ public class POrderDao {
     public List<POrder> searchPOrder(String pOrderCode, String manager, State state, String createId, String createIp,
                                      Integer accountNo, String startDate, String endDate, String pOrderDate, String type) {
 
-        if ("receive".equals(type)) {
-            return pOrderMapper.exeptSearchCmpPOrder(pOrderCode, manager, accountNo, startDate, endDate);
+        if("receive".equals(type)) {
+            return pOrderMapper.exceptSearchCmpPOrder(pOrderCode, manager, accountNo, startDate, endDate);
         }
 
         return pOrderMapper.searchPOrder(pOrderCode, manager, createId, createIp, accountNo, state,

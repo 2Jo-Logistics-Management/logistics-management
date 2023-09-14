@@ -16,7 +16,6 @@ import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.stream.Collectors;
 
-import io.swagger.models.auth.In;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Repository;
@@ -65,7 +64,6 @@ public class POrderItemDao {
 
     public List<POrderItem> searchPOrderItemList(String pOrderCode) {
         POrder retrievePOrder = retrievePOrder(pOrderCode);
-
         return pOrderItemMapper.searchPOrderItemList(retrievePOrder.getPOrderCode());
     }
 
@@ -156,5 +154,14 @@ public class POrderItemDao {
 
     private boolean checkPOrderCode(String pOrderCode) {
         return pOrderItemMapper.checkPOrderCode(pOrderCode);
+    }
+
+    public int searchPOrderItemRemainder(String porderCode, Integer porderItemNo) {
+        return pOrderItemMapper.searchPOrderItemRemainder(porderCode,porderItemNo);
+    }
+
+    public List<POrderItem> exceptSearchCmpPorderItemList(String pOrderCode) {
+        POrder retrievePOrder = retrievePOrder(pOrderCode);
+        return pOrderItemMapper.exceptSearchCmpPorderItemList(retrievePOrder.getPOrderCode());
     }
 }
