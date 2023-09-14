@@ -26,9 +26,7 @@ public class AccountService {
     }
 
     public void delete(List<Integer> accountNos) {
-        for (Integer accountNo : accountNos) {
-            accountDao.delete(accountNo);
-        }
+        accountDao.delete(accountNos);
     }
 
     public boolean checkAccountCode(String accountCode) {

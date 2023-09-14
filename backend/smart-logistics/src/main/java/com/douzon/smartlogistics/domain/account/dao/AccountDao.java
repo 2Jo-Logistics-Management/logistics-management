@@ -28,16 +28,17 @@ public class AccountDao {
         accountMapper.modify(accountNo, accountModifyDto);
     }
 
-    public void delete(Integer accountNo) {
-        Long retrieveItemCode = retrieveItem(accountNo);
-
-        accountMapper.delete(retrieveItemCode);
+    public void delete(List<Integer> accountNos) {
+        retrieveItem(accountNos);
+        accountMapper.delete(accountNos);
     }
 
-    private Long retrieveItem(Integer accountNo) {
-        return accountMapper.retrieve(accountNo).orElseThrow(() -> {
-            throw new NoSuchElementException("해당 거래처는 존재하지 않습니다.");
-        }).getAccountNo();
+    private void retrieveItem(List<Integer> accountNos) {
+        for (Integer item:accountNos) {
+            accountMapper.retrieve(item).orElseThrow((() -> {
+                throw new NoSuchElementException("해당 거래처는 존재하지 않습니다.");
+            }));
+        }
     }
 
     public boolean checkAccountCode(String accountCode) {

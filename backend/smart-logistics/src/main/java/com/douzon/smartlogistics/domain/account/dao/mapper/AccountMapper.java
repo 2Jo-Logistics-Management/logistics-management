@@ -24,7 +24,7 @@ public interface AccountMapper {
     void modify(@Param("accountNo") Integer accountNo,
                 @Param("accountModifyDto") AccountModifyDto accountModifyDto);
 
-    void delete(Long retrieveItemCode);
+    void delete(List<Integer> accountNos);
 
     Optional<Account> retrieve(Integer accountNo);
 
