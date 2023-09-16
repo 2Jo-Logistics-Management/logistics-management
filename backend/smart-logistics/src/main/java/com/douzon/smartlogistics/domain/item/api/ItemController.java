@@ -84,15 +84,15 @@ public class ItemController {
                                         content = @Content(mediaType = "application/json",
                                                            schema = @Schema(implementation = CommonResponse.class))))
     @PatchMapping("/modify/{itemCode}")
-    public ResponseEntity<CommonResponse<String>> modify(
+    public ResponseEntity<CommonResponse<Integer>> modify(
         @PathVariable @Parameter(description = "수정할 물품의 코드") Integer itemCode,
         @RequestBody @Valid @Parameter(description = "물품 수정을 위한 데이터") ItemModifyDto itemModifyDto) {
 
-        itemService.modify(itemCode, itemModifyDto);
+        Integer modifiedItemCode = itemService.modify(itemCode, itemModifyDto);
 
         return ResponseEntity.status(HttpStatus.OK)
                              .contentType(MediaType.APPLICATION_JSON)
-                             .body(CommonResponse.successWithDefaultMessage());
+                             .body(CommonResponse.successWith(modifiedItemCode));
     }
 
     @Operation(summary = "물품 삭제",

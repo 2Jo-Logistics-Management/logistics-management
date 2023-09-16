@@ -27,8 +27,8 @@ public class ItemService {
     }
 
     @Transactional
-    public void modify(Integer itemCode, ItemModifyDto itemModifyDto) {
-        itemDao.modify(itemCode, itemModifyDto);
+    public Integer modify(Integer itemCode, ItemModifyDto itemModifyDto) {
+        return itemDao.modify(itemCode, itemModifyDto);
     }
 
     @Transactional
