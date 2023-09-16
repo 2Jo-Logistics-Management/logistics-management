@@ -31,10 +31,12 @@ public class ItemDao {
     }
 
     @Transactional
-    public void modify(Integer itemCode, ItemModifyDto itemModifyDto) {
+    public Integer modify(Integer itemCode, ItemModifyDto itemModifyDto) {
         Integer retrieveItemCode = retrieveItem(itemCode);
 
         itemMapper.modify(retrieveItemCode, itemModifyDto);
+
+        return retrieveItemCode;
     }
 
 
