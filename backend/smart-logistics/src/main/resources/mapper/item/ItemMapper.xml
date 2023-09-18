@@ -16,6 +16,7 @@
       <if test="itemModifyDto.itemName != null">item_name = #{itemModifyDto.itemName},</if>
       <if test="itemModifyDto.spec != null">spec = #{itemModifyDto.spec},</if>
       <if test="itemModifyDto.unit != null">unit = #{itemModifyDto.unit},</if>
+      <if test="itemModifyDto.itemPrice != null">item_price = #{itemModifyDto.itemPrice},</if>
       modify_date = CURRENT_TIMESTAMP,
       <if test="itemModifyDto.modifyIp != null">modify_ip = #{itemModifyDto.modifyIp},</if>
       <if test="itemModifyDto.modifyId != null">modify_id = #{itemModifyDto.modifyId}</if>
