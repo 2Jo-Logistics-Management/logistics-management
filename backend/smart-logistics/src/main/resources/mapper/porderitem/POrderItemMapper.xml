@@ -89,26 +89,29 @@
     WHERE PORDER_ITEM_NO = #{pOrderItemNo}
       AND PORDER_CODE = #{pOrderCode};
   </select>
-  <select id="searchPOrderItemList" resultType="com.douzon.smartlogistics.domain.entity.POrderItem">
-    SELECT PORDER_ITEM_NO,
-           PORDER_CODE,
-           ITEM_CODE,
-           PORDER_COUNT,
-           PORDER_PRICE,
-           PORDER_ITEM_PRICE,
-           PORDER_STATE,
-           RECEIVE_DEADLINE,
-           CREATE_DATE,
-           CREATE_IP,
-           CREATE_ID,
-           MODIFY_DATE,
-           MODIFY_IP,
-           MODIFY_ID,
-           PORDER_STATE
-    FROM PORDER_ITEM
-    WHERE PORDER_CODE = #{pOrderCode};
-  </select>
-  <select id="checkPOrderCode" resultType="java.lang.Boolean">
+    <select id="searchPOrderItemList" resultType="com.douzon.smartlogistics.domain.entity.POrderItem">
+        SELECT
+            PI.PORDER_ITEM_NO,
+            PI.PORDER_CODE,
+            PI.ITEM_CODE,
+            I.ITEM_NAME, -- ITEM 테이블에서 ITEM_NAME을 가져옴
+            PI.PORDER_COUNT,
+            PI.PORDER_PRICE,
+            PI.PORDER_ITEM_PRICE,
+            PI.PORDER_STATE,
+            PI.RECEIVE_DEADLINE,
+            PI.CREATE_DATE,
+            PI.CREATE_IP,
+            PI.CREATE_ID,
+            PI.MODIFY_DATE,
+            PI.MODIFY_IP,
+            PI.MODIFY_ID,
+            PI.PORDER_STATE
+        FROM PORDER_ITEM AS PI
+                 INNER JOIN ITEM AS I ON PI.ITEM_CODE = I.ITEM_CODE
+        WHERE PI.PORDER_CODE = #{pOrderCode};
+    </select>
+    <select id="checkPOrderCode" resultType="java.lang.Boolean">
     SELECT CASE
              WHEN EXISTS(
                SELECT 1
