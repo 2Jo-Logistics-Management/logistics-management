@@ -25,4 +25,5 @@ public class POrderItem {
     private String modifyDate;
     private String modifyIp;
     private String modifyId;
+    private String itemName;
 }
