@@ -6,6 +6,7 @@ import com.douzon.smartlogistics.domain.receiveitem.dto.ReceiveItemInsertDto;
 import com.douzon.smartlogistics.domain.receiveitem.dto.ReceiveItemListDto;
 import com.douzon.smartlogistics.domain.receiveitem.dto.ReceiveItemModifyDto;
 import com.douzon.smartlogistics.domain.warehouse.dao.WarehouseDao;
+import com.douzon.smartlogistics.domain.warehousestock.dao.WarehouseStockDao;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -19,7 +20,7 @@ import java.util.List;
 public class ReceiveItemService {
 
     private final ReceiveItemDao receiveItemDao;
-    private final WarehouseDao warehouseDao;
+    private final WarehouseStockDao warehouseStockDao;
 
     @Transactional
     public void deleteReceiveItem(List<ReceiveItemDeleteDto> receiveItemDeleteDto) {
@@ -27,7 +28,7 @@ public class ReceiveItemService {
             String receiveCode = item.getReceiveCode();
             Long receiveItemNo = item.getReceiveItemNo();
             receiveItemDao.deleteReceiveItem(receiveCode, receiveItemNo);
-            warehouseDao.deleteReceiveItemWarehouse(receiveCode, receiveItemNo);
+            warehouseStockDao.deleteReceiveItemWarehouseStock(receiveCode, receiveItemNo);
         }
     }
 

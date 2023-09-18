@@ -56,8 +56,4 @@ public class WarehouseDao {
         warehouseMapper.deleteReceiveWarehouse(receiveCode);
     }
 
-    @Transactional
-    public void deleteReceiveItemWarehouse(String receiveCode, Long receiveItemNo){
-        warehouseMapper.deleteReceiveItemWarehouse(receiveCode,receiveItemNo);
-    }
 }

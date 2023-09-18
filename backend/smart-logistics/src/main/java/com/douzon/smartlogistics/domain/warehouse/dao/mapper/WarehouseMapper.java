@@ -32,8 +32,5 @@ public interface WarehouseMapper {
     void deleteReceiveWarehouse(String receiveCode);
 
     @Transactional
-    void deleteReceiveItemWarehouse(String receiveCode, Long receiveItemNo);
-
-    @Transactional
     void delete(Integer warehouseNo);
 }

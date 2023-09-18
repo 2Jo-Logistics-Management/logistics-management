@@ -32,4 +32,7 @@ public interface WarehouseStockMapper {
         @Param("startDate") String startDate,
         @Param("endDate") String endDate,
         @Param("warehouseName") String warehouseName);
+
+    @Transactional
+    void deleteReceiveItemWarehouseStock(String receiveCode, Long receiveItemNo);
 }
