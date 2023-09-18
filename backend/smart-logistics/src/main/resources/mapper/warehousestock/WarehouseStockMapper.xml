@@ -82,4 +82,36 @@
       </if>
     </where>
   </select>
+  <select id="searchWarehouseStocks"
+    resultType="com.douzon.smartlogistics.domain.warehousestock.dto.WarehouseStockSumResponseDto">
+    SELECT
+    WS.WAREHOUSE_NO,
+    w.WAREHOUSE_NAME,
+    WS.ITEM_CODE,
+    I.ITEM_NAME,
+    SUM(WS.COUNT) AS TOTAL_COUNT,
+    (SELECT R.MANAGER FROM RECEIVE R WHERE R.RECEIVE_CODE = MAX(WS.RECEIVE_CODE)) AS MANAGER
+    FROM
+    WAREHOUSE_STOCK WS
+    JOIN
+    ITEM I ON WS.ITEM_CODE = I.ITEM_CODE
+    JOIN
+    WAREHOUSE W ON WS.WAREHOUSE_NO = W.WAREHOUSE_NO
+    <where>
+      <if test="warehouseName != null and warehouseName != ''">
+        AND W.WAREHOUSE_NAME LIKE CONCAT('%', #{warehouseName}, '%')
+      </if>
+      <if test="itemName != null and itemName != ''">
+        AND I.ITEM_NAME LIKE CONCAT('%', #{itemName}, '%')
+      </if>
+      <if test="manager != null and manager != ''">
+        AND R.MANAGER LIKE CONCAT('%', #{manager}, '%')
+      </if>
+    </where>
+    GROUP BY
+    WS.WAREHOUSE_NO,
+    WS.ITEM_CODE,
+    I.ITEM_NAME,
+    W.WAREHOUSE_NAME
+  </select>
 </mapper>
