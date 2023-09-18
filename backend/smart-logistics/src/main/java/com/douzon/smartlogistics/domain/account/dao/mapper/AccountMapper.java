@@ -14,7 +14,7 @@ import java.util.Optional;
 @Mapper
 public interface AccountMapper {
     List<Account> searchAccountList(
-            @Param("accountCode") Integer accountCode,
+            @Param("accountNo") Integer accountNo,
             @Param("accountName") String accountName,
             @Param("createDate") String createDate,
             @Param("createId") String createId);
