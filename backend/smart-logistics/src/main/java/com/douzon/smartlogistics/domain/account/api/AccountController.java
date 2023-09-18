@@ -52,12 +52,12 @@ public class AccountController {
                     @Schema(implementation = CommonResponse.class)))})
     @GetMapping("/list")
     public ResponseEntity<CommonResponse<List<Account>>> searchAccountList(
-        @RequestParam(required = false) Integer accountCode,
+        @RequestParam(required = false) Integer accountNo,
         @RequestParam(required = false, defaultValue = "") String accountName,
         @RequestParam(required = false, defaultValue = "") String createDate,
         @RequestParam(required = false, defaultValue = "") String createId) {
 
-        List<Account> accoutList = accountService.searchAccoutList(accountCode, accountName, createDate, createId );
+        List<Account> accoutList = accountService.searchAccoutList(accountNo, accountName, createDate, createId );
         return ResponseEntity.status(HttpStatus.OK)
                 .contentType(MediaType.APPLICATION_JSON)
                 .body(CommonResponse.successWith(accoutList));

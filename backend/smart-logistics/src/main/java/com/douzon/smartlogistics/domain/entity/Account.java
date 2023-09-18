@@ -8,7 +8,6 @@ import lombok.RequiredArgsConstructor;
 public class Account {
 
     private final Long accountNo;
-    private final Long accountCode;
     private final String accountName;
     private final String representative;
     private final String contactNumber;
