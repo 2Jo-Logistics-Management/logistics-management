@@ -2,6 +2,7 @@ package com.douzon.smartlogistics.domain.warehousestock.application;
 
 import com.douzon.smartlogistics.domain.warehousestock.dao.WarehouseStockDao;
 import com.douzon.smartlogistics.domain.warehousestock.dto.WarehouseStockResponseDto;
+import com.douzon.smartlogistics.domain.warehousestock.dto.WarehouseStockSumResponseDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -18,5 +19,9 @@ public class WarehouseStockService {
 
         return warehouseStockDao.searchWarehouseStockList(warehouseStockNo, warehouseNo, receiveCode, receiveItemNo,
             itemCode, itemName, startDate, endDate, warehouseName);
+    }
+
+    public List<WarehouseStockSumResponseDto> searchWarehouseStocks(String warehouseName, String itemName, String manager) {
+        return warehouseStockDao.searchWarehouseStocks(warehouseName, itemName, manager);
     }
 }

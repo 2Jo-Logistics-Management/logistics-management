@@ -3,6 +3,7 @@ package com.douzon.smartlogistics.domain.warehousestock.dao.mapper;
 import com.douzon.smartlogistics.domain.receiveitem.dto.ReceiveItemInsertDto;
 import com.douzon.smartlogistics.domain.receiveitem.dto.ReceiveItemModifyDto;
 import com.douzon.smartlogistics.domain.warehousestock.dto.WarehouseStockResponseDto;
+import com.douzon.smartlogistics.domain.warehousestock.dto.WarehouseStockSumResponseDto;
 import java.util.List;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
@@ -32,4 +33,9 @@ public interface WarehouseStockMapper {
         @Param("startDate") String startDate,
         @Param("endDate") String endDate,
         @Param("warehouseName") String warehouseName);
+
+    List<WarehouseStockSumResponseDto> searchWarehouseStocks(
+        @Param("warehouseName") String warehouseName,
+        @Param("itemName") String itemName,
+        @Param("manager") String manager);
 }

@@ -83,8 +83,10 @@ public class WarehouseController {
                description = "창고삭제에 알맞은 데이터를 받아 데이터베이스의 데이터를 삭제합니다.")
     @DeleteMapping("/delete/{warehouseNo}")
     public ResponseEntity<CommonResponse<String>> delete(@PathVariable Integer warehouseNo) {
+
         warehouseService.delete(warehouseNo);
-        return ResponseEntity.status(HttpStatus.CREATED)
+
+        return ResponseEntity.status(HttpStatus.OK)
                              .contentType(MediaType.APPLICATION_JSON)
                              .body(CommonResponse.successWithDefaultMessage());
     }

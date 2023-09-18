@@ -2,6 +2,7 @@ package com.douzon.smartlogistics.domain.warehousestock.api;
 
 import com.douzon.smartlogistics.domain.warehousestock.application.WarehouseStockService;
 import com.douzon.smartlogistics.domain.warehousestock.dto.WarehouseStockResponseDto;
+import com.douzon.smartlogistics.domain.warehousestock.dto.WarehouseStockSumResponseDto;
 import com.douzon.smartlogistics.global.common.response.CommonResponse;
 import io.swagger.annotations.Api;
 import io.swagger.v3.oas.annotations.Operation;
@@ -34,7 +35,7 @@ public class WarehouseStockController {
                responses = {@ApiResponse(responseCode = "200",
                                          content = @Content(mediaType = "application/json",
                                                             schema = @Schema(implementation = CommonResponse.class)))})
-    @GetMapping("/list")
+//    @GetMapping("/list")
     public ResponseEntity<CommonResponse<List<WarehouseStockResponseDto>>> searchWarehouseStockList(
         @RequestParam(required = false) @Parameter(description = "창고재고번호") Long warehouseStockNo,
         @RequestParam(required = false) @Parameter(description = "창고번호") Integer warehouseNo,
@@ -46,11 +47,31 @@ public class WarehouseStockController {
         @RequestParam(required = false, defaultValue = "") @Parameter(description = "시작일") String startDate,
         @RequestParam(required = false, defaultValue = "") @Parameter(description = "마감일") String endDate
     ) {
-        List<WarehouseStockResponseDto> warehouseStockList = warehouseStockService.searchWarehouseStockList(warehouseStockNo,
+        List<WarehouseStockResponseDto> warehouseStockList = warehouseStockService.searchWarehouseStockList(
+            warehouseStockNo,
             warehouseNo, receiveCode, receiveItemNo, itemCode, itemName, startDate, endDate, warehouseName);
         return ResponseEntity.status(HttpStatus.OK)
                              .contentType(MediaType.APPLICATION_JSON)
                              .body(CommonResponse.successWith(warehouseStockList));
+    }
+
+    @Operation(summary = "창고(재고) 리스트 조회",
+               description = "창고(재고) 리스트 조회 요청을 처리하고 데이터 베이스를 조회해 리스트로 결과를 반환합니다.",
+               responses = {@ApiResponse(responseCode = "200",
+                                         content = @Content(mediaType = "application/json",
+                                                            schema = @Schema(implementation = CommonResponse.class)))})
+    @GetMapping("/list")
+    public ResponseEntity<CommonResponse<List<WarehouseStockSumResponseDto>>> searchWarehouseStocks(
+        @RequestParam(required = false, defaultValue = "") @Parameter(description = "창고이름") String warehouseName,
+        @RequestParam(required = false, defaultValue = "") @Parameter(description = "품목이름") String itemName,
+        @RequestParam(required = false, defaultValue = "") @Parameter(description = "담당자이름") String manager
+    ) {
+        List<WarehouseStockSumResponseDto> warehouseStocks = warehouseStockService.searchWarehouseStocks(warehouseName,
+            itemName, manager);
+
+        return ResponseEntity.status(HttpStatus.OK)
+                             .contentType(MediaType.APPLICATION_JSON)
+                             .body(CommonResponse.successWith(warehouseStocks));
     }
 }
 
