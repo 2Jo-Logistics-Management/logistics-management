@@ -38,4 +38,6 @@ public interface WarehouseStockMapper {
         @Param("warehouseName") String warehouseName,
         @Param("itemName") String itemName,
         @Param("manager") String manager);
+    @Transactional
+    void deleteReceiveItemWarehouseStock(String receiveCode, Long receiveItemNo);
 }

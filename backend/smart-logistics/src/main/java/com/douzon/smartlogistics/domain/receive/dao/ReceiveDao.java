@@ -34,7 +34,7 @@ public class ReceiveDao {
     }
 
     @Transactional
-    public void insertReceive(ReceiveInsertDto receiveInsertDto){
+    public void  insertReceive(ReceiveInsertDto receiveInsertDto){
         POrderItemStateModifyDto pOrderItemStateModifyDto = new POrderItemStateModifyDto();
 
         receiveMapper.insertReceive(receiveInsertDto);

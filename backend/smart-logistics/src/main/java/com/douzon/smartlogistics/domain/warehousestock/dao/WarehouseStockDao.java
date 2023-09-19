@@ -6,6 +6,7 @@ import com.douzon.smartlogistics.domain.warehousestock.dto.WarehouseStockSumResp
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -26,5 +27,10 @@ public class WarehouseStockDao {
         String manager) {
 
         return warehouseStockMapper.searchWarehouseStocks(warehouseName, itemName, manager);
+    }
+
+    @Transactional
+    public void deleteReceiveItemWarehouseStock(String receiveCode, Long receiveItemNo){
+        warehouseStockMapper.deleteReceiveItemWarehouseStock(receiveCode,receiveItemNo);
     }
 }

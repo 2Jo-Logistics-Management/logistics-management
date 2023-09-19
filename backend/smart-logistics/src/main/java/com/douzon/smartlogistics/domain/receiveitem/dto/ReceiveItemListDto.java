@@ -1,5 +1,6 @@
 package com.douzon.smartlogistics.domain.receiveitem.dto;
 
+import com.douzon.smartlogistics.domain.entity.constant.State;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Getter;
@@ -34,6 +35,9 @@ public class ReceiveItemListDto {
     @NotBlank
     private Integer porderItemNo;
 
+    @Schema(title = "발주 품목 진행상태", description = "조회할 발주품목의 진행상태 입니다.", example = "ING")
+    @NotBlank
+    private State pOrderState;
 
     @Schema(title = "물품 코드", description = "조회할 물품 코드 입니다.", example = "4")
     @NotBlank
@@ -60,6 +64,12 @@ public class ReceiveItemListDto {
     @Size(max = 20)
     private String accountName;
 
+    @Schema(title = "창고번호", description = "조회할 창고 번호 입니다.", example = "1")
+    @NotBlank
     private Integer warehouseNo;
+
+    @Schema(title = "창고이름", description = "조회할 창고 이름 입니다.", example = "A-1")
+    @NotBlank
     private String warehouseName;
+
 }
