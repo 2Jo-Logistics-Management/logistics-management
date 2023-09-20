@@ -3,6 +3,7 @@ import com.douzon.smartlogistics.domain.entity.Receive;
 import com.douzon.smartlogistics.domain.entity.constant.SeqCode;
 import com.douzon.smartlogistics.domain.receive.dao.ReceiveDao;
 import com.douzon.smartlogistics.domain.receive.dto.ReceiveInsertDto;
+import com.douzon.smartlogistics.domain.receive.dto.ReceiveListDto;
 import com.douzon.smartlogistics.domain.receive.dto.ReceiveModifyDto;
 import com.douzon.smartlogistics.domain.warehouse.dao.WarehouseDao;
 import com.douzon.smartlogistics.global.common.util.AutoSeqGenerator;
@@ -20,7 +21,7 @@ public class ReceiveService {
     private final ReceiveDao receiveDao;
     private final WarehouseDao warehouseDao;
 
-    public List<Receive> findReceive(String receiveCode, String manager, String createIp, String createId, String startDate, String endDate) {
+    public List<ReceiveListDto> findReceive(String receiveCode, String manager, String createIp, String createId, String startDate, String endDate) {
         if (startDate != null && !startDate.isEmpty()) {
             startDate += " 00:00:00";
         }

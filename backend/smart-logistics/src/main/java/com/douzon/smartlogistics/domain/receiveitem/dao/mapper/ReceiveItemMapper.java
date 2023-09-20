@@ -19,8 +19,6 @@ public interface ReceiveItemMapper {
 
     Optional<ReceiveItem> retrieveReceiveItem(String receiveCode, Long receiveItemNo);
 
-    ReceiveItem findReceiveItem(String rvCode, String poCode, Integer itemCode, Integer accountNo, Integer warehouseNo);
-
     @Transactional
     void deleteReceiveItem(String receiveCode, Long receiveItemNo);
 

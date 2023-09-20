@@ -39,6 +39,10 @@ public class ReceiveItemListDto {
     @NotBlank
     private State pOrderState;
 
+    @Schema(title = "발주품목수량", description = "조회할 발주물품의 발주품목수량 입니다.", example = "3.0")
+    @NotBlank
+    private Double pOrderCount;
+
     @Schema(title = "물품 코드", description = "조회할 물품 코드 입니다.", example = "4")
     @NotBlank
     @Digits(integer = 10, fraction = 0)

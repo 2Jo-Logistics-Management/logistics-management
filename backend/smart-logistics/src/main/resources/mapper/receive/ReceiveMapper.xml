@@ -26,37 +26,40 @@
         FROM RECEIVE
         WHERE RECEIVE_CODE = #{receiveCode};
     </delete>
-    <select id="findReceive" resultType="com.douzon.smartlogistics.domain.entity.Receive">
+    <select id="findReceive" resultType="com.douzon.smartlogistics.domain.receive.dto.ReceiveListDto">
         SELECT
-            RECEIVE_CODE, RECEIVE_DATE , MANAGER,
-            CREATE_DATE, CREATE_IP, CREATE_ID,
-            MODIFY_DATE, MODIFY_IP, MODIFY_ID
+        RECEIVE.RECEIVE_CODE,
+        RECEIVE.RECEIVE_DATE,
+        RECEIVE.MANAGER,
+        COUNT(CASE WHEN PORDER_ITEM.PORDER_STATE = 'WAIT' THEN 1 END) AS WAIT_COUNT,
+        COUNT(CASE WHEN PORDER_ITEM.PORDER_STATE = 'ING' THEN 1 END) AS ING_COUNT,
+        COUNT(CASE WHEN PORDER_ITEM.PORDER_STATE = 'CMP' THEN 1 END) AS CMP_COUNT
         FROM RECEIVE
+        LEFT JOIN RECEIVE_ITEM ON RECEIVE_ITEM.RECEIVE_CODE = RECEIVE.RECEIVE_CODE
+        LEFT JOIN PORDER_ITEM ON RECEIVE_ITEM.PORDER_CODE = PORDER_ITEM.PORDER_CODE AND RECEIVE_ITEM.PORDER_ITEM_NO = PORDER_ITEM.PORDER_ITEM_NO
         <where>
             <if test="receiveCode != null and receiveCode != ''">
-                AND RECEIVE_CODE LIKE CONCAT(CONCAT('%', #{receiveCode}), '%')
+                AND RECEIVE.RECEIVE_CODE LIKE CONCAT(CONCAT('%', #{receiveCode}), '%')
             </if>
             <if test="manager != null and manager != ''">
-                AND MANAGER LIKE CONCAT(CONCAT('%', #{manager}), '%')
-            </if>
-            <if test="createId != null and createId != ''">
-                AND CREATE_ID LIKE CONCAT('%', #{createId}, '%')
-            </if>
-            <if test="createIp != null and createIp != ''">
-                AND CREATE_IP LIKE CONCAT('%', #{createIp}, '%')
+                AND RECEIVE.MANAGER LIKE CONCAT(CONCAT('%', #{manager}), '%')
             </if>
             <if test="startDate != null and startDate != ''">
                 <![CDATA[
-                    AND RECEIVE_DATE >= #{startDate}
+                    AND RECEIVE.RECEIVE_DATE >= #{startDate}
                 ]]>
             </if>
             <if test="endDate != null and endDate != ''">
                 <![CDATA[
-                    AND RECEIVE_DATE <= #{endDate}
+                    AND RECEIVE.RECEIVE_DATE <= #{endDate}
                 ]]>
             </if>
         </where>
-        ORDER BY RECEIVE_DATE DESC
+        GROUP BY
+        RECEIVE.RECEIVE_CODE,
+        RECEIVE.RECEIVE_DATE,
+        RECEIVE.MANAGER
+        ORDER BY RECEIVE.RECEIVE_DATE DESC;
     </select>
     <select id="retrieve" resultType="com.douzon.smartlogistics.domain.entity.Receive">
         SELECT RECEIVE_CODE, RECEIVE_DATE, MANAGER, CREATE_DATE, CREATE_IP, CREATE_ID, MODIFY_DATE, MODIFY_IP, MODIFY_ID

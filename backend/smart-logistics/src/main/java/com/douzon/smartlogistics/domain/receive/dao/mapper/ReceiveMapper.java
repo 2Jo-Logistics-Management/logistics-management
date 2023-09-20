@@ -1,6 +1,7 @@
 package com.douzon.smartlogistics.domain.receive.dao.mapper;
 import com.douzon.smartlogistics.domain.entity.Receive;
 import com.douzon.smartlogistics.domain.receive.dto.ReceiveInsertDto;
+import com.douzon.smartlogistics.domain.receive.dto.ReceiveListDto;
 import com.douzon.smartlogistics.domain.receive.dto.ReceiveModifyDto;
 import com.douzon.smartlogistics.global.common.aop.annotation.TimeTrace;
 import org.apache.ibatis.annotations.Mapper;
@@ -13,7 +14,7 @@ import java.util.Optional;
 @Mapper
 public interface ReceiveMapper {
     @TimeTrace
-    List<Receive> findReceive(
+    List<ReceiveListDto> findReceive(
             @Param("receiveCode") String receiveCode,
             @Param("manager") String manager,
             @Param("createIp") String createIp,
