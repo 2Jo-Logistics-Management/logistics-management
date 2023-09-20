@@ -67,7 +67,6 @@
             member_no,
             member_name,
             member_id,
-            password,
             member_role,
             create_date,
             ipaddress
