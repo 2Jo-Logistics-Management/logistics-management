@@ -7,17 +7,6 @@
         INSERT INTO RECEIVE_ITEM(RECEIVE_CODE, RECEIVE_ITEM_NO, PORDER_CODE, PORDER_ITEM_NO, ITEM_CODE, RECEIVE_COUNT, ACCOUNT_NO, WAREHOUSE_NO, CREATE_IP, CREATE_ID)
         VALUES (#{receiveItem.receiveCode}, #{receiveItem.receiveItemNo}, #{receiveItem.porderCode}, #{receiveItem.porderItemNo}, #{receiveItem.itemCode}, #{receiveItem.receiveCount}, #{receiveItem.accountNo}, #{receiveItem.warehouseNo}, #{receiveItem.createIp},#{receiveItem.createId});
     </insert>
-    <select id="findReceiveItem" resultType="com.douzon.smartlogistics.domain.entity.ReceiveItem">
-        SELECT RECEIVE_ITEM_NO, RECEIVE_CODE, PORDER_CODE, PORDER_ITEM_NO, ITEM_CODE, RECEIVE_COUNT, ACCOUNT_NO, WAREHOUSE_NO, CREATE_DATE, CREATE_IP, CREATE_ID, MODIFY_DATE, MODIFY_IP, MODIFY_ID
-        FROM RECEIVE_ITEM
-        <where>
-            ITEM_CODE = #{itemCode} AND
-            RECEIVE_CODE = #{rvCode} AND
-            PORDER_CODE = #{poCode} AND
-            ACCOUNT_NO = #{accountNo} AND
-            WAREHOUSE_NO = #{warehouseNo}
-        </where>
-    </select>
     <update id="modifyReceiveItem">
         UPDATE RECEIVE_ITEM
         SET
@@ -54,6 +43,7 @@
                RECEIVE_ITEM.PORDER_CODE,
                RECEIVE_ITEM.PORDER_ITEM_NO,
                PORDER_ITEM.PORDER_STATE,
+               PORDER_ITEM.PORDER_COUNT,
                RECEIVE_ITEM.ITEM_CODE,
                ITEM.ITEM_NAME,
                RECEIVE_ITEM.RECEIVE_COUNT,

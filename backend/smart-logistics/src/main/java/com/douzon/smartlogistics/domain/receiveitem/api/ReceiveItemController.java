@@ -39,7 +39,6 @@ public class ReceiveItemController {
     public ResponseEntity<CommonResponse<List<ReceiveItemListDto>>> searchReceiveItem(
             @RequestParam @Valid @Parameter(description = "입고코드") String receiveCode
     ){
-        System.out.println("receiveCode = " + receiveCode);
         List<ReceiveItemListDto> receiveItemList = receiveItemService.searchReceiveItem(receiveCode);
         return ResponseEntity.status(HttpStatus.OK)
                 .contentType(MediaType.APPLICATION_JSON)

@@ -1,13 +1,11 @@
 package com.douzon.smartlogistics.domain.receive.api;
 
-import com.douzon.smartlogistics.domain.entity.Receive;
 import com.douzon.smartlogistics.domain.receive.application.ReceiveService;
 import com.douzon.smartlogistics.domain.receive.dto.ReceiveInsertDto;
+import com.douzon.smartlogistics.domain.receive.dto.ReceiveListDto;
 import com.douzon.smartlogistics.domain.receive.dto.ReceiveModifyDto;
 import com.douzon.smartlogistics.global.common.aop.annotation.TimeOut;
 import com.douzon.smartlogistics.global.common.response.CommonResponse;
-import com.github.pagehelper.PageHelper;
-import com.github.pagehelper.PageInfo;
 import io.swagger.annotations.Api;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
@@ -40,24 +38,16 @@ public class ReceiveController {
                     ))})
     @TimeOut
     @GetMapping("/list")
-    public ResponseEntity<CommonResponse<List<Receive>>> findReceive(
+    public ResponseEntity<CommonResponse<List<ReceiveListDto>>> findReceive(
             @RequestParam(required = false, defaultValue = "") @Parameter(description = "입고코드") String receiveCode,
             @RequestParam(required = false, defaultValue = "") @Parameter(description = "담당자") String manager,
-            @RequestParam(required = false, defaultValue = "0") @Parameter(description = "물품코드") Integer itemCode,
-            @RequestParam(required = false, defaultValue = "") @Parameter(description = "물품명") String itemName,
-            @RequestParam(required = false, defaultValue = "0") @Parameter(description = "거래처번호") Integer accountNo,
-            @RequestParam(required = false, defaultValue = "") @Parameter(description = "거래처명") String accountName,
             @RequestParam(required = false, defaultValue = "") @Parameter(description = "조회 시작날짜") String startDate,
             @RequestParam(required = false, defaultValue = "") @Parameter(description = "조회 마감날짜") String endDate,
             @RequestParam(required = false, defaultValue = "") @Parameter(description = "작성자 ip") String createIp,
-            @RequestParam(required = false, defaultValue = "") @Parameter(description = "작성자 id") String createId,
-            @RequestParam(defaultValue = "1") @Parameter(description = "페이지 번호") int pageNum,
-            @RequestParam(defaultValue = "50") @Parameter(description = "페이지 크기") int pageSize
+            @RequestParam(required = false, defaultValue = "") @Parameter(description = "작성자 id") String createId
     ) {
-        PageHelper.startPage(pageNum, pageSize);
-        List<Receive> receiveList = receiveService.findReceive(
+        List<ReceiveListDto> receiveList = receiveService.findReceive(
                 receiveCode, manager, createIp, createId, startDate, endDate);
-        PageInfo<Receive> pageInfo = new PageInfo<>(receiveList);
 
         return ResponseEntity.status(HttpStatus.OK)
                 .contentType(MediaType.APPLICATION_JSON)

@@ -7,6 +7,7 @@ import com.douzon.smartlogistics.domain.porderitem.dao.mapper.POrderItemMapper;
 import com.douzon.smartlogistics.domain.porderitem.dto.POrderItemStateModifyDto;
 import com.douzon.smartlogistics.domain.receive.dao.mapper.ReceiveMapper;
 import com.douzon.smartlogistics.domain.receive.dto.ReceiveInsertDto;
+import com.douzon.smartlogistics.domain.receive.dto.ReceiveListDto;
 import com.douzon.smartlogistics.domain.receive.dto.ReceiveModifyDto;
 import com.douzon.smartlogistics.domain.receiveitem.dao.mapper.ReceiveItemMapper;
 import com.douzon.smartlogistics.domain.receiveitem.dto.ReceiveItemInsertDto;
@@ -29,7 +30,7 @@ public class ReceiveDao {
     private final POrderItemMapper pOrderItemMapper;
     private final POrderMapper pOrderMapper;
 
-    public List<Receive> findReceive(String receiveCode, String manager, String createIp, String createId, String startDate, String endDate) {
+    public List<ReceiveListDto> findReceive(String receiveCode, String manager, String createIp, String createId, String startDate, String endDate) {
         return receiveMapper.findReceive(receiveCode, manager, createIp, createId, startDate, endDate);
     }
 
