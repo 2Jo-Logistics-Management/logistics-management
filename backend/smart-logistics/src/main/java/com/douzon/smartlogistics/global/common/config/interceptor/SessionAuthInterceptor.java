@@ -4,6 +4,7 @@ import com.douzon.smartlogistics.domain.member.application.MemberService;
 import com.douzon.smartlogistics.domain.entity.Member;
 import com.douzon.smartlogistics.global.common.exception.auth.Auth;
 import com.douzon.smartlogistics.global.common.exception.auth.AuthException;
+import com.douzon.smartlogistics.global.common.exception.auth.ForbiddenException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
@@ -49,8 +50,7 @@ public class SessionAuthInterceptor implements HandlerInterceptor {
             if ("ADMIN".equals(member.getMemberRole())) {
                 return true;
             } else {
-
-                throw new AuthException("do not have permission");
+                throw new ForbiddenException();
             }
         }
 

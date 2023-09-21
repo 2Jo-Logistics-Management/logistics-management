@@ -97,17 +97,14 @@
     ITEM I ON WS.ITEM_CODE = I.ITEM_CODE
     JOIN
     WAREHOUSE W ON WS.WAREHOUSE_NO = W.WAREHOUSE_NO
-    <where>
-      <if test="warehouseName != null and warehouseName != ''">
-        AND W.WAREHOUSE_NAME LIKE CONCAT('%', #{warehouseName}, '%')
-      </if>
-      <if test="itemName != null and itemName != ''">
-        AND I.ITEM_NAME LIKE CONCAT('%', #{itemName}, '%')
-      </if>
-      <if test="manager != null and manager != ''">
-        AND R.MANAGER LIKE CONCAT('%', #{manager}, '%')
-      </if>
-    </where>
+    JOIN
+    RECEIVE R ON R.RECEIVE_CODE = WS.RECEIVE_CODE
+    WHERE
+    W.WAREHOUSE_NAME LIKE CONCAT('%', #{warehouseName}, '%')
+    AND
+    I.ITEM_NAME LIKE CONCAT('%', #{itemName}, '%')
+    AND
+    R.MANAGER LIKE CONCAT('%', #{manager}, '%')
     GROUP BY
     WS.WAREHOUSE_NO,
     WS.ITEM_CODE,

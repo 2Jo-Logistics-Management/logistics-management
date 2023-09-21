@@ -1,15 +1,14 @@
 package com.douzon.smartlogistics.global.common.exception.advice;
 
 import com.douzon.smartlogistics.global.common.exception.auth.AuthException;
+import com.douzon.smartlogistics.global.common.exception.auth.ForbiddenException;
 import com.douzon.smartlogistics.global.common.response.CommonResponse;
 import com.douzon.smartlogistics.global.common.response.ErrorResponse;
 import com.douzon.smartlogistics.global.common.response.ValidationBindingResultErrorResponse;
 import java.net.UnknownHostException;
-import java.nio.charset.StandardCharsets;
 import java.util.Objects;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.core.annotation.Order;
-import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -86,6 +85,15 @@ public class GlobalControllerAdvice {
         log.error("Auth Exception: {}", e.getMessage());
 
         return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
+                             .contentType(MediaType.APPLICATION_JSON)
+                             .body(CommonResponse.error(new ErrorResponse(e.getMessage())));
+    }
+
+    @ExceptionHandler({ForbiddenException.class})
+    public ResponseEntity<CommonResponse<String>> forbiddenException(ForbiddenException e) {
+        log.error("Forbidden Exception: {}", e.getMessage());
+
+        return ResponseEntity.status(HttpStatus.FORBIDDEN)
                              .contentType(MediaType.APPLICATION_JSON)
                              .body(CommonResponse.error(new ErrorResponse(e.getMessage())));
     }
